@@ -1,0 +1,1 @@
+them_producttype.blade.php

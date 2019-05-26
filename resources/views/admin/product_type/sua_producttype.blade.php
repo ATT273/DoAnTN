@@ -1,0 +1,1 @@
+sua_producttype.blade.php
