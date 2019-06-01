@@ -96,7 +96,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin-middleware'],function(){
 		Route::get('edit/{id}','CategoryController@getEdit');
 		Route::post('edit/{id}','CategoryController@postEdit');
 
-		Route::post('del/{id}','CategoryController@postDel');
+		Route::get('del/{id}','CategoryController@getDel');
 	});
 
 	//Slide

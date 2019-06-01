@@ -7,7 +7,7 @@
           <!-- small box -->
           <div class="small-box bg-aqua">
             <div class="inner">
-              <h3>150</h3>
+              <h3>{{count($bills)}}</h3>
 
               <p>New Orders</p>
             </div>
@@ -37,7 +37,7 @@
           <!-- small box -->
           <div class="small-box bg-yellow">
             <div class="inner">
-              <h3>44</h3>
+              <h3>{{count($users)}}</h3>
 
               <p>User Registrations</p>
             </div>
