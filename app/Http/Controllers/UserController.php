@@ -16,7 +16,7 @@ class UserController extends Controller
     	
     	
     	if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
-    		return redirect('admin/dashboard');
+    		return redirect('index');
     	}
     	else{
     		return redirect('login')->with('thongbao','Failed to login '.$request->email.' '.$request->password);
@@ -36,6 +36,28 @@ class UserController extends Controller
     //  echo $request->username.' '.$request->password;
     }
 
+    public function postRegister(Request $request){
+        $this->validate($request,
+        [
+            'password' => 'required|min:6|confirmed',
+            'username' => 'required|unique:users,username',
+            'fullname' => 'required|regex:/^[a-zA-Z][a-zA-Z\s]*$/',
+            'email' => 'required'
+        ],
+        [
+            'password.required' => 'Type in your Password',
+            'password.min' => 'Your password need at least 6 character',
+            'password.confirmed' => 'Confirm password did not match',
+            'username.required' => 'Input your username',
+            'username.unique' => 'username has been used',
+            'fullname.required' => 'Input your fullname',
+            'fullname.regex' => 'no special characters and numbers are allowed',
+            'email.required' => 'input your email'
+
+        ]);
+
+         return redirect('login')->with('thongbao','Failed to login: Email or password is invalid');
+    }
     public function getLogout(){
         Auth::logout();
         return redirect('index');

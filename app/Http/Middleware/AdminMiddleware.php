@@ -25,8 +25,8 @@ class AdminMiddleware
             
         }
         else{
-            echo "failed";
-            // return redirect('login');
+            
+            return redirect('admin/login');
         }
     }
 }

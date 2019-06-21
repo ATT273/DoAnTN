@@ -59,7 +59,7 @@
                   @foreach($category as $cate)
                   <tr>
                     <td>{{$cate->id}}</td>
-                    <td>{{$cate->name}}</td>
+                    <td>{{$cate->name}}-</td>
                     <td>{{$cate->lowcase_name}}</td>
                     <td><i class="fa fa-pencil"></i> <a href="admin/category/edit/{{$cate->id}}">Edit</a></td>
                     <td><i class="fa fa-trash-o"></i> <a href="admin/category/del/{{$cate->id}}" onclick="return confirm('Ban co muon xoa danh muc nay khong?')">Delete</a></td>

@@ -4,7 +4,7 @@
 <section class="content">
     <div class="box box-warning">
         <div class="box-header with-border">
-          <h3 class="box-title">Add A New Product Type</h3>
+          <h3 class="box-title">Add A New Tag</h3>
         </div>
         <!-- /.box-header -->
         @if(count($errors) > 0)
@@ -21,22 +21,14 @@
             </div>
         @endif
         <div class="box-body">
-          <form role="form" action="admin/product_type/add" method="POST">
+          <form role="form" action="admin/tag/add" method="POST">
             <!-- text input -->
             <input type="hidden" name="_token" value="{{csrf_token()}}">
             <div class="form-group">
-              <label>Category</label>
-              <select name="category" class="form-control">
-              	@foreach($categories as $cate)
-              		<option value="{{$cate->id}}">{{$cate->name}}</option>
-              	@endforeach
-              </select>
+              <label>Tag</label>
+              <input type="text" class="form-control" placeholder="New Tag here" name="tag">
             </div>
-            <div class="form-group">
-              <label>Product Type</label>
-              <input type="text" class="form-control" name="product_type">
-            </div>
-            <button type="submit" class="btn btn-success">Add</button>
+            <button type="submit" class="btn btn-default">Add</button>
             <button type="reset" class="btn btn-default">Reset</button>
           </form>
         </div>
