@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Bill;
 use App\BillDetail;
+use App\Category;
+use App\Product;
 use Illuminate\Http\Request;
 
 class PageController extends Controller
@@ -18,10 +20,17 @@ class PageController extends Controller
     	return view('layouts.admin.admin_login');
     }
     public function getlogin(){
-    	return view('login');
+    	return view('customer.login');
+    }
+
+    public function getRegister(){
+        return view('customer.register');
     }
 
     public function getIndex(){
-        return view('customer.index');
+        $categories = Category::all();
+        $newProducts = Product::orderBy('id','DESC')->take(4)->get();
+        $topProduct = Product::orderBy('sold','DESC')->take(4)->get();
+        return view('customer.index',['categories' => $categories]);
     }
 }

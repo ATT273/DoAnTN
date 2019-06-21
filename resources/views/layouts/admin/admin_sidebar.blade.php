@@ -36,6 +36,21 @@
           </a>
         </li>
         <li>
+          <a href="admin/product_type/danhsach-loaisp">
+            <i class="fa fa-th"></i> <span>Product Type</span>
+          </a>
+        </li>
+        <li>
+          <a href="admin/product/danhsach-sp">
+            <i class="fa fa-th"></i> <span>Product</span>
+          </a>
+        </li>
+        <li>
+          <a href="admin/tag/danhsach-tag">
+            <i class="fa fa-th"></i> <span>Tag</span>
+          </a>
+        </li>
+        <li>
           <a href="admin/user/danhsach-users">
             <i class="fa fa-th"></i> <span>User</span>
           </a>

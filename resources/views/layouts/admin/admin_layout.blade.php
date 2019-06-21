@@ -299,5 +299,6 @@
 <script src="js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="js/demo.js"></script>
+<script type="text/javascript" src="bower_components/ckeditor/ckeditor.js"></script>
 </body>
 </html>

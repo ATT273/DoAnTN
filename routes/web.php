@@ -38,7 +38,9 @@ Route::group(['middleware'],function(){
 	//search item
 	Route::get('search', 'ProductController@getSearch');
 });
-
+//register
+Route::get('register','PageController@getRegister');
+Route::post('register','UserController@postRegister');
 //Login
 Route::get('login','PageController@getlogin');
 Route::post('login','UserController@postLogin');
@@ -83,6 +85,19 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin-middleware'],function(){
 
 		Route::get('del/{id}','ProductController@getDel');
 	});
+
+	//Tag
+	Route::group(['prefix'=>'tag'], function(){
+		Route::get('danhsach-tag','TagController@getDanhsach');
+		Route::get('add','TagController@getAdd');
+		Route::post('add','TagController@postAdd');
+
+		Route::get('edit/{id}','TagController@getEdit');
+		Route::post('edit/{id}','TagController@postEdit');
+
+		Route::get('del/{id}','TagController@getDel');
+	});
+
 	//Product Image
 	Route::group(['prefix' => 'img_product'],function(){
 		Route::get('del/{id}','ProductController@getImgDel');
