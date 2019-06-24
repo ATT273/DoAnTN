@@ -61,7 +61,7 @@
                   <tr>
                   	<td>{{$product->id}}</td>
                   	<td><img src="{{$product->productimg->first()['name']}}"></td>
-                  	<td>{{$product->name}}</td>
+                  	<td><a href="admin/product/view/{{$product->id}}">{{$product->name}}</a></td>
                   	<td>{{$product->product_type->name}}</td>
                   	<td>{{$product->product_type->category->name}}</td>
                     <td><i class="fa fa-pencil"></i> <a href="admin/product/edit/{{$product->id}}">Edit</a></td>
@@ -70,6 +70,7 @@
                   @endforeach
                 </tbody>
               </table>
+              {{$products->links()}}
             </div>
             <!-- /.box-body -->
           </div>
