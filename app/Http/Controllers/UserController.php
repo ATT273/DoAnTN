@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     //
+    
     public function postLogin(Request $request){
     	
     	
@@ -55,8 +56,14 @@ class UserController extends Controller
             'email.required' => 'input your email'
 
         ]);
+        $user = new User;
+        $user->username = $request->username;
+        $user->name = $request->fullname;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
 
-         return redirect('login')->with('thongbao','Failed to login: Email or password is invalid');
+        $user->save();
+         return redirect('login')->with('thongbao','Registered successfully! Please Login your account');
     }
     public function getLogout(){
         Auth::logout();

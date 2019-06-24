@@ -46,6 +46,7 @@ Route::get('login','PageController@getlogin');
 Route::post('login','UserController@postLogin');
 //Logout
 Route::get('logout','UserController@getLogout');
+ Route::get('last','ProductController@getLastest');
 
 ///////////////////////////
 //admin routes//
@@ -100,7 +101,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin-middleware'],function(){
 
 	//Product Image
 	Route::group(['prefix' => 'img_product'],function(){
-		Route::get('del/{id}','ProductController@getImgDel');
+		Route::get('del/{id}','ProductController@getDeleteImage');
 	});
 	//Category
 	Route::group(['prefix'=>'category'], function(){

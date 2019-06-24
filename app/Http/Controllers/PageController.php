@@ -20,11 +20,13 @@ class PageController extends Controller
     	return view('layouts.admin.admin_login');
     }
     public function getlogin(){
-    	return view('customer.login');
+        $categories = Category::all();
+    	return view('customer.login',['categories' => $categories]);
     }
 
     public function getRegister(){
-        return view('customer.register');
+        $categories = Category::all();
+        return view('customer.register',['categories' => $categories]);
     }
 
     public function getIndex(){

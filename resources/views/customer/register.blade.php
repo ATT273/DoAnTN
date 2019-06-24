@@ -26,24 +26,24 @@
 						
 						<div class="form-block">
 							<label for="email">Email address*</label>
-							<input type="email" id="email" name="email" required>
+							<input type="email" id="email" name="email" class="form-control" required>
 						</div>
 
 						<div class="form-block">
 							<label for="your_last_name">FullName*</label>
-							<input type="text" id="your_last_name" name="fullname" required>
+							<input type="text" id="your_last_name" name="fullname" class="form-control" required>
 						</div>
 						<div class="form-block">
 							<label for="your_last_name">UserName*</label>
-							<input type="text" id="username" name="username" required>
+							<input type="text" id="username" name="username" class="form-control" required>
 						</div>
 						<div class="form-block">
 							<label for="phone">Password*</label>
-							<input type="password" id="password" name="password" required>
+							<input type="password" id="password" name="password" class="form-control" required>
 						</div>
 						<div class="form-block">
 							<label for="phone">Re password*</label>
-							<input type="password" id="password" name="password_confirmation" required>
+							<input type="password" id="password" name="password_confirmation" class="form-control" required>
 						</div>
 						<div class="form-block">
 							<button type="submit" class="btn btn-primary">Register</button>

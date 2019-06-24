@@ -20,6 +20,6 @@ class Product extends Model
     	return $this->hasMany('App\ProductImage','product_id','id');
     }
     public function tag(){
-        return $this->belongsToMany('App\Tag','post_tag');
+        return $this->belongsToMany('App\Tag','product_tag');
     }
 }

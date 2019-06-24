@@ -57,6 +57,14 @@
               <textarea id="demo" name="product_desc" class="ckeditor form-control" rows="10" cols="80"></textarea>
             </div>
             <div class="form-group">
+              <label>Tags</label>
+              <select name="tag[]" class="form-control select2-tag" multiple="multiple">
+                @foreach($tags as $tag)
+                  <option value="{{$tag->id}}">{{$tag->name}}</option>
+                @endforeach
+              </select>
+            </div>
+            <div class="form-group">
               <label>Images</label>
               <input type="file" name="product_img[]" multiple class="form-control">
             </div>
@@ -67,4 +75,11 @@
         <!-- /.box-body -->
   	</div>
 </section>
+@endsection
+@section('script')
+ <script type="text/javascript">
+   $(document).ready(function(){
+      $('.select2-tag').select2();
+   });
+ </script>
 @endsection
