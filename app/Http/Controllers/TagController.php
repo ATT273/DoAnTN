@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Tag;
+use App\ProductTag;
 use Illuminate\Http\Request;
 
 class TagController extends Controller
@@ -32,11 +33,30 @@ class TagController extends Controller
     	$tag = new Tag;
     	$tag->name = $request->tag;
     	$tag->save();
-    	return redirect('admin/tag/add')->with('thongbao','Added Successfully');
+    	return redirect('admin/tag/danhsach-tag')->with('thongbao','Added Successfully');
     }
 
     public function getEdit($id){
     	$tag = Tag::find($id);
     	return view('admin.tag.sua_tag',['tag'=>$tag]);
+    }
+    public function postEdit(Request $request, $id){
+        $tag = Tag::find($id);
+        $tag->name = $request->tag;
+        $tag->save();
+
+        return redirect('admin/tag/danhsach-tag')->with('thongbao','Added Successfully');
+    }
+    public function getDel($id){
+        $tag = Tag::find($id);
+        $productTags = ProductTag::where('tag_id',$id)->get();
+
+        $tag->delete();
+        foreach ($productTags as $pt) {
+            $pt->delete();
+        }
+
+        return redirect('admin/tag/danhsach-tag')->with('thongbao', 'Deleted Successfully');
+
     }
 }

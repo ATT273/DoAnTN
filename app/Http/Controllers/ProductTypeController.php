@@ -72,6 +72,15 @@ class ProductTypeController extends Controller
     //Delete product type
 
     public function getDel($id){
-
+        $productType = ProductType::find($id);
+        $count = count($productType->product);
+        echo $count;
+        
+        if ($count > 0) {
+            return redirect('admin/product_type/danhsach-loaisp')->with('loi','cannot delete because there are many products belong to this category');
+        }elseif ($count == 0) {
+            $category->delete();
+            return redirect('admin/product_type/danhsach_loaisp')->with('thongbao','Delete  Successfully');
+        }
     }
 }

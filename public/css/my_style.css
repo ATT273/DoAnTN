@@ -231,3 +231,41 @@ p.single-item-price{
 }
 
 /*Slick Slide*/
+
+
+/*Bill Detail*/
+.subtotal{
+	padding: 5px 5px 5px 5px;
+	/*height: 30px;*/
+	line-height: 30px;
+	text-align: center;
+	background-color: #ffa259;
+}
+.subtotal-name{
+	line-height: 30px;
+	text-align: center;
+	border-right: 1px solid black;
+}
+.subtotal-amount{
+	line-height: 30px;
+	text-align: center;
+	padding-right: 30px;
+	text-align: right;
+}
+.status button{
+	position: relative;
+	float: left;
+	margin-right: 10px;
+}
+
+.confirmation-st {
+	position: relative;
+	float: left;
+	width: 60%;
+	height: 30px;
+	margin-right: 20px;
+}
+.confirmation-st span{
+	float: right;
+	line-height: 20px;
+}

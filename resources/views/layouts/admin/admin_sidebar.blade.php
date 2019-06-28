@@ -51,6 +51,16 @@
           </a>
         </li>
         <li>
+          <a href="admin/bill/danhsach-bill">
+            <i class="fa fa-th"></i> <span>Bill</span>
+          </a>
+        </li>
+        <li>
+          <a href="admin/promo_code/danhsach-code">
+            <i class="fa fa-th"></i> <span>Promo Code</span>
+          </a>
+        </li>
+        <li>
           <a href="admin/user/danhsach-users">
             <i class="fa fa-th"></i> <span>User</span>
           </a>

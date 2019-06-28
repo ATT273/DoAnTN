@@ -69,12 +69,14 @@ class CategoryController extends Controller
     public function getDel($id){
         $category = Category::find($id);
         $count = count($category->product);
-        $category->product->first()->name;
+        echo $count;
         
-        // if ($count > 0) {
-        //     return redirect('admin/category/danhsach-danhmuc')->with('error','cannot delete because there are many products belong to this category');
-        //  } 
-        // $category->delete();
-        // return redirect('admin/category/danhsach_category')->with('thongbao','Delete  Successfully');
+        if ($count > 0) {
+            return redirect('admin/category/danhsach-danhmuc')->with('loi','cannot delete because there are many products belong to this category');
+        }elseif ($count == 0) {
+            $category->delete();
+            return redirect('admin/category/danhsach_category')->with('thongbao','Delete  Successfully');
+        }
+        
     }
 }

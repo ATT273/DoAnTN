@@ -80,8 +80,12 @@
             
               	@endforeach
           	</div>
-            <button type="submit" class="btn btn-default">Add</button>
+            
+            <a href="admin/product/danhsach-sp"><button type="button"class="btn btn-danger">Cancel</button></a>
+            &nbsp;
             <button type="reset" class="btn btn-default">Reset</button>
+            &nbsp;
+            <button type="submit" class="btn btn-success">Update</button>
           </form>
         </div>
         <!-- /.box-body -->
