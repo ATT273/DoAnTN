@@ -96,7 +96,7 @@ class ProductController extends Controller
     			'product_price' => 'required',
     			'product_qty' => 'required',
     			'product_promo' => 'required',
-    			'product_img' => 'required',
+    			// 'product_img' => 'required',
     		],
     		[
     			'product_name.required'=>'Please enter product name',
@@ -106,7 +106,7 @@ class ProductController extends Controller
     			'product_promo.required'=>'Please enter product promo price',
     			'product_qty.required'=>'Please enter product quantity',
     			'product_unit.required'=>'Please enter product unit',
-    			'product_img.required' => 'Please choose images for this product',
+    			// 'product_img.required' => 'Please choose images for this product',
     			// 'product_promo'
     		]);
 
@@ -151,6 +151,25 @@ class ProductController extends Controller
         $img->delete();
 
         return redirect()->back();
+    }
+
+    public function getDel($id){
+        $product = Product::find($id);
+        $images = ProductImage::where('product_id',$id)->get();
+        foreach ($images as $img) {
+            Storage::delete($img->name);
+            $img->delete();
+        }
+        $product->delete();
+
+        return redirect('admin/product/danhsach-sp')->with('thongbao','Deleted Successfully');
+    }
+
+
+    public function getSearchProduct1(Request $request){
+    	$products = Product::where('name','LIKE', '%'.$request->keyword.'%')->take(20)->paginate(2);
+    	$products->appends(['keyword' => $request->keyword]);
+    	return view('admin.product.danhsach_product',['products'=>$products]);
     }
     // public function getLastest(){
     // 	$lastest_pr = Product::orderBy('created_at','DESC')->first();

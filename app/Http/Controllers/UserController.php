@@ -28,7 +28,7 @@ class UserController extends Controller
     public function postAdminLogin(Request $request){
         
         
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+        if(Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password])){
             return redirect('admin/dashboard');
         }
         else{

@@ -57,8 +57,8 @@
                   <tr>
                     <td>{{$tag->id}}</td>
                     <td>{{$tag->name}}</td>
-                    <td><i class="fa fa-pencil"></i> <a href="admin/category/edit/{{$tag->id}}">Edit</a></td>
-                    <td><i class="fa fa-trash-o"></i> <a href="admin/category/del/{{$tag->id}}" onclick="return confirm('Ban co muon xoa danh muc nay khong?')">Delete</a></td>
+                    <td><i class="fa fa-pencil"></i> <a href="admin/tag/edit/{{$tag->id}}">Edit</a></td>
+                    <td><i class="fa fa-trash-o"></i> <a href="admin/tag/del/{{$tag->id}}" onclick="return confirm('Ban co muon xoa danh muc nay khong?')">Delete</a></td>
                   </tr>
                   @endforeach
                 </tbody>
