@@ -175,4 +175,14 @@ class ProductController extends Controller
     // 	$lastest_pr = Product::orderBy('created_at','DESC')->first();
     // 	echo $lastest_pr->name;
     // }
+
+
+    // APi function
+
+    public function getProductApi(){
+        $products  = Product::all();
+        $response["status"] = 200;
+        $response["products"] = $products;
+        return response()->json($response);
+    }
 }

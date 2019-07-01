@@ -87,4 +87,26 @@ class UserController extends Controller
         $bill = Bill::where('user_id',$id)->get();
         return view('admin.user.profile_user',['user' => $user, 'bills' => $bill]);
     }
+
+
+    // Api function
+    public function postAdminLoginApi(Request $request){
+        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+            $admin  = Auth::user();
+            $user = User::all();
+            $bill = Bill::all();
+            $user_count = count($user);
+            $bill_count = count($bill);
+            $response["status"] = 200;
+            $response["message"] = 'Login Success';
+            $response["user_count"] = $user_count;
+            $response["bill_count"] = $bill_count;
+            $response["admin"] = $admin;
+        } else{
+            $response["status"] = 205;
+            $response["message"] = 'Login Fail';
+        }
+
+        return response()->json($response);
+    }
 }
