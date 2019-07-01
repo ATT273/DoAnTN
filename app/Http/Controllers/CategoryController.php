@@ -105,7 +105,7 @@ class CategoryController extends Controller
             $response["message"] = "success";
         } else {
             $response["status"] = 500;
-            $response["message"] = $validator->errors()->all();
+            $response["message"] = $validator->errors()->first();
         }
 
         return response()->json($response);
@@ -128,7 +128,7 @@ class CategoryController extends Controller
             $response["message"] = "success";
         } else {
             $response["status"] = 500;
-            $response["message"] = $validator->errors()->all();
+            $response["message"] = $validator->errors()->first();
         }
         
         return response()->json($response);
