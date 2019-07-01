@@ -18,10 +18,28 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-// //Logout
-// Route::group(['middleware' => 'auth:api'],function(){
-// 	Route::get('logout','UserController@getLogout');
-// 	// Route::post('admin/login','UserController@postAdminLogin');
-// 	Route::get('admin/login','PageController@getAdminlogin');
-// });
+//admin login
+Route::post('admin/login','UserController@postAdminLoginApi');
+Route::get('admin/login','PageController@getAdminloginApi');
+
+Route::group(['prefix'=>'admin'],function(){
+	
+	//DashBoard
+	Route::get('dashboard','PageController@getAdminDashboardApi');
+
+	//product
+	Route::group(['prefix'=>'product'], function(){
+			Route::get('danhsach','ProductController@getProductApi'); 
+	});
+
+	//Category
+	Route::group(['prefix'=>'category'], function(){
+		Route::get('danhsach-danhmuc',['as'=>'danhmuc', 'uses'=>'CategoryController@getDanhSachApi']);
+		Route::post('add','CategoryController@postAddApi');
+
+		Route::post('edit/{id}','CategoryController@postEditApi');
+
+		Route::get('del/{id}','CategoryController@getDelApi');
+	});
+});
 

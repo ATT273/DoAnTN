@@ -79,4 +79,74 @@ class CategoryController extends Controller
         }
         
     }
+
+    // Api function
+
+    public function getDanhSachApi(){
+        $category = Category::all();
+        $response["status"] = 200;
+        $response["category"] = $category;
+        return response()->json($response);
+    }
+
+    public function postAddApi(Request $request){
+        $rules = [
+                'category'=>'required|unique:category,name| min:3| max:100'
+            ];
+        $validator = Validator::make($request->all(), $rules);
+
+        if($validator->passes()){
+            $category = new Category;
+            $category->name = $request->category;
+            $category->lowcase_name = changeTitle($request->category);
+            $category->save();
+
+            $response["status"] = 200;
+            $response["message"] = "success";
+        } else {
+            $response["status"] = 500;
+            $response["message"] = $validator->errors()->all();
+        }
+
+        return response()->json($response);
+    }
+
+    public function postEditApi(Request $request, $id){
+        $rules = [
+                'category' => 'required|unique:category,name|min:3|max:100'
+            ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if($validator->passes()){
+            $category = Category::find($id);
+            $category->name = $request->category;
+            $category->lowcase_name = changeTitle($request->category);
+            $category->save();
+
+            $response["status"] = 200;
+            $response["message"] = "success";
+        } else {
+            $response["status"] = 500;
+            $response["message"] = $validator->errors()->all();
+        }
+        
+        return response()->json($response);
+    }
+
+    public function getDelApi($id){
+        $category = Category::find($id);
+        $count = count($category->product);
+        
+        if ($count > 0) {
+            $response["status"] = 501;
+            $response["message"] = "cannot delete because there are many products belong to this category";
+        }elseif ($count == 0) {
+            $category->delete();
+            $response["status"] = 200;
+            $response["message"] = "success";
+        }
+
+        return response()->json($response);
+    }
 }
