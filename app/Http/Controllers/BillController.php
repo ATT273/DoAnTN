@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Bill;
 use App\BillDetail;
 use App\User;
+use Validator;
 use Illuminate\Http\Request;
 
 class BillController extends Controller

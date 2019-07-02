@@ -6,6 +6,7 @@ use App\Category;
 use App\ProductType;
 use App\ProductImage;
 use App\Tag;
+use Validator;
 use Illuminate\Http\Request;
 use Storage;
 
@@ -79,11 +80,11 @@ class ProductController extends Controller
 
     public function getEdit($id){
     	$product = Product::find($id);
-		$product_images = ProductImage::where('product_id',$id)->get();
+		// $product_images = ProductImage::where('product_id',$id)->get();
     	$productTypes = ProductType::all();
     	$tags = Tag::all();
 	
-	 	return view('admin.product.sua_product',['product'=>$product,'productTypes'=>$productTypes,'images'=>$product_images, 'tags' => $tags]);
+	 	return view('admin.product.sua_product',['product'=>$product,'productTypes'=>$productTypes, 'tags' => $tags]);
     	
     }
 

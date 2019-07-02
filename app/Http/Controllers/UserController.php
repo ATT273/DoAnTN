@@ -7,6 +7,7 @@ use App\User;
 use App\Product;
 use App\Bill;
 use App\Http\Requests;
+use Validator;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller

@@ -69,7 +69,7 @@
               <input type="file" name="product_img[]" multiple class="form-control">
             </div>
             <div class="product_img_edit">
-                @foreach($images as $img)
+                @foreach($product->productimg as $img)
                 
 	              	<div class="img_block">
 	                <img src="upload/product/{{$img->name}}" width="120px">

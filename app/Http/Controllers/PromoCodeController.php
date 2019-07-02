@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Tag;
 use App\ProductTag;
 use App\PromoCode;
+use Validator;
 use Illuminate\Http\Request;
 
 class PromoCodeController extends Controller

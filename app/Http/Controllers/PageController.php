@@ -6,6 +6,7 @@ use App\Bill;
 use App\BillDetail;
 use App\Category;
 use App\Product;
+use Validator;
 use Illuminate\Http\Request;
 
 class PageController extends Controller
