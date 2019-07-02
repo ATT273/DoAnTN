@@ -17,6 +17,6 @@ class ReportController extends Controller
 
 	// Export report
     public function getExport(){
-
+    	
     }
 }

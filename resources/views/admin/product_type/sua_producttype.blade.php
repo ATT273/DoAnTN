@@ -20,6 +20,12 @@
 
             </div>
         @endif
+        @if(session('loi'))
+            <div class="alert alert-danger">
+                {{session('loi')}}
+
+            </div>
+        @endif
         <div class="box-body">
           <form role="form" action="admin/product_type/edit/{{$prtypes->id}}" method="POST">
             <!-- text input -->

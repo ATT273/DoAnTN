@@ -61,12 +61,19 @@ class ProductTypeController extends Controller
     			
     		]);
 
-    	$productType = ProductType::find($id);
-    	$productType->category_id = $request->category;
-    	$productType->name = $request->product_type;
-    	$productType->lowcase_name = changeTitle($request->product_type);
-    	$productType->save();
-    	return redirect('admin/product_type/danhsach-loaisp')->with('thongbao','Update Successfully');
+        $checkname = ProductType::where('name',$request->product_type)->get();
+
+        if($checkname[0]->id == $id){
+            $productType = ProductType::find($id);
+            $productType->category_id = $request->category;
+            $productType->name = $request->product_type;
+            $productType->lowcase_name = changeTitle($request->product_type);
+            $productType->save();
+            return redirect('admin/product_type/danhsach-loaisp')->with('thongbao','Update Successfully');
+        }elseif ($checkname[0]->id !== $id) {
+            return redirect('admin/product_type/edit/'.$id)->with('loi','This product type has already been existed');
+        }
+    	
     }
 
     //Delete product type
@@ -83,7 +90,12 @@ class ProductTypeController extends Controller
         }
     }
 
-    // Api function
+
+
+
+    ///////////////////
+    // Api function//
+    //////////////////
     public function getDanhSachApi(){
         $productTypes = ProductType::all();
         $categories = Category::all();
@@ -119,25 +131,31 @@ class ProductTypeController extends Controller
     public function postEditApi(Request $request, $id){
         $rules = [
                 'category' => 'required',
-                'product_type' => 'required|unique:type_product,name',
+                'product_type' => 'required',
             ];
 
         $validator = Validator::make($request->all(), $rules);
 
         if($validator->passes()){
-            $productType = ProductType::find($id);
-            $productType->category_id = $request->category;
-            $productType->name = $request->product_type;
-            $productType->lowcase_name = changeTitle($request->product_type);
-            $productType->save();
+            $checkname = ProductType::where('name',$request->product_type)->get();
 
-            $response["status"] = 200;
-            $response["message"] = "success";
+            if($checkname[0]->id == $id){
+                $productType = ProductType::find($id);
+                $productType->category_id = $request->category;
+                $productType->name = $request->product_type;
+                $productType->lowcase_name = changeTitle($request->product_type);
+                $productType->save();
+
+                $response["status"] = 200;
+                $response["message"] = "success";
+            }elseif ($checkname[0]->id !== $id) {
+                $response["status"] = 500;
+                $response["message"] = "This product type has already been existed";
+            } 
         } else {
             $response["status"] = 500;
             $response["message"] = $validator->errors()->first();
         }
-        
         return response()->json($response);
     }
 
