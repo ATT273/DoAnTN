@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\ProductType;
 use App\Product;
 use App\Category;
-
+use Validator;
 use Illuminate\Http\Request;
 
 class ProductTypeController extends Controller
@@ -53,12 +53,12 @@ class ProductTypeController extends Controller
     	$this->validate($request,
     		[
     			'category' => 'required',
-    			'product_type' => 'required|unique:type_product,name',
+    			'product_type' => 'required',
     		],
     		[
     			'category.required' => 'Please choose Category',
     			'product_type.required' => 'Please Enter Product Type Name',
-    			'product_type.unique' => 'You have already added this product type',
+    			
     		]);
 
     	$productType = ProductType::find($id);
@@ -74,13 +74,86 @@ class ProductTypeController extends Controller
     public function getDel($id){
         $productType = ProductType::find($id);
         $count = count($productType->product);
-        echo $count;
         
         if ($count > 0) {
-            return redirect('admin/product_type/danhsach-loaisp')->with('loi','cannot delete because there are many products belong to this category');
+            return redirect('admin/product_type/danhsach-loaisp')->with('loi','cannot delete because there are many products belong to this product type');
         }elseif ($count == 0) {
             $category->delete();
             return redirect('admin/product_type/danhsach_loaisp')->with('thongbao','Delete  Successfully');
         }
+    }
+
+    // Api function
+    public function getDanhSachApi(){
+        $productTypes = ProductType::all();
+        $categories = Category::all();
+        $response["status"] = 200;
+        $response["productTypes"] = $productTypes;
+        $response["categories"] = $categories;
+        return response()->json($response);
+    }
+
+    public function postAddApi(Request $request){
+        $rules = [
+                'product_type' => 'required|unique:type_product,name',
+            ];
+        $validator = Validator::make($request->all(), $rules);
+
+        if($validator->passes()){
+            $product_type = new ProductType;
+            $product_type->name = $request->product_type;
+            $product_type->lowcase_name = changeTitle($request->product_type);
+            $product_type->category_id = $request->category;
+            $product_type->save();
+
+            $response["status"] = 200;
+            $response["message"] = "success";
+        } else {
+            $response["status"] = 500;
+            $response["message"] = $validator->errors()->first();
+        }
+
+        return response()->json($response);
+    }
+
+    public function postEditApi(Request $request, $id){
+        $rules = [
+                'category' => 'required',
+                'product_type' => 'required|unique:type_product,name',
+            ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if($validator->passes()){
+            $productType = ProductType::find($id);
+            $productType->category_id = $request->category;
+            $productType->name = $request->product_type;
+            $productType->lowcase_name = changeTitle($request->product_type);
+            $productType->save();
+
+            $response["status"] = 200;
+            $response["message"] = "success";
+        } else {
+            $response["status"] = 500;
+            $response["message"] = $validator->errors()->first();
+        }
+        
+        return response()->json($response);
+    }
+
+    public function getDelApi($id){
+        $productType = ProductType::find($id);
+        $count = count($productType->product);
+        
+        if ($count > 0) {
+            $response["status"] = 501;
+            $response["message"] = "cannot delete because there are many products belong to this category";
+        }elseif ($count == 0) {
+            $productType->delete();
+            $response["status"] = 200;
+            $response["message"] = "success";
+        }
+
+        return response()->json($response);
     }
 }

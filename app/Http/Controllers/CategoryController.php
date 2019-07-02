@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\ProductType;
 use App\Product;
+use Validator;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -50,11 +51,10 @@ class CategoryController extends Controller
     	
     	$this->validate($request,
     		[
-    			'category' => 'required|unique:category,name|min:3|max:100'
+    			'category' => 'required|min:3|max:100'
     		],
     		[
     			'category.required'=>'Ban chua nhap ten moi',
-    			'category.unique'=> 'Ten da bi trung',
     			'category.min'=>'Ten co do dai tu 3 den 100 ky tu',
     			'category.max'=>'Ten co do dai tu 3 den 100 ky tu'
     		]
@@ -69,7 +69,6 @@ class CategoryController extends Controller
     public function getDel($id){
         $category = Category::find($id);
         $count = count($category->product);
-        echo $count;
         
         if ($count > 0) {
             return redirect('admin/category/danhsach-danhmuc')->with('loi','cannot delete because there are many products belong to this category');

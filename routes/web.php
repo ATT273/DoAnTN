@@ -161,4 +161,8 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin-middleware'],function(){
 
 		Route::get('del/{id}','UserController@getDel');
 	});
+
+	Route::group(['prefix' => 'report'],function(){
+		Route::get('make-report','ReportController@getReport');
+	});
 });

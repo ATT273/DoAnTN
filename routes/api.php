@@ -41,5 +41,13 @@ Route::group(['prefix'=>'admin'],function(){
 
 		Route::get('del/{id}','CategoryController@getDelApi');
 	});
+
+	//ProductType
+	Route::group(['prefix'=>'product_type'], function(){
+		Route::get('danhsach-loaisp',['as'=>'loaisp', 'uses'=>'ProductTypeController@getDanhsachApi']);
+		Route::post('add','ProductTypeController@postAddApi');
+		Route::post('edit/{id}','ProductTypeController@postEditApi');
+		Route::get('del/{id}','ProductTypeController@getDelApi');
+	});
 });
 

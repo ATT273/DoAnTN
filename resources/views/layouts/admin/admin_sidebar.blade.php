@@ -66,6 +66,11 @@
           </a>
         </li>
         <li>
+          <a href="admin/report/make-report">
+            <i class="fa fa-th"></i> <span>Report</span>
+          </a>
+        </li>
+        <li>
           <a href="pages/mailbox/mailbox.html">
             <i class="fa fa-envelope"></i> <span>Mailbox</span>
             <span class="pull-right-container">

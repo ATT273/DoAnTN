@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Tag;
 use App\ProductTag;
+use Validator;
 use Illuminate\Http\Request;
 
 class TagController extends Controller
@@ -41,6 +42,16 @@ class TagController extends Controller
     	return view('admin.tag.sua_tag',['tag'=>$tag]);
     }
     public function postEdit(Request $request, $id){
+        $this -> validate($request,
+            [
+                'tag'=>'required| min:3| max:20'
+            ],
+            [
+                'category.required'=>'chua nhap ten the loai',
+                'category.min'=>'Ten co do dai tu 3 den 20 ky tu',
+                'category.max'=>'Ten co do dai tu 3 den 20 ky tu'
+            ]
+        );
         $tag = Tag::find($id);
         $tag->name = $request->tag;
         $tag->save();
