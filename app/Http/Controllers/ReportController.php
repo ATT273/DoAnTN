@@ -13,8 +13,7 @@ use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
-	private $daysOfWeek = [];
-	private $week = '';
+
 	private function checkReport($day){
 		$check_report = Report::where('date',$day)->get();
 		if (count($check_report) > 0) {
@@ -61,18 +60,7 @@ class ReportController extends Controller
 		}
 	}
 
-	public function getWeekDays(){
-		$today = Carbon::now();
-		$this->week = $today->weekOfYear;
-		$firstDay = $today->startOfWeek();
-		$day1 = $firstDay;
-		array_push($this->daysOfWeek, $day1->toDateString());
-		for ($i=0; $i < 6; $i++) { 
-			$day = $firstDay->addDay()->toDateString();
-			array_push($this->daysOfWeek, $day);
-		}
 
-	}
 
 	// Report menu
 	public function getMenu(){
@@ -95,16 +83,36 @@ class ReportController extends Controller
 	}
 
 	public function getWeeklyReport(){
+		$daysOfWeek = [];
+		$today = Carbon::now();
+		$week = $today->weekOfYear;
+		$firstDay = $today->startOfWeek();
+		$day1 = $firstDay;
+		array_push($daysOfWeek, $day1->toDateString());
+		for ($i=0; $i < 6; $i++) { 
+			$day = $firstDay->addDay()->toDateString();
+			array_push($daysOfWeek, $day);
+		}
 		
-		$this->getWeekDays();
-		$reports = Report::whereBetween('date',[$this->daysOfWeek[0],$this->daysOfWeek[6]])->get();
-		return view('admin.report.weekly_report',['reports' => $reports, 'days' => $this->daysOfWeek, 'week' => $this->week]);
+		$reports = Report::whereBetween('date',[$daysOfWeek[0],$daysOfWeek[6]])->get();
+		return view('admin.report.weekly_report',['reports' => $reports, 'days' => $daysOfWeek, 'week' => $week]);
 	}
 	public function getMonthlyReport(){
-		$this->getWeekDays();
-		// print_r($this->daysOfWeek);
+		$today = Carbon::now();
+		$daysOfMonth = [];
+		$month = $today->month;
+		$daysInMonth = $today->daysInMonth;
+		$start = Carbon::parse($today)->startOfMonth();
+		$end = Carbon::parse($today)->endOfMonth();
+		$day1 = Carbon::parse($start)->toDateString();
+		array_push($daysOfMonth, $day1);
+		for ($i=0; $i < $daysInMonth-1 ; $i++) { 
+			$day = $start->addDay()->toDateString();
+			array_push($daysOfMonth, $day);
+		}
 
-		return view('admin.report.monthly_report',['days' => $this->daysOfWeek]);
+		$reports = Report::whereBetween('date',[$daysOfMonth[0],$daysOfMonth[$daysInMonth-1]])->get();
+		return view('admin.report.monthly_report',['reports' => $reports, 'days' => $daysOfMonth, 'month' => $month]);
 	}
 
     //Import report
