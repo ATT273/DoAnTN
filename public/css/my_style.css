@@ -230,6 +230,30 @@ p.single-item-price{
 	color:#fff;
 }
 
+/*Add Product*/
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove{
+	color: #000000;
+	cursor: pointer;
+	display: inline-block;
+	font-weight: bold;
+	margin-right: 2px;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice{
+	background-color: #f88028;
+	border: 1px solid #0e0d0d;
+	border-radius: 4px;
+	cursor: default;
+	float: left;
+	margin-right: 5px;
+	margin-top: 5px;
+	padding: 0 5px;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice{
+	padding: 1px 10px;
+	color: #030303;
+}
+
+
 /*Slick Slide*/
 
 
@@ -268,4 +292,29 @@ p.single-item-price{
 .confirmation-st span{
 	float: right;
 	line-height: 20px;
+}
+
+/*Report*/
+.small-box .inner a h3,
+.small-box .inner a h4{
+	color: #fff;
+}
+
+.report-detail{
+	margin-right: 0px;
+	margin-left: 0px;
+}
+.report-header{
+	background-color: #E3120E;
+	color: #fff;
+	margin-bottom: 20px;
+	border-top-left-radius: 3px;
+	border-bottom-left-radius: 3px;
+}
+.report-body{
+	background-color: #FA270C;
+	color: #fff;
+	margin-bottom: 20px;
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
 }
