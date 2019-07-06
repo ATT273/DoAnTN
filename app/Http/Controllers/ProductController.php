@@ -172,10 +172,16 @@ class ProductController extends Controller
     	$products->appends(['keyword' => $request->keyword]);
     	return view('admin.product.danhsach_product',['products'=>$products]);
     }
-    // public function getLastest(){
-    // 	$lastest_pr = Product::orderBy('created_at','DESC')->first();
-    // 	echo $lastest_pr->name;
-    // }
+    
+
+    public function testP(){
+        $product = Product::where('created_at', '<', '2019-01-23' )->get();
+        foreach ($product as $p) {
+            echo $p->created_at;
+            echo $p->name;
+            echo '<br>';
+        }
+    }
 
 
     // APi function

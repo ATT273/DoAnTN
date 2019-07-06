@@ -84,6 +84,8 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin-middleware'],function(){
 		Route::get('del/{id}','ProductController@getDel');
 
 		Route::get('ajax/search','ProductController@getSearchProduct1');
+
+		Route::get('test','ProductController@testP');
 	});
 
 	//Tag
@@ -163,6 +165,10 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin-middleware'],function(){
 	});
 
 	Route::group(['prefix' => 'report'],function(){
-		Route::get('make-report','ReportController@getReport');
+		Route::get('menu','ReportController@getMenu');
+		Route::get('weekly-report','ReportController@getWeeklyReport');
+		Route::get('monthly-report','ReportController@getMonthlyReport');
+		Route::get('daily-report/today','ReportController@getDailyReportToday');
+		Route::post('daily-report/other','ReportController@getDailyReportOther');
 	});
 });
