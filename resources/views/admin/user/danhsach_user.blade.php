@@ -1,5 +1,28 @@
 @extends('layouts.admin.admin_layout')
 @section('main_content')
+<section class="content-header">
+      <div class="row">
+        <div class="col-md-7">
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="#">Tables</a></li>
+                <li class="active">Users</li>
+            </ol>
+        </div>
+        <div class="col-md-5">
+            <form action="admin/user/search" method="Get">
+                <div class="input-group">
+                    <input type="text" name="keyword" id="search-box" placeholder="Search..." class="form-control">
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+    </section>
 <section class="content">
       <div class="row">
         <div class="col-xs-12">
@@ -39,6 +62,7 @@
                   @endforeach
                 </tbody>
               </table>
+              {{$users->links()}}
             </div>
             <!-- /.box-body -->
           </div>

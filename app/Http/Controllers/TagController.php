@@ -10,7 +10,7 @@ class TagController extends Controller
 {
     //
     public function getDanhsach(){
-    	$tags = Tag::all() ;
+    	$tags = Tag::paginate(5) ;
     	return view('admin.tag.danhsach_tag',['tags'=>$tags]);
     }
 
@@ -69,5 +69,16 @@ class TagController extends Controller
 
         return redirect('admin/tag/danhsach-tag')->with('thongbao', 'Deleted Successfully');
 
+    }
+
+    public function getSearchTag(Request $request){
+        if($request->has('keyword')){
+            $tags = Tag::where('name','LIKE', '%'.$request->keyword.'%')->paginate(2);
+            $tags->appends(['keyword' => $request->keyword]);
+            return view('admin.tag.danhsach_tag',['tags'=>$tags]);
+        }else{
+            return redirect('admin/tag/danhsach-tag');
+        }
+        
     }
 }

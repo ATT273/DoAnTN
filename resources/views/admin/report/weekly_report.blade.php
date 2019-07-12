@@ -7,9 +7,13 @@
 		            <div class="box-header">
 		            	<div class="row">
 		            		<div class="col-xs-7">
-		            			<h3 class="box-title">Bill List</h3>
+		            			<h3 class="box-title">Daily reports List</h3>
 		            		</div>
-		            		
+		            		<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+		            			<a href="admin/report/export-report/week">
+		            				<button type="button" class="btn btn-success pull-right">Export file report</button>
+		            			</a>
+		            		</div>
 		            	</div>
 		            </div>
 		            
@@ -20,11 +24,11 @@
 				                <thead>
 				                  	<tr>
 					                    <th>Date</th>
-					                    <th>Gross Revenue</th>
-					                    <th>Discount Amount</th>
-					                    <th>Received</th>
-					                    <th>Number 0f Orders</th>
-					                    <th>Sold Products</th>
+					                    <th class="text-right">Gross Revenue</th>
+					                    <th class="text-right">Discount Amount</th>
+					                    <th class="text-right">Received</th>
+					                    <th class="text-right">Number 0f Orders</th>
+					                    <th class="text-right">Sold Products</th>
 					                    <th>Edit</th>
 					                    <th>Delete</th>
 				                  	</tr>
@@ -33,11 +37,11 @@
 				                  	@foreach($reports as $report)
 						                <tr>
 						                    <td>{{$report->date}}</td>
-						                    <td>{{$report->gross_revenue}}</td>
-						                    <td>{{$report->discount_amount}}</td>
-						                    <td>{{$report->received}}</td>
-						                    <td>{{$report->number_of_orders}}</td>
-						                    <td>{{$report->number_products_sold}}</td>
+						                    <td align="right">@money($report->gross_revenue)</td>
+						                    <td align="right">@money($report->discount_amount)</td>
+						                    <td align="right">@money($report->received)</td>
+						                    <td align="right">{{$report->number_of_orders}}</td>
+						                    <td align="right">{{$report->number_products_sold}}</td>
 						                    <td><i class="fa fa-pencil"></i> <a href="admin/report/edit/{{$report->id}}">Edit</a></td>
 						                    <td><i class="fa fa-trash-o"></i> <a href="admin/report/del/{{$report->id}}" onclick="return confirm('Ban co muon xoa danh muc nay khong?')">Delete</a></td>
 						                </tr>
@@ -45,36 +49,7 @@
 				                </tbody>
 			             	</table>
 			             	<br>
-			             	{{-- <div class="row report-detail">
-			             		<div class="row">
-			             			<div class="col-xs-4">
-			             				<div class="report-header col-xs-7"><h4>Date</h4></div>
-			             				<div class="report-body col-xs-5"><h4 class="pull-right">{{$report[0]->date}}</h4></div>
-			             			</div>
-				             		<div class="col-xs-4">
-				             			<div class="report-header col-xs-7"><h4>Number of orders</h4></div>
-			             				<div class="report-body col-xs-5"><h4 class="pull-right">{{$report[0]->number_of_orders}}</h4></div>
-				             		</div>
-				             		<div class="col-xs-4">
-				             			<div class="report-header col-xs-7"><h4>Sold Products</h4></div>
-			             				<div class="report-body col-xs-5"><h4 class="pull-right">{{$report[0]->number_products_sold}}</h4></div>
-				             		</div>
-			             		</div>
-			             		<div class="row">
-			             			<div class="col-xs-4">
-			             				<div class="report-header col-xs-7"><h4>Gross Revenue</h4></div>
-			             				<div class="report-body col-xs-5"><h4 class="pull-right">@money($report[0]->gross_revenue)</h4></div>
-			             			</div>
-				             		<div class="col-xs-4">
-				             			<div class="report-header col-xs-7"><h4>Discount Amount</h4></div>
-			             				<div class="report-body col-xs-5"><h4 class="pull-right">@money($report[0]->discount_amount)</h4></div>
-				             		</div>
-				             		<div class="col-xs-4">
-				             			<div class="report-header col-xs-7"><h4>Received</h4></div>
-			             				<div class="report-body col-xs-5"><h4 class="pull-right">@money($report[0]->received)</h4></div>
-				             		</div>
-			             		</div>
-			             	</div> --}}
+			             	
 		                @else
 			            	<h3>{{'There is no order today'}}</h3>
 			           	@endif
@@ -118,9 +93,7 @@
 	    $('#datepicker').datepicker({
 	    	format: 'yyyy-mm-dd',
 	    });
-
-
-
+	    
 	//-------------
     //- BAR CHART -
     //-------------
@@ -140,9 +113,17 @@
 	          pointHighlightFill  : '#fff',
 	          pointHighlightStroke: 'rgba(220,220,220,1)',
 	          data                : [
-	          		@foreach ($reports as $report) 
-	          			{{$report->gross_revenue }}{{","}}
-	          		@endforeach 
+          		@foreach($days as $day)
+					@if(in_array($day, $reportDates))
+						@foreach($reports as $report)
+							@if($day == $report->date)
+								{{$report->gross_revenue}}{{","}}
+							@endif
+						@endforeach
+					@else
+						{{'0'}}{{","}}
+					@endif
+				@endforeach
 	          ]
 	        },
 	        // {

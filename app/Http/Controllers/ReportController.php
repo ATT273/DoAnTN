@@ -95,7 +95,11 @@ class ReportController extends Controller
 		}
 		
 		$reports = Report::whereBetween('date',[$daysOfWeek[0],$daysOfWeek[6]])->get();
-		return view('admin.report.weekly_report',['reports' => $reports, 'days' => $daysOfWeek, 'week' => $week]);
+		$reportDates=[];
+		foreach ($reports as $report) {
+			array_push($reportDates,$report->date);
+		}
+		return view('admin.report.weekly_report',['reports' => $reports, 'days' => $daysOfWeek, 'week' => $week, 'reportDates' => $reportDates]);
 	}
 	public function getMonthlyReport(){
 		$today = Carbon::now();
@@ -112,7 +116,11 @@ class ReportController extends Controller
 		}
 
 		$reports = Report::whereBetween('date',[$daysOfMonth[0],$daysOfMonth[$daysInMonth-1]])->get();
-		return view('admin.report.monthly_report',['reports' => $reports, 'days' => $daysOfMonth, 'month' => $month]);
+		$reportDates=[];
+		foreach ($reports as $report) {
+			array_push($reportDates,$report->date);
+		}
+		return view('admin.report.monthly_report',['reports' => $reports, 'days' => $daysOfMonth, 'month' => $month, 'reportDates' => $reportDates]);
 	}
 
     //Import report
@@ -121,7 +129,31 @@ class ReportController extends Controller
 	}
 
 	// Export report
-    public function getExport(){
-    	
+    public function getExport($type){
+    	$today = Carbon::now();
+    	$week = $today->weekOfYear;
+    	$month = $today->englishMonth;
+    	$year = $today->year;
+    	$startMonth = Carbon::parse($today)->startOfMonth()->toDateString();
+		$endMonth = Carbon::parse($today)->endOfMonth()->toDateString();
+		$startWeek = Carbon::parse($today)->startOfWeek()->toDateString();
+		$endWeek = Carbon::parse($today)->endOfWeek()->toDateString();
+
+    	if ($type == 'month') {
+    		$reports = Report::whereBetween('date',[$startMonth,$endMonth])->get();
+    		Excel::create('Report of '.$month.'-'.$year, function($excel) use($reports){
+	    		$excel->sheet('Sheet 1', function($sheet) use($reports){
+	    			$sheet->fromArray($reports,null,'A1',true);
+	    		});
+    		})->export('xlsx');
+    		
+    	}elseif ($type == 'week') {
+    		$reports = Report::whereBetween('date',[$startWeek,$endWeek])->get();
+    		Excel::create('Report of week '.$week.'-'.$year, function($excel) use($reports){
+	    		$excel->sheet('Sheet 1', function($sheet) use($reports){
+	    			$sheet->fromArray($reports,null,'A1',true);
+	    		});
+    		})->export('xlsx');
+    	}
     }
 }

@@ -27,7 +27,7 @@ class BillController extends Controller
         $bill->confirmation = 1;
         $bill->save();
 
-        echo 'Da xac nhan';
+        echo '<strong>Confirmation: </strong>'.'<span class="label label-success">Da xac nhan</span>';
     }
 
 }

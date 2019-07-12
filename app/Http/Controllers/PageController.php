@@ -6,6 +6,10 @@ use App\Bill;
 use App\BillDetail;
 use App\Category;
 use App\Product;
+use App\Slide;
+use App\ProductType;
+use App\ProductImage;
+use App\Tag;
 use Validator;
 use Illuminate\Http\Request;
 
@@ -33,7 +37,19 @@ class PageController extends Controller
     public function getIndex(){
         $categories = Category::all();
         $newProducts = Product::orderBy('id','DESC')->take(4)->get();
-        $topProduct = Product::orderBy('sold','DESC')->take(4)->get();
-        return view('customer.index',['categories' => $categories]);
+        $topProducts = Product::orderBy('sold','DESC')->take(4)->get();
+        $banners  = Slide::all();
+        return view('customer.index',['categories' => $categories, 'banners' => $banners, 'newProducts' => $newProducts, 'topProducts' => $topProducts]);
+    }
+
+    public function getDetailProduct($id){
+        $product = Product::find($id);
+        $relatedProducts = Product::where('type_id',$product->type_id)->take(4)->get();
+        $categories = Category::all();
+        $tags = Tag::whereIn('id',$product->tag()->allRelatedIds())->get();
+        // dd($tags);
+
+        // dd($product->tag()->allRelatedIds()) ;
+        return view('customer.product_detail',['product' => $product, 'categories' => $categories, 'relatedProducts' => $relatedProducts, 'tags' => $tags]);
     }
 }

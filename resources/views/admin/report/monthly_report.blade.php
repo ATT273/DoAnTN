@@ -7,9 +7,13 @@
 		            <div class="box-header">
 		            	<div class="row">
 		            		<div class="col-xs-7">
-		            			<h3 class="box-title">Bill List</h3>
+		            			<h3 class="box-title">Daily reports List</h3>
 		            		</div>
-		            		
+		            		<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+		            			<a href="admin/report/export-report/month">
+		            				<button type="button" class="btn btn-success pull-right">Export file report</button>
+		            			</a>
+		            		</div>
 		            	</div>
 		            </div>
 		            
@@ -45,36 +49,6 @@
 				                </tbody>
 			             	</table>
 			             	<br>
-			             	{{-- <div class="row report-detail">
-			             		<div class="row">
-			             			<div class="col-xs-4">
-			             				<div class="report-header col-xs-7"><h4>Date</h4></div>
-			             				<div class="report-body col-xs-5"><h4 class="pull-right">{{$report[0]->date}}</h4></div>
-			             			</div>
-				             		<div class="col-xs-4">
-				             			<div class="report-header col-xs-7"><h4>Number of orders</h4></div>
-			             				<div class="report-body col-xs-5"><h4 class="pull-right">{{$report[0]->number_of_orders}}</h4></div>
-				             		</div>
-				             		<div class="col-xs-4">
-				             			<div class="report-header col-xs-7"><h4>Sold Products</h4></div>
-			             				<div class="report-body col-xs-5"><h4 class="pull-right">{{$report[0]->number_products_sold}}</h4></div>
-				             		</div>
-			             		</div>
-			             		<div class="row">
-			             			<div class="col-xs-4">
-			             				<div class="report-header col-xs-7"><h4>Gross Revenue</h4></div>
-			             				<div class="report-body col-xs-5"><h4 class="pull-right">@money($report[0]->gross_revenue)</h4></div>
-			             			</div>
-				             		<div class="col-xs-4">
-				             			<div class="report-header col-xs-7"><h4>Discount Amount</h4></div>
-			             				<div class="report-body col-xs-5"><h4 class="pull-right">@money($report[0]->discount_amount)</h4></div>
-				             		</div>
-				             		<div class="col-xs-4">
-				             			<div class="report-header col-xs-7"><h4>Received</h4></div>
-			             				<div class="report-body col-xs-5"><h4 class="pull-right">@money($report[0]->received)</h4></div>
-				             		</div>
-			             		</div>
-			             	</div> --}}
 		                @else
 			            	<h3>{{'There is no order today'}}</h3>
 			           	@endif
@@ -87,7 +61,6 @@
 				<div class="box box-success">
 					<div class="box-header with-border">
 						<h3 class="box-title">Gross Revenue of Month {{$month}}</h3>
-
 						<div class="box-tools pull-right">
 							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
 							</button>
@@ -115,9 +88,9 @@
 	//-------------
     //- DATE PICKER -
     //-------------
-	    $('#datepicker').datepicker({
-	    	format: 'yyyy-mm-dd',
-	    });
+    $('#datepicker').datepicker({
+    	format: 'yyyy-mm-dd',
+    });
 
 
 
@@ -127,35 +100,45 @@
 		var barChartCanvas                   = $('#barChart').get(0).getContext('2d')
 	    var barChart                         = new Chart(barChartCanvas)
 	    var barChartData = {
-	      labels  : [@foreach($days as $day)
-		            	{!!'"'!!}{{$day}}{!!'"'!!}{{','}}
-		            @endforeach],
-	      datasets: [
-	        {
-	          label               : 'Electronics',
-	          fillColor           : 'rgba(210, 214, 222, 1)',
-	          strokeColor         : 'rgba(210, 214, 222, 1)',
-	          pointColor          : 'rgba(210, 214, 222, 1)',
-	          pointStrokeColor    : '#c1c7d1',
-	          pointHighlightFill  : '#fff',
-	          pointHighlightStroke: 'rgba(220,220,220,1)',
-	          data                : [
-	          		@foreach ($reports as $report) 
-	          			{{$report->gross_revenue }}{{","}}
-	          		@endforeach 
-	          ]
-	        },
-	        // {
-	        //   label               : 'Digital Goods',
-	        //   fillColor           : 'rgba(60,141,188,0.9)',
-	        //   strokeColor         : 'rgba(60,141,188,0.8)',
-	        //   pointColor          : '#3b8bba',
-	        //   pointStrokeColor    : 'rgba(60,141,188,1)',
-	        //   pointHighlightFill  : '#fff',
-	        //   pointHighlightStroke: 'rgba(60,141,188,1)',
-	        //   data                : [28, 48, 40, 19, 86, 27, 90]
-	        // }
-	      ]
+			labels  : [
+				@foreach($days as $day)
+					{!!'"'!!}{{$day}}{!!'"'!!}{{','}}
+				@endforeach
+			],
+			datasets: [
+			{
+			label               : 'Electronics',
+			fillColor           : 'rgba(210, 214, 222, 1)',
+			strokeColor         : 'rgba(210, 214, 222, 1)',
+			pointColor          : 'rgba(210, 214, 222, 1)',
+			pointStrokeColor    : '#c1c7d1',
+			pointHighlightFill  : '#fff',
+			pointHighlightStroke: 'rgba(220,220,220,1)',
+			data                : [
+				@foreach($days as $day)
+					@if(in_array($day, $reportDates))
+						@foreach($reports as $report)
+							@if($day == $report->date)
+								{{$report->gross_revenue}}{{","}}
+							@endif
+						@endforeach
+					@else
+						{{'0'}}{{","}}
+					@endif
+				@endforeach
+			]
+			},
+			// {
+			//   label               : 'Digital Goods',
+			//   fillColor           : 'rgba(60,141,188,0.9)',
+			//   strokeColor         : 'rgba(60,141,188,0.8)',
+			//   pointColor          : '#3b8bba',
+			//   pointStrokeColor    : 'rgba(60,141,188,1)',
+			//   pointHighlightFill  : '#fff',
+			//   pointHighlightStroke: 'rgba(60,141,188,1)',
+			//   data                : [28, 48, 40, 19, 86, 27, 90]
+			// }
+			]
 	    }
 	    barChartData.datasets[0].fillColor   = '#00a65a'
 	    barChartData.datasets[0].strokeColor = '#00a65a'

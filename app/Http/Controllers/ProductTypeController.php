@@ -12,7 +12,7 @@ class ProductTypeController extends Controller
     //
 	//List Product Type
     public function getDanhsach(){
-    	$productTypes = ProductType::all();
+    	$productTypes = ProductType::paginate(5);
 
     	return view('admin.product_type.danhsach_producttype',['prtypes' => $productTypes]);
     }
@@ -86,10 +86,20 @@ class ProductTypeController extends Controller
             return redirect('admin/product_type/danhsach-loaisp')->with('loi','cannot delete because there are many products belong to this product type');
         }elseif ($count == 0) {
             $category->delete();
-            return redirect('admin/product_type/danhsach_loaisp')->with('thongbao','Delete  Successfully');
+            return redirect('admin/product_type/danhsach-loaisp')->with('thongbao','Delete  Successfully');
         }
     }
 
+    public function getSearchProductType(Request $request){
+        if($request->has('keyword')){
+            $productTypes = ProductType::where('name','LIKE', '%'.$request->keyword.'%')->paginate(2);
+            $productTypes->appends(['keyword' => $request->keyword]);
+            return view('admin.product_type.danhsach_producttype',['prtypes'=>$productTypes]);
+        }else{
+            return redirect('admin/product_type/danhsach-loaisp');
+        }
+        
+    }
 
 
 

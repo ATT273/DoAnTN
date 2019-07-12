@@ -18,6 +18,10 @@ class AppServiceProvider extends ServiceProvider
         Blade::directive('money',function($m){
             return "<?php echo number_format($m).' VND'; ?>";
         });
+
+        Blade::directive('excerpt', function($str){
+            return "<?php  echo explode('---',$str)[0]; ?>";
+        });
     }
 
     /**
