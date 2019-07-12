@@ -1,20 +1,20 @@
 <div class="header-body">
 	<div class="container beta-relative">
 		<div class="pull-left">
-			<a href="index.html" id="logo"><img src="assets/dest/images/logo-cake.png" width="200px" alt=""></a>
+			<a href="index" id="logo"><img src="upload/logo/logo.png" width="200px" alt=""></a>
 		</div>
 		<div class="pull-right beta-components space-left ov">
 			<div class="space10">&nbsp;</div>
 			<div class="beta-comp">
 				<form role="search" method="get" id="searchform" action="/">
-			        <input type="text" value="" name="s" id="s" placeholder="Nhập từ khóa..." />
+			        <input type="text" value="" name="s" id="s" placeholder="Nhập từ khóa..." class="form-control" />
 			        <button class="fa fa-search" type="submit" id="searchsubmit"></button>
 				</form>
 			</div>
 
 			<div class="beta-comp">
 				<div class="cart">
-					<div class="beta-select"><i class="fa fa-shopping-cart"></i> Giỏ hàng (Trống) <i class="fa fa-chevron-down"></i></div>
+					<div class="beta-select"><i class="fa fa-shopping-cart"></i><i class="fa fa-chevron-down"></i></div>
 					<div class="beta-dropdown cart-body">
 						<div class="cart-item">
 							<div class="media">

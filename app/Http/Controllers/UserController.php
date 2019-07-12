@@ -72,7 +72,7 @@ class UserController extends Controller
     }
 
     public function getDanhsach(){
-        $users = User::all();
+        $users = User::paginate(5);
         return view('admin.user.danhsach_user',['users'=>$users]);
     }
     public function getAdd(){
@@ -85,9 +85,20 @@ class UserController extends Controller
 
     public function getUserProfile($id){
         $user = User::find($id);
-        $bill = Bill::where('user_id',$id)->get();
-        return view('admin.user.profile_user',['user' => $user, 'bills' => $bill]);
+        $bills = Bill::where('user_id',$id)->get();
+        return view('admin.user.profile_user',['user' => $user, 'bills' => $bills]);
     }
+
+    public function getSearchUser(Request $request){
+        if($request->has('keyword')){
+            $users = User::where('name','LIKE', '%'.$request->keyword.'%')->orWhere('username','LIKE', '%'.$request->keyword.'%')->orWhere('email','LIKE', '%'.$request->keyword.'%')->paginate(2);
+            $users->appends(['keyword' => $request->keyword]);
+            return view('admin.user.danhsach_user',['users'=>$users]);
+        }else{
+            return redirect('admin/user/danhsach-users');
+        }
+    }
+
 
 
     // Api function

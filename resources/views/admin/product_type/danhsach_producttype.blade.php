@@ -2,16 +2,27 @@
 @section('main_content')
 	    <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
-        {{-- San Pham
-        <small>advanced tables</small> --}}
-        <ol class="breadcrumb">
-          <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-          <li><a href="#">Tables</a></li>
-          <li class="active">Product Type</li>
-        </ol>
-      </h1>
-      
+     <div class="row">
+        <div class="col-md-7">
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="#">Tables</a></li>
+                <li class="active">Product Type</li>
+            </ol>
+        </div>
+        <div class="col-md-5">
+            <form action="admin/product_type/search" method="Get">
+                <div class="input-group">
+                    <input type="text" name="keyword" id="search-box" placeholder="Search..." class="form-control">
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
     </section>
     @if(count($errors) > 0)
         <div class="alert alert-danger">
@@ -38,7 +49,7 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Category List</h3>
+              <h3 class="box-title">Product Type List</h3>
               <a href="admin/product_type/add" class="admin_btn_add btn btn-success">Add A New Product Type</a>
             </div>
             <!-- /.box-header -->
@@ -66,6 +77,7 @@
                   @endforeach
                 </tbody>
               </table>
+              {{$prtypes->links()}}
             </div>
             <!-- /.box-body -->
           </div>

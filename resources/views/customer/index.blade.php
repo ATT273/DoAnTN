@@ -1,4 +1,8 @@
 @extends('layouts.customer.customer_layout')
+@section('menu')
+	@include('layouts.customer.index_menu')<!-- .header-bottom - menu-->
+@endsection
+
 @section('content')
 	@include('layouts.customer.index_slide')
 	<div class="container">
@@ -17,4 +21,16 @@
 			</div> <!-- .main-content -->
 		</div> 
 	</div><!-- #content -->
+@endsection
+@section('script')
+	<script type="text/javascript" src="slick-1.8.1/slick/slick.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('.slide').slick({
+				autoplay:true,
+				arrows:true,
+				autoplaySpeed:1000,
+			});
+		});
+	</script>
 @endsection

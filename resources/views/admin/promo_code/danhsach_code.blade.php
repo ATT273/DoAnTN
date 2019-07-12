@@ -3,14 +3,27 @@
 
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
-        <ol class="breadcrumb">
-          <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-          <li><a href="#">Tables</a></li>
-          <li class="active">Promo Code</li>
-        </ol>
-      </h1>
-      
+      <div class="row">
+        <div class="col-md-7">
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="#">Tables</a></li>
+                <li class="active">News</li>
+            </ol>
+        </div>
+        <div class="col-md-5">
+            <form action="admin/promo_code/search" method="Get">
+                <div class="input-group">
+                    <input type="text" name="keyword" id="search-box" placeholder="Search..." class="form-control">
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
     </section>
     @if(count($errors) > 0)
         <div class="alert alert-danger">
@@ -69,6 +82,7 @@
                   @endforeach
                 </tbody>
               </table>
+              {{$pcodes->links()}}
             </div>
             <!-- /.box-body -->
           </div>

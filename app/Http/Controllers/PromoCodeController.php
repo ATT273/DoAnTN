@@ -11,7 +11,7 @@ class PromoCodeController extends Controller
 {
 
 	public function getDanhsach(){
-		$pcodes = PromoCode::all();
+		$pcodes = PromoCode::paginate(5);
 		return view('admin.promo_code.danhsach_code',['pcodes'=>$pcodes]);
 	}
 
@@ -67,5 +67,16 @@ class PromoCodeController extends Controller
 		// }
 		// echo '<br>'.$request->code_type;
 	}
+
+	public function getSearchCode(Request $request){
+        if($request->has('keyword')){
+        	$codes = PromoCode::where('name','LIKE', '%'.$request->keyword.'%')->paginate(2);
+	        $codes->appends(['keyword' => $request->keyword]);
+	        return view('admin.promo_code.danhsach_code',['pcodes'=>$codes]);
+        }else{
+            return redirect('admin/promo_code/danhsach-code');
+        }
+        
+    }
 
 }

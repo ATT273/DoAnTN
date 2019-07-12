@@ -8,7 +8,6 @@ use App\ProductImage;
 use App\Tag;
 use Validator;
 use Illuminate\Http\Request;
-use Storage;
 
 class ProductController extends Controller
 {
@@ -34,7 +33,7 @@ class ProductController extends Controller
     			'product_price' => 'required',
     			'product_qty' => 'required',
     			'product_promo' => 'required',
-    			'product_img' => 'required',
+    			'product_img' => 'required|mimes:jpeg,jpg,png|max:1024',
     		],
     		[
     			'product_name.required'=>'Please enter product name',
@@ -74,7 +73,6 @@ class ProductController extends Controller
     		$img->product_id = $lastest_pr->id;
     		$img->save();
     	}
-
     	return redirect('admin/product/danhsach-sp')->with('thongbao','Added Successfully');
     }
 
@@ -97,7 +95,7 @@ class ProductController extends Controller
     			'product_price' => 'required',
     			'product_qty' => 'required',
     			'product_promo' => 'required',
-    			// 'product_img' => 'required',
+    			'product_img.*' => 'mimes:jpeg,png|max:1024',
     		],
     		[
     			'product_name.required'=>'Please enter product name',
@@ -107,7 +105,8 @@ class ProductController extends Controller
     			'product_promo.required'=>'Please enter product promo price',
     			'product_qty.required'=>'Please enter product quantity',
     			'product_unit.required'=>'Please enter product unit',
-    			// 'product_img.required' => 'Please choose images for this product',
+    			'product_img.*.mimes' => 'Image must be jpeg,jpg,png',
+                'product_img.*.max' => ' Max size is 1Mb',
     			// 'product_promo'
     		]);
 
@@ -148,7 +147,7 @@ class ProductController extends Controller
 
     public function getDeleteImage($id){
     	$img = ProductImage::find($id);
-    	Storage::delete($img->name);
+    	unlink('upload/product/'.$img->name);
         $img->delete();
 
         return redirect()->back();
@@ -158,7 +157,7 @@ class ProductController extends Controller
         $product = Product::find($id);
         $images = ProductImage::where('product_id',$id)->get();
         foreach ($images as $img) {
-            Storage::delete($img->name);
+            unlink('upload/product/'.$img->name);
             $img->delete();
         }
         $product->delete();
@@ -167,21 +166,27 @@ class ProductController extends Controller
     }
 
 
-    public function getSearchProduct1(Request $request){
-    	$products = Product::where('name','LIKE', '%'.$request->keyword.'%')->take(20)->paginate(2);
-    	$products->appends(['keyword' => $request->keyword]);
-    	return view('admin.product.danhsach_product',['products'=>$products]);
+    public function getSearchProduct(Request $request){
+        if($request->has('keyword')){
+            $products = Product::where('name','LIKE', '%'.$request->keyword.'%')->orWhere('price',$request->keyword)->paginate(2);
+            $products->appends(['keyword' => $request->keyword]);
+            return view('admin.product.danhsach_product',['products'=>$products]);
+        }else{
+           return redirect('admin/product/danhsach-sp');
+        }
+    	
     }
     
+    
 
-    public function testP(){
-        $product = Product::where('created_at', '<', '2019-01-23' )->get();
-        foreach ($product as $p) {
-            echo $p->created_at;
-            echo $p->name;
-            echo '<br>';
-        }
-    }
+    // public function testP(){
+    //     $product = Product::where('created_at', '<', '2019-01-23' )->get();
+    //     foreach ($product as $p) {
+    //         echo $p->created_at;
+    //         echo $p->name;
+    //         echo '<br>';
+    //     }
+    // }
 
 
     // APi function

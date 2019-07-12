@@ -84,13 +84,13 @@
   	    			<div class="box-header"><h3>Bill's Status</h3></div>
   	    			<div class="box-body">
                 <div class="status">
-                  <div class="confirmation-st">
+                  <div id="confirm_status" class="confirmation-st">
                     <strong>Confirmation: </strong>
                     @if($bill->confirmation == 0)
-                      <span id="confirm_status" class="label label-danger">{{'Chua xac nhan'}}</span>
+                      <span class="label label-danger">{{'Chua xac nhan'}}</span>
                     @endif
                     @if($bill->confirmation == 1)
-                      <span id="confirm_status" class="label label-success">{{'Da xac nhan'}}</span>
+                      <span  class="label label-success">{{'Da xac nhan'}}</span>
                     @endif
                   </div>
                   <button id="btn_xacnhan" class="btn btn-success btn-xs"> Xac nhan</button>

@@ -15,15 +15,17 @@
 		            @if(session('thongbao'))
 		                <div class="alert alert-success">
 		                    {{session('thongbao')}}
-
 		                </div>
 		            @endif
+		            @if(session('error'))
+				        <div class="alert alert-danger">
+				            {{session('error')}}
+				        </div>
+				    @endif
 					<div class="col-sm-3"></div>
-					<div class="col-sm-6">
-						<h4>Đăng kí</h4>
+					<div class="col-sm-6 form-login">
+						<center><h4>Đăng kí</h4></center>
 						<div class="space20">&nbsp;</div>
-
-						
 						<div class="form-block">
 							<label for="email">Email address*</label>
 							<input type="email" id="email" name="email" class="form-control" required>

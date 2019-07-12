@@ -1,5 +1,13 @@
+:root{
+	--main-color:#FC5B31;
+	--lighter-main-color:#ffb363;
+	--body-color:#F5F5F5;
+	--product-block:#fff;
+	--border-color:#dddddd;
+}
+
 body{
-	background-color: #dddddd;
+	background-color: var(--body-color);
 }
 
 .login-admin{
@@ -38,45 +46,77 @@ input[type=radio]{
 }
 
 /*Index page*/
+.header-body{
+	background-image: linear-gradient(45deg, var(--main-color), var(--lighter-main-color));
+	border-bottom:0.5px solid var(--border-color);
+}
+.container{
+	width: 1300px;
+}
+
 p.single-item-price{
 	height: 40px;
 }
+.beta-products-list{
+	background-color: var(--product-block);
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+	padding-bottom: 20px;
+	/*padding:20px 20px 20px 20px;*/
+}
+.beta-products-list .row{
+	margin: 10px 10px 10px 10px;
+}
+.beta-products-list .block-title{
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+	padding-left: 20px;
+	background-color: var(--main-color);
+	
+}
+.beta-products-list .block-title h4{
+	color: #fff;
+}
+.beta-products-list .row .item-block{
+	border-right: 0.5px solid #ddd;
+}
 
-/*admin-section product*/
-.img_del{
-	/*background-color: red;*/
-	width: 20px;
-	height: 20px;
-	z-index: 99;
-	position: absolute;
-	/*float: left;*/
-	top: 5px;
-	right: 5px;
+/*tabs detail products*/
+/* Tabs*/
+section {
+    padding: 60px 0;
 }
-.img_del a i:hover{
-	color: black;
-}
-.img_del a i{
-	color: gray;
-}
-.product_img_edit{
-	width: 100%;
-	position: relative;
-	float: left;
-}
-.img_block{
-	width: 130px;
-	position: relative;
-	float: left;
-	padding-right: 10px;
-	padding-left: 10px;
-}
-.img_block img{
 
+section .section-title {
+    text-align: center;
+    color: #007b5e;
+    margin-bottom: 50px;
+    text-transform: uppercase;
 }
-.admin_btn_add{
-	float: right;
+#tabs{
+	/*background: #007b5e;*/
+    /*color: #eee;*/
 }
+#tabs h6.section-title{
+    color: #eee;
+}
+
+#tabs .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    background-color: transparent;
+    border-color: transparent transparent #f3f3f3;
+    border-bottom: 4px solid !important;
+    font-size: 20px;
+    font-weight: bold;
+}
+#tabs .nav-tabs .nav-link {
+    border: 1px solid transparent;
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+    /*color: #000;*/
+    font-size: 20px;
+}
+
+
 
 /*Main menu*/
 
@@ -110,7 +150,7 @@ p.single-item-price{
 }
 #main_menu{
 	font-family: Montserrat, sans-serif;
-	background: #333333;
+	background-color: var(--main-color);
 	height: 50px;
 
 }
@@ -204,7 +244,7 @@ p.single-item-price{
 	text-decoration: none;
 	color: #dddddd;
 	font-weight: 400;
-	background: #333333;
+	background: var(--main-color);
 }
 #main_menu ul ul li:last-child>a,
 #main_menu ul ul li.last-item>a{
@@ -214,6 +254,46 @@ p.single-item-price{
 #main_menu ul ul li a:hover{
 	color: #ffffff;
 }
+/*Login and register*/
+.form-login{
+	background-color: #fff;
+}
+
+/*admin-section product*/
+.img_del{
+	width: 20px;
+	height: 20px;
+	z-index: 99;
+	position: absolute;
+	top: 5px;
+	right: 5px;
+}
+.img_del a i:hover{
+	color: black;
+}
+.img_del a i{
+	color: gray;
+}
+.product_img_edit{
+	width: 100%;
+	position: relative;
+	float: left;
+}
+.img_block{
+	width: 130px;
+	position: relative;
+	float: left;
+	padding-right: 10px;
+	padding-left: 10px;
+}
+.img_block img{
+
+}
+.admin_btn_add{
+	float: right;
+}
+
+
 
 /*Product detail*/
 .buy-now{

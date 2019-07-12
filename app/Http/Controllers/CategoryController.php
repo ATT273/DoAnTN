@@ -11,8 +11,8 @@ class CategoryController extends Controller
 {
     //
     public function getDanhsach(){
-    	$category = Category::all();
-    	return view('admin.category.danhsach_category',['category'=> $category]);
+    	$categories = Category::paginate(5);;
+    	return view('admin.category.danhsach_category',['categories'=> $categories]);
 
     }
 
@@ -74,12 +74,26 @@ class CategoryController extends Controller
             return redirect('admin/category/danhsach-danhmuc')->with('loi','cannot delete because there are many products belong to this category');
         }elseif ($count == 0) {
             $category->delete();
-            return redirect('admin/category/danhsach_category')->with('thongbao','Delete  Successfully');
+            return redirect('admin/category/danhsach-danhmuc')->with('thongbao','Delete  Successfully');
         }
         
     }
 
-    // Api function
+    public function getSearchCategory(Request $request){
+        if($request->has('keyword')){
+            $categories = Category::where('name','LIKE', '%'.$request->keyword.'%')->paginate(2);
+            $categories->appends(['keyword' => $request->keyword]);
+            return view('admin.category.danhsach_category',['categories'=>$categories]);
+        }else{
+            return redirect('admin/category/danhsach-danhmuc');
+        }
+        
+    }
+
+
+    //////////////////
+    // Api function //
+    //////////////////
 
     public function getDanhSachApi(){
         $category = Category::all();

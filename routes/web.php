@@ -19,19 +19,19 @@ Route::get('/', function () {
 ///////////////////////////
 //customer route//
 ///////////////////////////
-Route::group(['middleware'],function(){
+
 	//index
-	Route::get('index',['as'=>'trang-chu','uses'=>'PageController@getIndex']);
+	Route::get('index','PageController@getIndex');
 	//ProductType
-	Route::get('loai-sp',['as'=>'loaisp','uses'=>'PageController@getLoaisp']);
+	Route::get('loai-sp','PageController@getLoaisp');
 	//Prodct Detail
-	Route::get('detail/{id}','ProductController@getDetailSp');
+	Route::get('product/{id}','PageController@getDetailProduct');
 	//Other
-	Route::get('lien-he',['as'=>'lienhe', 'uses'=>'PageController@lienHe']);
-	Route::get('gioi-thieu',['as'=>'gioithieu', 'uses'=>'PageController@gioiThieu']);
+	Route::get('lien-he','PageController@lienHe');
+	Route::get('gioi-thieu','PageController@gioiThieu');
 	//search item
 	Route::get('search', 'ProductController@getSearch');
-});
+
 //register
 Route::get('register','PageController@getRegister');
 Route::post('register','UserController@postRegister');
@@ -41,9 +41,6 @@ Route::post('login','UserController@postLogin');
 //Logout
 Route::get('logout','UserController@getLogout');
 
-
-
- Route::get('last','ProductController@getLastest');
 
 ///////////////////////////
 //admin routes//
@@ -62,20 +59,22 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin-middleware'],function(){
 
 	//ProductType
 	Route::group(['prefix'=>'product_type'], function(){
-		Route::get('danhsach-loaisp',['as'=>'loaisp', 'uses'=>'ProductTypeController@getDanhsach']);
-		Route::get('add',['as'=>'addloaisp', 'uses'=>'ProductTypeController@getAdd']);
+		Route::get('danhsach-loaisp','ProductTypeController@getDanhsach');
+		Route::get('add','ProductTypeController@getAdd');
 		Route::post('add','ProductTypeController@postAdd');
 
 		Route::get('edit/{id}','ProductTypeController@getEdit');
 		Route::post('edit/{id}','ProductTypeController@postEdit');
 
 		Route::get('del/{id}','ProductTypeController@getDel');
+
+		Route::get('search','ProductTypeController@getSearchProductType');
 	});
 
 	//Product
 	Route::group(['prefix'=>'product'], function(){
 		Route::get('danhsach-sp','ProductController@getDanhsach');
-		Route::get('add',['as'=>'addsp', 'uses'=>'ProductController@getAdd']);
+		Route::get('add','ProductController@getAdd');
 		Route::post('add','ProductController@postAdd');
 		
 		Route::get('edit/{id}','ProductController@getEdit');
@@ -83,9 +82,9 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin-middleware'],function(){
 
 		Route::get('del/{id}','ProductController@getDel');
 
-		Route::get('ajax/search','ProductController@getSearchProduct1');
+		Route::get('search','ProductController@getSearchProduct');
 
-		Route::get('test','ProductController@testP');
+		// Route::get('test','ProductController@testP');
 	});
 
 	//Tag
@@ -98,6 +97,8 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin-middleware'],function(){
 		Route::post('edit/{id}','TagController@postEdit');
 
 		Route::get('del/{id}','TagController@getDel');
+
+		Route::get('search','TagController@getSearchTag');
 	});
 	//Promo Code
 	Route::group(['prefix'=>'promo_code'], function(){
@@ -109,6 +110,8 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin-middleware'],function(){
 		Route::post('edit/{id}','PromoCodeController@postEdit');
 
 		Route::get('del/{id}','PromoCodeController@getDel');
+
+		Route::get('search','PromoCodeController@getSearchCode');
 	});
 	//Product Image
 	Route::group(['prefix' => 'img_product'],function(){
@@ -116,20 +119,44 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin-middleware'],function(){
 	});
 	//Category
 	Route::group(['prefix'=>'category'], function(){
-		Route::get('danhsach-danhmuc',['as'=>'danhmuc', 'uses'=>'CategoryController@getDanhsach']);
-		Route::get('add',['as'=>'adddanhmuc', 'uses'=>'CategoryController@getAdd']);
+		Route::get('danhsach-danhmuc','CategoryController@getDanhsach');
+		Route::get('add','CategoryController@getAdd');
 		Route::post('add','CategoryController@postAdd');
 
 		Route::get('edit/{id}','CategoryController@getEdit');
 		Route::post('edit/{id}','CategoryController@postEdit');
 
 		Route::get('del/{id}','CategoryController@getDel');
+
+		Route::get('search','CategoryController@getSearchCategory');
 	});
 
 	//Slide
 	Route::group(['prefix'=>'slide'], function(){
-		Route::get('danhsach-slide','SlideController@getDanhsach');
+		Route::get('danhsach-banner','SlideController@getDanhsach');
+
 		Route::get('add','SlideController@getAdd');
+		Route::post('add','SlideController@postAdd');
+
+		Route::get('edit/{id}','SlideController@getEdit');
+		Route::post('edit/{id}','SlideController@postEdit');
+
+		Route::get('del/{id}','SlideController@getDel');
+	});
+	//News
+	Route::group(['prefix'=>'news'], function(){
+		Route::get('danhsach-news','NewsController@getDanhsach');
+
+		Route::get('add','NewsController@getAdd');
+		Route::post('add','NewsController@postAdd');
+
+		Route::get('edit/{id}','NewsController@getEdit');
+		Route::post('edit/{id}','NewsController@postEdit');
+
+		Route::get('del/{id}','NewsController@getDel');
+		Route::get('delImage/{id}','NewsController@getDelImage');
+
+		Route::get('search','NewsController@getSearchNews');
 	});
 
 	//Bill
@@ -162,13 +189,21 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin-middleware'],function(){
 		Route::post('edit/{id}','UserController@postEdit');
 
 		Route::get('del/{id}','UserController@getDel');
+
+		Route::get('search','UserController@getSearchUser');
 	});
 
+	
+	// Report
 	Route::group(['prefix' => 'report'],function(){
 		Route::get('menu','ReportController@getMenu');
+
 		Route::get('weekly-report','ReportController@getWeeklyReport');
 		Route::get('monthly-report','ReportController@getMonthlyReport');
 		Route::get('daily-report/today','ReportController@getDailyReportToday');
 		Route::post('daily-report/other','ReportController@getDailyReportOther');
+
+		Route::get('export-report/{type}','ReportController@getExport');
+		// Route::get('export-weekly-report','ReportController@getExportReport');
 	});
 });
