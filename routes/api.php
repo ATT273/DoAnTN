@@ -28,8 +28,16 @@ Route::group(['prefix'=>'admin'],function(){
 	Route::get('dashboard','PageController@getAdminDashboardApi');
 
 	//product
-	Route::group(['prefix'=>'product'], function(){
-			Route::get('danhsach','ProductController@getProductApi'); 
+	Route::group(['prefix'=>'product'], function(){ 
+		Route::get('danhsach-sp',['as'=>'sp', 'uses'=>'ProductController@getDanhsachApi']);
+	
+		Route::post('add','ProductController@postAddApi');
+		
+		Route::post('edit/{id}','ProductController@postEdit');
+
+		Route::get('del/{id}','ProductController@getDelApi');
+
+		Route::get('search','ProductController@getSearchProduct');
 	});
 
 	//Category
@@ -48,6 +56,18 @@ Route::group(['prefix'=>'admin'],function(){
 		Route::post('add','ProductTypeController@postAddApi');
 		Route::post('edit/{id}','ProductTypeController@postEditApi');
 		Route::get('del/{id}','ProductTypeController@getDelApi');
+	});
+
+	//Tag
+	Route::group(['prefix'=>'tag'], function(){
+		Route::get('danhsach-tag',['as'=>'tag', 'uses'=>'TagController@getDanhsachApi']);
+
+		Route::post('add','TagController@postAddApi');
+
+
+		Route::post('edit/{id}','TagController@postEditApi');
+
+		Route::get('del/{id}','TagController@getDelApi');
 	});
 });
 

@@ -191,10 +191,89 @@ class ProductController extends Controller
 
     // APi function
 
-    public function getProductApi(){
-        $products  = Product::all();
+    public function getDanhsachApi(){
+        $products = Product::paginate(5);
+        $tagAll = Tag::all(); 
+        $productTypes = ProductType::all();
+        foreach ($products as $product) { 
+            $image = $product->productimg; 
+            $productType = $product->product_type->first(); 
+            $category = $product->product_type->category->first();
+            $tags = $product->tag; 
+        } 
+            $response = array( 
+                'status' => 200, 
+                'message' => "success", 
+                'products' => $products->toArray(), 
+                'tags' => $tagAll->toArray(),
+                'productTypes' => $productTypes->toArray()
+            ); 
+            return response()->json($response);
+    }
+
+    public function postAddApi(Request $request){
+        $rules = [
+                'product_name' => 'required|unique:product,name|min:10|max:200',
+                'product_type' => 'required',
+                'product_unit' => 'required',
+                'product_price' => 'required',
+                'product_qty' => 'required',
+                'product_promo' => 'required',
+            ];
+        $validator = Validator::make($request->all(), $rules);
+
+        if($validator->passes()){
+                $product = new Product;
+                $product->name = $request->product_name;
+                $product->type_id = $request->product_type;
+                $product->price = $request->product_price;
+                $product->promo_price = $request->product_promo;
+                $product->unit = $request->product_unit;
+                $product->quantity = $request->product_qty;
+                $product->description = $request->product_desc;
+
+                $product->save();
+
+                $product->tag()->sync($request->tag,false);
+
+                $lastest_pr = Product::orderBy('created_at','DESC')->first();
+                if(Request::has('file')){
+                    $files = Input::file('file');
+                    $dates = date('Y-m-d H-i-s');
+                    foreach ($files as $file) {
+                        $file_name = $file->getClientOriginalName();
+                        $name = $dates."-".$file_name;
+                        $file->move('upload/product',$name);
+                        $img = new ProductImage;
+                        $img->name = $name;
+                        $img->product_id = $lastest_pr->id;
+                        $img->save();
+                    }
+                
+                }
+
+            $response["status"] = 200;
+            $response["message"] = "success";
+        } else {
+            $response["status"] = 500;
+            $response["message"] = $validator->errors()->first();
+        }
+
+        return response()->json($response);
+    }
+
+    public function getDelApi($id){
+        $product = Product::find($id);
+        // $img = ProductImage::find($id);
+        // foreach ($images as $img) {
+        //     unlink('upload/product/'.$img->name);
+        //     $img->delete();
+        // }
+        $product->delete();
+
         $response["status"] = 200;
-        $response["products"] = $products;
+        $response["message"] = "success";
+
         return response()->json($response);
     }
 }

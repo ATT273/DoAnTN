@@ -81,4 +81,72 @@ class TagController extends Controller
         }
         
     }
+
+
+     // APi function
+
+    public function getDanhsachApi(){
+        $tags = Tag::all() ;
+        $response["status"] = 200;
+        $response["tags"] = $tags;
+        return response()->json($response);
+    }
+
+    public function postAddApi(Request $request){
+        $rules = [
+                'tag'=>'required|unique:tag,name| min:3| max:100'
+            ];
+        $validator = Validator::make($request->all(), $rules);
+
+        if($validator->passes()){
+            $tag = new Tag;
+            $tag->name = $request->tag;
+            $tag->save();
+
+            $response["status"] = 200;
+            $response["message"] = "success";
+        } else {
+            $response["status"] = 500;
+            $response["message"] = $validator->errors()->first();
+        }
+
+        return response()->json($response);
+    }
+
+    public function postEditApi(Request $request, $id){
+        $rules = [
+                'tag' => 'required|unique:tag,name|min:3|max:100'
+            ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if($validator->passes()){
+            $tag = Tag::find($id);
+            $tag->name = $request->tag;
+            $tag->save();
+
+            $response["status"] = 200;
+            $response["message"] = "success";
+        } else {
+            $response["status"] = 500;
+            $response["message"] = $validator->errors()->first();
+        }
+        return response()->json($response);
+    }
+
+    public function getDelApi($id){
+
+        $tag = Tag::find($id);
+        $productTags = ProductTag::where('tag_id',$id)->get();
+
+        $tag->delete();
+        foreach ($productTags as $pt) {
+            $pt->delete();
+        }
+
+        $response["status"] = 200;
+        $response["message"] = "success";
+
+        return response()->json($response);
+    }
 }
