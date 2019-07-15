@@ -150,7 +150,7 @@ class ProductController extends Controller
             return redirect('admin/product/danhsach-sp')->with('thongbao','Updated Successfully');
         }
         if($checkname[0]->id == $id){
-           $product = Product::findOrFail($id);
+            $product = Product::findOrFail($id);
             $product->name = $request->product_name;
             $product->type_id = $request->product_type;
             $product->price = $request->product_price;

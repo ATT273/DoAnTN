@@ -41,6 +41,7 @@ class TagController extends Controller
     	$tag = Tag::find($id);
     	return view('admin.tag.sua_tag',['tag'=>$tag]);
     }
+
     public function postEdit(Request $request, $id){
         $this -> validate($request,
             [
@@ -136,12 +137,28 @@ class TagController extends Controller
         $validator = Validator::make($request->all(), $rules);
 
         if($validator->passes()){
-            $tag = Tag::find($id);
-            $tag->name = $request->tag;
-            $tag->save();
 
-            $response["status"] = 200;
-            $response["message"] = "success";
+            $checkname = Tag::where('name',$request->tag)->get();
+            if(count($checkname) == 0){
+                $tag = Tag::find($id);
+                $tag->name = $request->tag;
+                $tag->save();
+
+                $response["status"] = 200;
+                $response["message"] = "success";
+            }
+            if($checkname[0]->id == $id){
+                $tag = Tag::find($id);
+                $tag->name = $request->tag;
+                $tag->save();
+
+                $response["status"] = 200;
+                $response["message"] = "success";
+            }elseif ($checkname[0]->id !== $id) {
+                $response["status"] = 500;
+                $response["message"] = 'This tag has already been existed';
+            }
+            
         } else {
             $response["status"] = 500;
             $response["message"] = $validator->errors()->first();

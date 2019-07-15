@@ -148,13 +148,31 @@ class CategoryController extends Controller
         $validator = Validator::make($request->all(), $rules);
 
         if($validator->passes()){
-            $category = Category::find($id);
-            $category->name = $request->category;
-            $category->lowcase_name = changeTitle($request->category);
-            $category->save();
+            $checkname = Category::where('name',$request->category)->get();
 
-            $response["status"] = 200;
-            $response["message"] = "success";
+
+            if(count($checkname) == 0){
+                $category = Category::find($id);
+                $category->name = $request->category;
+                $category->lowcase_name = changeTitle($request->category);
+                $category->save();
+
+                $response["status"] = 200;
+                $response["message"] = "success";
+            }
+            if($checkname[0]->id == $id){
+                $category = Category::find($id);
+                $category->name = $request->category;
+                $category->lowcase_name = changeTitle($request->category);
+                $category->save();
+
+                $response["status"] = 200;
+                $response["message"] = "success";
+            }elseif ($checkname[0]->id !== $id) {
+                $response["status"] = 500;
+                $response["message"] = 'This category has already been existed';
+            }
+            
         } else {
             $response["status"] = 500;
             $response["message"] = $validator->errors()->first();

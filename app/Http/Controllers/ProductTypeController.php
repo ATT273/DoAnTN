@@ -155,7 +155,17 @@ class ProductTypeController extends Controller
 
         if($validator->passes()){
             $checkname = ProductType::where('name',$request->product_type)->get();
+            
+            if(count($checkname) == 0){
+                $productType = ProductType::find($id);
+                $productType->category_id = $request->category;
+                $productType->name = $request->product_type;
+                $productType->lowcase_name = changeTitle($request->product_type);
+                $productType->save();
 
+                $response["status"] = 200;
+                $response["message"] = "success";
+            }
             if($checkname[0]->id == $id){
                 $productType = ProductType::find($id);
                 $productType->category_id = $request->category;
