@@ -52,12 +52,27 @@ class TagController extends Controller
                 'category.max'=>'Ten co do dai tu 3 den 20 ky tu'
             ]
         );
-        $tag = Tag::find($id);
-        $tag->name = $request->tag;
-        $tag->save();
 
-        return redirect('admin/tag/danhsach-tag')->with('thongbao','Added Successfully');
+        $checkname = Tag::where('name',$request->tag)->get();
+        if(count($checkname) == 0){
+            $tag = Tag::find($id);
+            $tag->name = $request->tag;
+            $tag->save();
+
+            return redirect('admin/tag/danhsach-tag')->with('thongbao','Added Successfully');
+        }
+        if($checkname[0]->id == $id){
+            $tag = Tag::find($id);
+            $tag->name = $request->tag;
+            $tag->save();
+
+            return redirect('admin/tag/danhsach-tag')->with('thongbao','Added Successfully');
+        }elseif ($checkname[0]->id !== $id) {
+            return redirect('admin/tag/edit/'.$id)->with('loi','This tag has already been existed');
+        }
     }
+
+    
     public function getDel($id){
         $tag = Tag::find($id);
         $productTags = ProductTag::where('tag_id',$id)->get();

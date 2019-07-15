@@ -62,7 +62,14 @@ class ProductTypeController extends Controller
     		]);
 
         $checkname = ProductType::where('name',$request->product_type)->get();
-
+        if(count($checkname) == 0){
+            $productType = ProductType::find($id);
+            $productType->category_id = $request->category;
+            $productType->name = $request->product_type;
+            $productType->lowcase_name = changeTitle($request->product_type);
+            $productType->save();
+            return redirect('admin/product_type/danhsach-loaisp')->with('thongbao','Update Successfully');
+        }
         if($checkname[0]->id == $id){
             $productType = ProductType::find($id);
             $productType->category_id = $request->category;

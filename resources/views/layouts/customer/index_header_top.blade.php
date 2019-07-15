@@ -2,8 +2,8 @@
 	<div class="container">
 		<div class="pull-left auto-width-left">
 			<ul class="top-menu menu-beta l-inline">
-				<li><a href=""><i class="fa fa-home"></i> O dau con lau moi noi</a></li>
-				<li><a href=""><i class="fa fa-phone"></i>1900-10 khong co</a></li>
+				<li><a href=""><i class="fa fa-home"></i> Ha Noi- Viet Nam</a></li>
+				<li><a href=""><i class="fa fa-phone"></i>1900-1080</a></li>
 			</ul>
 		</div>
 		<div class="pull-right auto-width-right">

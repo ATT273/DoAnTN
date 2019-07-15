@@ -81,16 +81,15 @@ class PromoCodeController extends Controller
 			]);
 
 		$checkname = PromoCode::where('name',$request->code_name)->get();
-
-        if($checkname[0]->id == $id){
+		if(count($checkname) == 0){
             $pcode = PromoCode::find($id);
             $pcode->name = $request->code_name;
 			$pcode->expiration_date = $request->code_exp_date;
-
-            //kiem tra loai ma giam gia
-		if($request->code_type == 1){
-			$pcode->fixed = $request->code_discount;
-			$pcode->percentage = 0;
+			$pcode->expired = 0;
+	            //kiem tra loai ma giam gia
+			if($request->code_type == 1){
+				$pcode->fixed = $request->code_discount;
+				$pcode->percentage = 0;
 		}elseif($request->code_type == 2){
 			$pcode->fixed = 0;
 			//kiemtra neu % giam gia lon hon 100 hoac nho hon 0
@@ -101,7 +100,31 @@ class PromoCodeController extends Controller
 			}elseif($request->code_discount < 100 && $request->code_discount > 0){
 				$pcode->percentage = $request->code_discount;
 			}
-			
+		}
+
+		$pcode->save();
+
+		return redirect('admin/promo_code/danhsach-code')->with('thongbao','Updated Successfully');
+        }
+        if($checkname[0]->id == $id){
+            $pcode = PromoCode::find($id);
+            $pcode->name = $request->code_name;
+			$pcode->expiration_date = $request->code_exp_date;
+			$pcode->expired = 0;
+	            //kiem tra loai ma giam gia
+			if($request->code_type == 1){
+				$pcode->fixed = $request->code_discount;
+				$pcode->percentage = 0;
+		}elseif($request->code_type == 2){
+			$pcode->fixed = 0;
+			//kiemtra neu % giam gia lon hon 100 hoac nho hon 0
+			if($request->code_discount > 100 || $request->code_discount <= 0){
+				return redirect('admin/promo_code/add')->with('loi','Discount percentage must be greater than 0 and less than 100');
+
+			//kiem tra neu % giam gia nho hon 100 va lon hon 0
+			}elseif($request->code_discount < 100 && $request->code_discount > 0){
+				$pcode->percentage = $request->code_discount;
+			}
 		}
 
 		$pcode->save();
@@ -109,7 +132,7 @@ class PromoCodeController extends Controller
 		return redirect('admin/promo_code/danhsach-code')->with('thongbao','Updated Successfully');
 
         }elseif ($checkname[0]->id !== $id) {
-            return redirect('admin/product_type/edit/'.$id)->with('loi','This code has already been existed');
+            return redirect('admin/promo_code/edit/'.$id)->with('loi','This code has already been existed');
         }
 	}
 

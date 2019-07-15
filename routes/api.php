@@ -69,5 +69,23 @@ Route::group(['prefix'=>'admin'],function(){
 
 		Route::get('del/{id}','TagController@getDelApi');
 	});
+
+	//Bill
+	Route::group(['prefix'=>'bill'], function(){
+		Route::get('danhsach-bill','BillController@getDanhsachApi');
+
+		Route::get('add','BillController@getAdd');
+		Route::post('add','BillController@postAdd');
+
+		Route::get('edit/{id}','BillController@getEdit');
+		Route::post('edit/{id}','BillController@postEdit');
+
+		Route::get('del/{id}','BillController@getDel');
+
+
+		//BIll detail
+		Route::get('detail/{id}','BillController@getDetailApi');
+		Route::get('confirm/{id}','BillController@getConfirmApi');
+	});
 });
 

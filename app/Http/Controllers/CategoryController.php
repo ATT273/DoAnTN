@@ -59,11 +59,27 @@ class CategoryController extends Controller
     			'category.max'=>'Ten co do dai tu 3 den 100 ky tu'
     		]
     	);
-    	$category = Category::find($id);
-    	$category->name = $request->category;
-    	$category->lowcase_name = changeTitle($request->category);
-    	$category->save();
-    	return redirect('admin/category/edit/'.$category->id)->with('thongbao','Updated Successfully');
+
+        $checkname = Category::where('name',$request->category)->get();
+        if(count($checkname) == 0){
+            $category = Category::find($id);
+            $category->name = $request->category;
+            $category->lowcase_name = changeTitle($request->category);
+            $category->save();
+            return redirect('admin/category/danhsach-danhmuc')->with('thongbao','Updated Successfully');
+        }
+        if($checkname[0]->id == $id){
+            $category = Category::find($id);
+            $category->name = $request->category;
+            $category->lowcase_name = changeTitle($request->category);
+            $category->save();
+            return redirect('admin/category/danhsach-danhmuc')->with('thongbao','Updated Successfully');
+        }elseif ($checkname[0]->id !== $id) {
+            return redirect('admin/category/edit/'.$id)->with('loi','This category has already been existed');
+        }
+
+
+    	
     }
 
     public function getDel($id){

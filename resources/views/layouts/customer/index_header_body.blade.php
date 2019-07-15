@@ -6,8 +6,9 @@
 		<div class="pull-right beta-components space-left ov">
 			<div class="space10">&nbsp;</div>
 			<div class="beta-comp">
-				<form role="search" method="get" id="searchform" action="/">
-			        <input type="text" value="" name="s" id="s" placeholder="Nhập từ khóa..." class="form-control" />
+				<form role="search" method="get" id="searchform" action="search">
+					<input type="hidden" name="_token" value="{{csrf_token()}}">
+			        <input type="text" value="" name="keyword"  placeholder="Search..." class="form-control"/>
 			        <button class="fa fa-search" type="submit" id="searchsubmit"></button>
 				</form>
 			</div>

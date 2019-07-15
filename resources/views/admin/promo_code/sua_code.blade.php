@@ -17,17 +17,15 @@
         @if(session('thongbao'))
             <div class="alert alert-success">
                 {{session('thongbao')}}
-
             </div>
         @endif
         @if(session('loi'))
             <div class="alert alert-danger">
                 {{session('loi')}}
-
             </div>
         @endif
         <div class="box-body">
-          <form role="form" action="admin/promo_code/add" method="POST">
+          <form role="form" action="admin/promo_code/edit/{{$code->id}}" method="POST">
             <!-- text input -->
             <input type="hidden" name="_token" value="{{csrf_token()}}">
             <div class="form-group">

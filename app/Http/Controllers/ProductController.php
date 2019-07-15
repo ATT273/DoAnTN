@@ -33,7 +33,7 @@ class ProductController extends Controller
     			'product_price' => 'required',
     			'product_qty' => 'required',
     			'product_promo' => 'required',
-    			'product_img' => 'required|mimes:jpeg,jpg,png|max:1024',
+    			'product_img.*' => 'required|mimes:jpeg,png|max:1024',
     		],
     		[
     			'product_name.required'=>'Please enter product name',
@@ -44,7 +44,9 @@ class ProductController extends Controller
     			'product_promo.required'=>'Please enter product promo price',
     			'product_qty.required'=>'Please enter product quantity',
     			'product_unit.required'=>'Please enter product unit',
-    			'product_img.required' => 'Please choose images for this product',
+    			'product_img.*.required' => 'Please choose images for this product',
+                'product_img.*.mimes' => 'Image must be jpeg,jpg,png',
+                'product_img.*.max' => ' Max size is 1Mb',
     			// 'product_promo'
     		]);
 
@@ -110,39 +112,80 @@ class ProductController extends Controller
     			// 'product_promo'
     		]);
 
-    	$product = Product::findOrFail($id);
-    	$product->name = $request->product_name;
-    	$product->type_id = $request->product_type;
-    	$product->price = $request->product_price;
-    	$product->promo_price = $request->product_promo;
-    	$product->unit = $request->product_unit;
-    	$product->quantity = $request->product_qty;
-    	$product->description = $request->product_desc;
 
-    	$product->save();
+        $checkname = Product::where('name',$request->product_name)->get();
+        if(count($checkname) == 0){
+            $product = Product::findOrFail($id);
+            $product->name = $request->product_name;
+            $product->type_id = $request->product_type;
+            $product->price = $request->product_price;
+            $product->promo_price = $request->product_promo;
+            $product->unit = $request->product_unit;
+            $product->quantity = $request->product_qty;
+            $product->description = $request->product_desc;
 
-    	
-    	if($request->hasFile('product_img')){
-    		$files = $request->file('product_img');
-	    	$dates = date('Y-m-d H-i-s');
-	    	foreach ($files as $file) {
-	    		$file_name = $file->getClientOriginalName();
-	    		$name = $dates."-".$file_name;
-	    		$file->move('upload/product',$name);
-	    		$img = new ProductImage;
-	    		$img->name = $name;
-	    		$img->product_id = $product->id;
-	    		$img->save();
-	    	}
-    	}
-    	
-    	if(isset($request->tag)){
-    		$product->tag()->sync($request->tag);
-    	}else{
-    		$product->tag()->sync(array());
-    	}
+            $product->save();
 
-    	return redirect('admin/product/danhsach-sp')->with('thongbao','Updated Successfully');
+            
+            if($request->hasFile('product_img')){
+                $files = $request->file('product_img');
+                $dates = date('Y-m-d H-i-s');
+                foreach ($files as $file) {
+                    $file_name = $file->getClientOriginalName();
+                    $name = $dates."-".$file_name;
+                    $file->move('upload/product',$name);
+                    $img = new ProductImage;
+                    $img->name = $name;
+                    $img->product_id = $product->id;
+                    $img->save();
+                }
+            }
+            
+            if(isset($request->tag)){
+                $product->tag()->sync($request->tag);
+            }else{
+                $product->tag()->sync(array());
+            }
+
+            return redirect('admin/product/danhsach-sp')->with('thongbao','Updated Successfully');
+        }
+        if($checkname[0]->id == $id){
+           $product = Product::findOrFail($id);
+            $product->name = $request->product_name;
+            $product->type_id = $request->product_type;
+            $product->price = $request->product_price;
+            $product->promo_price = $request->product_promo;
+            $product->unit = $request->product_unit;
+            $product->quantity = $request->product_qty;
+            $product->description = $request->product_desc;
+
+            $product->save();
+
+            
+            if($request->hasFile('product_img')){
+                $files = $request->file('product_img');
+                $dates = date('Y-m-d H-i-s');
+                foreach ($files as $file) {
+                    $file_name = $file->getClientOriginalName();
+                    $name = $dates."-".$file_name;
+                    $file->move('upload/product',$name);
+                    $img = new ProductImage;
+                    $img->name = $name;
+                    $img->product_id = $product->id;
+                    $img->save();
+                }
+            }
+            
+            if(isset($request->tag)){
+                $product->tag()->sync($request->tag);
+            }else{
+                $product->tag()->sync(array());
+            }
+
+            return redirect('admin/product/danhsach-sp')->with('thongbao','Updated Successfully');
+        }elseif ($checkname[0]->id !== $id) {
+            return redirect('admin/product/edit/'.$id)->with('loi','This product has already been existed');
+        }
     }
 
     public function getDeleteImage($id){
@@ -177,16 +220,13 @@ class ProductController extends Controller
     	
     }
     
-    
+   public function getSearch(Request $request){
+        $categories = Category::all();
+        $products = Product::where('name','LIKE', '%'.$request->keyword.'%')->orWhere('price',$request->keyword)->paginate(3);
+        $products->appends(['keyword' => $request->keyword]);
+        return view('customer.search_result',['products' => $products, 'categories' => $categories]);
+   }
 
-    // public function testP(){
-    //     $product = Product::where('created_at', '<', '2019-01-23' )->get();
-    //     foreach ($product as $p) {
-    //         echo $p->created_at;
-    //         echo $p->name;
-    //         echo '<br>';
-    //     }
-    // }
 
 
     // APi function
