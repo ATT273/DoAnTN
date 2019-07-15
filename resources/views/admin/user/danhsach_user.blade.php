@@ -42,9 +42,6 @@
                     <th>Email</th>
                     <th>Gender</th>
                     <th>Role</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                    
                   </tr>
                 </thead>
                 <tbody>
@@ -56,8 +53,6 @@
                     <td>{{$user->email}}</td>
                     <td>{{$user->gender}}</td>
                     <td>{{$user->role}}</td>
-                    <td><i class="fa fa-pencil"></i> <a href="admin/users/edit/{{$user->id}}">Edit</a></td>
-                    <td><i class="fa fa-trash-o"></i> <a href="admin/users/del{{$user->id}}">Delete</a></td>
                   </tr>
                   @endforeach
                 </tbody>

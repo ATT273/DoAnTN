@@ -8,7 +8,7 @@
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
                 <li><a href="#">Tables</a></li>
-                <li class="active">News</li>
+                <li class="active">Promo Code</li>
             </ol>
         </div>
         <div class="col-md-5">
@@ -73,9 +73,11 @@
                   <tr>
                     <td>{{$pcode->id}}</td>
                     <td>{{$pcode->name}}</td>
-                    <td>{{$pcode->fixed}}</td>
-                    <td>{{$pcode->percentage}}</td>
-                    <td>{{$pcode->expiration_date}}</td>
+                    <td>@money($pcode->fixed)</td>
+                    <td>{{$pcode->percentage}}%</td>
+                    <td>{{$pcode->expiration_date}}
+                      @if($pcode->expired == 1) - <i class="fa fa-ban status-danger" aria-hidden="true"></i>@endif
+                    </td>
                     <td><i class="fa fa-pencil"></i> <a href="admin/promo_code/edit/{{$pcode->id}}">Edit</a></td>
                     <td><i class="fa fa-trash-o"></i> <a href="admin/promo_code/del/{{$pcode->id}}" onclick="return confirm('Ban co muon xoa danh muc nay khong?')">Delete</a></td>
                   </tr>

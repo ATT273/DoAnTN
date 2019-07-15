@@ -77,7 +77,7 @@ class ProductController extends Controller
     }
 
     public function getEdit($id){
-    	$product = Product::find($id);
+    	$product = Product::findOrFail($id);
 		// $product_images = ProductImage::where('product_id',$id)->get();
     	$productTypes = ProductType::all();
     	$tags = Tag::all();

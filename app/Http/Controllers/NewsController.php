@@ -56,7 +56,7 @@ class NewsController extends Controller
     }
 
     public function getEdit($id){
-    	$news = News::find($id);
+    	$news = News::findOrFail($id);
     	return view('admin.news.sua_news',['news' => $news]);
     }
 

@@ -8,7 +8,7 @@
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
                 <li><a href="#">Tables</a></li>
-                <li class="active">News</li>
+                <li class="active">Tag</li>
             </ol>
         </div>
         <div class="col-md-5">

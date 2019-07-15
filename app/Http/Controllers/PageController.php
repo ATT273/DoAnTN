@@ -43,13 +43,11 @@ class PageController extends Controller
     }
 
     public function getDetailProduct($id){
-        $product = Product::find($id);
+        $product = Product::findOrFail($id);
+        
         $relatedProducts = Product::where('type_id',$product->type_id)->take(4)->get();
         $categories = Category::all();
         $tags = Tag::whereIn('id',$product->tag()->allRelatedIds())->get();
-        // dd($tags);
-
-        // dd($product->tag()->allRelatedIds()) ;
         return view('customer.product_detail',['product' => $product, 'categories' => $categories, 'relatedProducts' => $relatedProducts, 'tags' => $tags]);
     }
 }

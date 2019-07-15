@@ -49,7 +49,6 @@
                 <div class="box-header">
                     <h3 class="box-title">Products List</h3>
                     <a href="admin/product/add" class="admin_btn_add btn btn-success">Add A New Product</a>
-                    <a href="admin/product/test" class="admin_btn_add btn btn-success">Test date time</a>
                 </div>
             <!-- /.box-header -->
                 <div class="box-body" id="product-table">
@@ -71,7 +70,7 @@
                                 <tr>
                                     <td>{{$product->id}}</td>
                                     <td><img src="upload/product/{{$product->productimg->first()["name"]}}" width="100px"></td>
-                                    <td><a href="admin/product/view/{{$product->id}}">{{$product->name}}</a></td>
+                                    <td><a href="product/{{$product->id}}">{{$product->name}}</a></td>
                                     <td>{{$product->product_type->name}}</td>
                                     <td>{{$product->product_type->category->name}}</td>
                                     <td>@money($product->price)</td>

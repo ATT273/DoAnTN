@@ -28,8 +28,11 @@
               <label>Category- {{$category->name}}</label>
               <input type="text" class="form-control" placeholder="New Category here" name="category" value="{{$category->name}}">
             </div>
-            <button type="submit" class="btn btn-default">Update</button>
+            <a href="admin/category/danhsach-danhmuc"><button type="button"class="btn btn-danger">Cancel</button></a>
+            &nbsp;
             <button type="reset" class="btn btn-default">Reset</button>
+            &nbsp;
+            <button type="submit" class="btn btn-success">Update</button>
           </form>
         </div>
         <!-- /.box-body -->

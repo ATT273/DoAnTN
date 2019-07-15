@@ -4,7 +4,7 @@
 <section class="content">
     <div class="box box-warning">
         <div class="box-header with-border">
-          <h3 class="box-title">Add A New Product</h3>
+          <h3 class="box-title">Edit Product</h3>
         </div>
         <!-- /.box-header -->
         @if(count($errors) > 0)

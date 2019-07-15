@@ -32,14 +32,14 @@ Route::get('/', function () {
 	//search item
 	Route::get('search', 'ProductController@getSearch');
 
-//register
-Route::get('register','PageController@getRegister');
-Route::post('register','UserController@postRegister');
-//Login
-Route::get('login','PageController@getlogin');
-Route::post('login','UserController@postLogin');
-//Logout
-Route::get('logout','UserController@getLogout');
+	//register
+	Route::get('register','PageController@getRegister');
+	Route::post('register','UserController@postRegister');
+	//Login
+	Route::get('login','PageController@getlogin');
+	Route::post('login','UserController@postLogin');
+	//Logout
+	Route::get('logout','UserController@getLogout');
 
 
 ///////////////////////////

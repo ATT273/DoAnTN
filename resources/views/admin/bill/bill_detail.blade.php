@@ -19,13 +19,11 @@
     @if(session('thongbao'))
         <div class="alert alert-success">
             {{session('thongbao')}}
-
         </div>
     @endif
     @if(session('error'))
         <div class="alert alert-danger">
             {{session('error')}}
-
         </div>
     @endif
     <!-- Main content -->
@@ -51,7 +49,7 @@
       							<tbody>
       								@foreach($billDetails as $item)
       									<tr>
-      										<td><a href="admin/product/detail/{{$item->product_id}}">{{$item->product_name}}</a></td>
+      										<td><a href="product/{{$item->product_id}}">{{$item->product_name}}</a></td>
       										<td>
       										@money($item->product_price)
       										</td>
@@ -93,7 +91,7 @@
                       <span  class="label label-success">{{'Da xac nhan'}}</span>
                     @endif
                   </div>
-                  <button id="btn_xacnhan" class="btn btn-success btn-xs"> Xac nhan</button>
+                  <button id="btn_xacnhan" class="btn btn-success btn-xs" @if($bill->confirmation == 1){{'disabled'}}@endif> Xac nhan</button>
                   <button id="btn_huy" class="btn btn-danger btn-xs"> Huy</button>
                 </div>
                 <div class="status">
@@ -160,12 +158,12 @@
     $(document).ready(function(){
             
             $("#btn_xacnhan").click(function(){
-
-               // alert(idTheLoai);
                //gọi trang ajax lên ,trang ajax tạo trong route
                 $.get("admin/bill/ajax/confirm/"+{{$bill->id}},function(data){
                     $("#confirm_status").html(data);
                 });
+
+                $(this).attr('disabled',true);
             });
         });
   </script>

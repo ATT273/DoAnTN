@@ -35,7 +35,7 @@
             </div>
         </div>
         <!-- About Me Box -->
-        <div class="box box-primary">
+ {{--        <div class="box box-primary">
             <div class="box-header with-border">
                 <h3 class="box-title">About Me</h3>
             </div>
@@ -62,7 +62,7 @@
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
             </div>
         <!-- /.box-body -->
-        </div>
+        </div> --}}
     <!-- /.box -->
     </div>
 <!-- /.col -->
@@ -99,7 +99,7 @@
                                         @if($bill->payment_status == 1){{'Da thanh toan'}}@endif
                                     </td>
                                     <td>@money($bill->total)</td>
-                                    <td><i class="fa fa-search"></i> <a href="admin/category/edit/{{$bill->id}}">Detail</a></td>
+                                    <td><i class="fa fa-search"></i> <a href="admin/bill/detail/{{$bill->id}}">Detail</a></td>
                                 </tr>
                             @endforeach
                         </tbody>
