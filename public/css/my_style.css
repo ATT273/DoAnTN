@@ -4,6 +4,7 @@
 	--body-color:#F5F5F5;
 	--product-block:#fff;
 	--border-color:#dddddd;
+	--filter-section:#b54a90; 
 
 	--danger:#dd4b39;
 	--success:#00a65a;
@@ -55,6 +56,44 @@ input[type=radio]{
 	background-image: linear-gradient(45deg, var(--main-color), var(--lighter-main-color));
 	border-bottom:0.5px solid var(--border-color);
 }
+.item-number{
+	position: absolute;
+	top:-10px;
+	background-color: var(--main-color);
+	color: #fff;
+	z-index: 100;
+	line-height: 20px;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	border-radius: 100%;
+	/*border: 0.5px solid #fff;*/
+}
+ul.cart-items-list{
+	width: 300px;
+	background-color: red;
+	position: absolute;
+	top: 100%;
+	left: auto;
+	right: 0;
+	z-index: 1000;
+	display: none;
+	float: left;
+	min-width: 160px;
+	padding: 5px 0;
+	margin: 5px 0 0;
+	font-size: 14px;
+	text-align: left;
+	list-style: none;
+	background-color: #fff;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+	border: 1px solid #ccc;
+	border: 1px solid rgba(0,0,0,.15);
+	border-radius: 4px;
+	-webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+	box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
 .container{
 	width: 1300px;
 }
@@ -67,7 +106,6 @@ p.single-item-price{
 	border-top-left-radius: 3px;
 	border-top-right-radius: 3px;
 	padding-bottom: 20px;
-	/*padding:20px 20px 20px 20px;*/
 }
 .beta-products-list .row{
 	margin: 10px 10px 10px 10px;
@@ -83,8 +121,48 @@ p.single-item-price{
 	color: #fff;
 }
 .beta-products-list .row .item-block{
-	border-right: 0.5px solid #ddd;
+	border: 0.5px solid #ddd;
 }
+
+/*Search sortby*/
+.filter{
+	height: 50px;
+	border-top:0.5px solid var(--border-color);
+	background-color: var(--filter-section);
+}
+.filter h4{
+	color: #fff;
+	text-align: center;
+	line-height: 50px;
+}
+
+/*CART*/
+.cart{
+	border: none !important;
+	min-height: 200px;
+}
+.cart #qty,
+.cart #add,
+.cart #sub{
+	position: relative;
+	float: left;
+}
+.cart #add,
+.cart #sub{
+	width: 40px;
+}
+.item-price,
+.delete-item{
+	width: 50%;
+	position: relative;
+	float: left;
+}
+.sub-total{
+	height: 100px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
 
 /*tabs detail products*/
 /* Tabs*/
@@ -117,7 +195,6 @@ section .section-title {
     border: 1px solid transparent;
     border-top-left-radius: .25rem;
     border-top-right-radius: .25rem;
-    /*color: #000;*/
     font-size: 20px;
 }
 
@@ -137,7 +214,7 @@ section .section-title {
 	line-height: 1;
 	display: block;
 	position: relative;
-	z-index: 100000;
+	z-index: 100;
 	-webkit-box-sizing:border-box;
 	box-sizing: border-box;
 }
@@ -338,14 +415,13 @@ section .section-title {
 	color: #030303;
 }
 
-
+/*ADMIN SECTION*/
 /*Slick Slide*/
 
 
 /*Bill Detail*/
 .subtotal{
 	padding: 5px 5px 5px 5px;
-	/*height: 30px;*/
 	line-height: 30px;
 	text-align: center;
 	background-color: #ffa259;

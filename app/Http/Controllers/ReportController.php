@@ -16,6 +16,7 @@ class ReportController extends Controller
 
 	private function checkReport($day){
 		$check_report = Report::where('date',$day)->get();
+		
 		if (count($check_report) > 0) {
 
 			$bills =  Bill::where('order_date',$day)->get();

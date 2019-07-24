@@ -2,8 +2,14 @@
 @section('menu')
 	@include('layouts.customer.index_menu')<!-- .header-bottom - menu-->
 @endsection
+@section('search_filter')
+	@include('layouts.customer.search_filter')
+@endsection
 @section('content')
 	<div class="container">
+		<div class="pull-right">
+			{{$products->links()}}
+		</div>
 		<div id="content" class="space-top-none">
 			<div class="main-content">
 				<div class="space60">&nbsp;</div>
@@ -11,7 +17,9 @@
 				<!-- end section with sidebar and main content -->
 			</div> <!-- .main-content -->
 		</div> 
-		{{$products->links()}}
+		<div class="pull-right">
+			{{$products->links()}}
+		</div>
 	</div>
  <!-- #content -->
 @endsection

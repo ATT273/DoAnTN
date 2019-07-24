@@ -31,6 +31,20 @@
 				arrows:true,
 				autoplaySpeed:1000,
 			});
+
+			@foreach($newProducts as $newPr)
+			$('#add-to-cart-{{$newPr->id}}').click(function(){
+				$('#cart-button').load('add-to-cart/{{$newPr->id}}');
+				alert('Product is added to your cart');
+			});
+			@endforeach
+
+			@foreach($topProducts as $topPr)
+			$('#add-to-cart-{{$topPr->id}}').click(function(){
+				$('#cart-items-list').load('add-to-cart/{{$topPr->id}}');
+				alert('Product is added to your cart');
+			});
+			@endforeach
 		});
 	</script>
 @endsection

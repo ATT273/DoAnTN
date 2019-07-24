@@ -12,55 +12,52 @@
 			        <button class="fa fa-search" type="submit" id="searchsubmit"></button>
 				</form>
 			</div>
-
-			<div class="beta-comp">
-				<div class="cart">
-					<div class="beta-select"><i class="fa fa-shopping-cart"></i><i class="fa fa-chevron-down"></i></div>
-					<div class="beta-dropdown cart-body">
-						<div class="cart-item">
-							<div class="media">
-								<a class="pull-left" href="#"><img src="assets/dest/images/products/cart/1.png" alt=""></a>
-								<div class="media-body">
-									<span class="cart-item-title">Sample Woman Top</span>
-									<span class="cart-item-options">Size: XS; Colar: Navy</span>
-									<span class="cart-item-amount">1*<span>$49.50</span></span>
+			&nbsp;
+			<div class="btn-group" id="cart-button">
+				<button type="button" class="btn btn-default">
+					<a href="view-cart">
+						<i class="fa fa-shopping-cart fa-lg"></i>
+						<div class="item-number">
+							@if(Session::has('cart'))
+								{{$cart->totalQty}}
+							@elseif(!Session::has('cart'))
+								0
+							@endif
+						</div>
+					</a>
+				</button>
+				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<span class="caret"></span>
+					<span class="sr-only">Toggle Dropdown</span>
+				</button>
+				<ul class="dropdown-menu cart-items-list" id="cart-items-list">
+					@if(Session::has('cart'))
+						@foreach ($items as $item)
+							<li>
+								<div class="row" style="margin-left: 0; margin-top: 10px;">
+									<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+										<img src="upload/product/{{$item['item']->productimg->first()->name}}" width="100">
+									</div>
+									<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+										<div class="row">
+											<a href="product/{{$item['item']['id']}}"><strong>{{$item['item']['name']}}</strong></a>
+										</div>
+										<div class="row">
+											@money($item['item']['price']) X {{$item['qty']}}
+										</div>
+									</div>
 								</div>
-							</div>
-						</div>
-
-						<div class="cart-item">
-							<div class="media">
-								<a class="pull-left" href="#"><img src="assets/dest/images/products/cart/2.png" alt=""></a>
-								<div class="media-body">
-									<span class="cart-item-title">Sample Woman Top</span>
-									<span class="cart-item-options">Size: XS; Colar: Navy</span>
-									<span class="cart-item-amount">1*<span>$49.50</span></span>
-								</div>
-							</div>
-						</div>
-
-						<div class="cart-item">
-							<div class="media">
-								<a class="pull-left" href="#"><img src="assets/dest/images/products/cart/3.png" alt=""></a>
-								<div class="media-body">
-									<span class="cart-item-title">Sample Woman Top</span>
-									<span class="cart-item-options">Size: XS; Colar: Navy</span>
-									<span class="cart-item-amount">1*<span>$49.50</span></span>
-								</div>
-							</div>
-						</div>
-
-						<div class="cart-caption">
-							<div class="cart-total text-right">Tổng tiền: <span class="cart-total-value">$34.55</span></div>
-							<div class="clearfix"></div>
-
-							<div class="center">
-								<div class="space10">&nbsp;</div>
-								<a href="checkout.html" class="beta-btn primary text-center">Đặt hàng <i class="fa fa-chevron-right"></i></a>
-							</div>
-						</div>
-					</div>
-				</div> <!-- .cart -->
+								
+							</li>
+						@endforeach
+						<li><a><strong>Subtotal:</strong>&nbsp; <div class="pull-right">@money($totalPrice)</div></a></li>
+						<li role="separator" class="divider"></li>
+						<li><a href="#" disabled>To Checkout</a></li>
+					@endif
+					@if(!Session::has('cart'))
+						<li><a>No item in your cart</a></li>
+					@endif
+				</ul>
 			</div>
 		</div>
 		<div class="clearfix"></div>

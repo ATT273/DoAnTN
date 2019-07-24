@@ -220,12 +220,7 @@ class ProductController extends Controller
     	
     }
     
-   public function getSearch(Request $request){
-        $categories = Category::all();
-        $products = Product::where('name','LIKE', '%'.$request->keyword.'%')->orWhere('price',$request->keyword)->paginate(3);
-        $products->appends(['keyword' => $request->keyword]);
-        return view('customer.search_result',['products' => $products, 'categories' => $categories]);
-   }
+   
 
 
 

@@ -158,6 +158,7 @@
     $(document).ready(function(){
             
             $("#btn_xacnhan").click(function(){
+              
                //gọi trang ajax lên ,trang ajax tạo trong route
                 $.get("admin/bill/ajax/confirm/"+{{$bill->id}},function(data){
                     $("#confirm_status").html(data);

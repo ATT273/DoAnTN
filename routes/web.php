@@ -30,7 +30,13 @@ Route::get('/', function () {
 	Route::get('lien-he','PageController@lienHe');
 	Route::get('gioi-thieu','PageController@gioiThieu');
 	//search item
-	Route::get('search', 'ProductController@getSearch');
+	Route::get('search', 'PageController@getSearch');
+	//add to cart
+	Route::get('add-to-cart/{id}','PageController@getAddToCart');
+	Route::get('session','PageController@getAddToCart2');
+	Route::get('update-cart/{id}/{new_qty}','PageController@getUpdateCart');
+	Route::get('view-cart','PageController@getCartView');
+	Route::get('del-session', 'PageController@getdelsession');
 
 	//register
 	Route::get('register','PageController@getRegister');
@@ -40,6 +46,7 @@ Route::get('/', function () {
 	Route::post('login','UserController@postLogin');
 	//Logout
 	Route::get('logout','UserController@getLogout');
+
 
 
 ///////////////////////////

@@ -8,6 +8,7 @@
 	<link href='http://fonts.googleapis.com/css?family=Dosis:300,400' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" title="style" href="css/my_style.css">
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<link rel="stylesheet" href="css/colorbox.css">
 	<link rel="stylesheet" href="css/settings.css">
@@ -15,7 +16,6 @@
 	<link rel="stylesheet" title="style" href="css/style.css">
 	<link rel="stylesheet" href="css/animate.css">
 	<link rel="stylesheet" title="style" href="css/huong-style.css">
-	<link rel="stylesheet" title="style" href="css/my_style.css">
 	<link rel="stylesheet" type="text/css" href="slick-1.8.1/slick/slick.css">
 	<link rel="stylesheet" type="text/css" href="slick-1.8.1/slick/slick-theme.css"/>
 </head>
@@ -27,7 +27,7 @@
 		@yield('menu')
 	</div> <!-- #header -->
 	
-
+	@yield('search_filter')
 	@yield('content')
 	
 
@@ -63,6 +63,5 @@
 		)
 	})
 	</script>
-	<div>dahndahd</div>
 </body>
 </html>

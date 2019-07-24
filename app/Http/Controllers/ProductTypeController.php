@@ -155,7 +155,7 @@ class ProductTypeController extends Controller
 
         if($validator->passes()){
             $checkname = ProductType::where('name',$request->product_type)->get();
-            
+
             if(count($checkname) == 0){
                 $productType = ProductType::find($id);
                 $productType->category_id = $request->category;
@@ -165,6 +165,7 @@ class ProductTypeController extends Controller
 
                 $response["status"] = 200;
                 $response["message"] = "success";
+                return response()->json($response);
             }
             if($checkname[0]->id == $id){
                 $productType = ProductType::find($id);
@@ -175,13 +176,16 @@ class ProductTypeController extends Controller
 
                 $response["status"] = 200;
                 $response["message"] = "success";
+                return response()->json($response);
             }elseif ($checkname[0]->id !== $id) {
                 $response["status"] = 500;
                 $response["message"] = "This product type has already been existed";
+                return response()->json($response);
             } 
         } else {
             $response["status"] = 500;
             $response["message"] = $validator->errors()->first();
+            return response()->json($response);
         }
         return response()->json($response);
     }

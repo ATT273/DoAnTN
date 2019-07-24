@@ -1,6 +1,6 @@
 <div class="beta-products-list">
 	<div class="block-title">
-		<h4>New Products</h4>
+		<h4>Top Products</h4>
 	</div>
 	<div class="row">
 		@foreach($topProducts as $topPr)
@@ -16,7 +16,9 @@
 					</p>
 				</div>
 				<div class="single-item-caption">
-					<a class="add-to-cart pull-left" href="shopping_cart.html"><i class="fa fa-shopping-cart"></i></a>
+					<button type="button" class="btn btn-warning pull-left" href="add-to-cart/{{$topPr->id}}" id="add-to-cart-{{$topPr->id}}">
+						<i class="fa fa-shopping-cart"></i>
+					</button>&nbsp;
 					<a class="beta-btn primary" href="product/{{$topPr->id}}">Details <i class="fa fa-chevron-right"></i></a>
 					<div class="clearfix"></div>
 				</div>

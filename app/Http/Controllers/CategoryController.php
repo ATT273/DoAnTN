@@ -159,6 +159,7 @@ class CategoryController extends Controller
 
                 $response["status"] = 200;
                 $response["message"] = "success";
+                return response()->json($response);
             }
             if($checkname[0]->id == $id){
                 $category = Category::find($id);
@@ -168,14 +169,17 @@ class CategoryController extends Controller
 
                 $response["status"] = 200;
                 $response["message"] = "success";
+                return response()->json($response);
             }elseif ($checkname[0]->id !== $id) {
                 $response["status"] = 500;
-                $response["message"] = 'This category has already been existed';
+                $response["message"] = 'This category has already been existed';\
+                return response()->json($response);
             }
-            
+
         } else {
             $response["status"] = 500;
             $response["message"] = $validator->errors()->first();
+            return response()->json($response);
         }
         
         return response()->json($response);
