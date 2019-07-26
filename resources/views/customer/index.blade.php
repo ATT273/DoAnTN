@@ -21,6 +21,7 @@
 			</div> <!-- .main-content -->
 		</div> 
 	</div><!-- #content -->
+	@include('layouts.customer.comparison_list')
 @endsection
 @section('script')
 	<script type="text/javascript" src="slick-1.8.1/slick/slick.min.js"></script>
@@ -31,20 +32,33 @@
 				arrows:true,
 				autoplaySpeed:1000,
 			});
-
+			// new product
 			@foreach($newProducts as $newPr)
 			$('#add-to-cart-{{$newPr->id}}').click(function(){
 				$('#cart-button').load('add-to-cart/{{$newPr->id}}');
 				alert('Product is added to your cart');
 			});
+			$('#compare-{{$newPr->id}}').click(function(){
+				$('#modal-body').load('compare/{{$newPr->id}}');
+			});
 			@endforeach
 
+			// top product
 			@foreach($topProducts as $topPr)
 			$('#add-to-cart-{{$topPr->id}}').click(function(){
-				$('#cart-items-list').load('add-to-cart/{{$topPr->id}}');
+				$('#cart-button').load('add-to-cart/{{$topPr->id}}');
 				alert('Product is added to your cart');
 			});
 			@endforeach
+
+			// delete compare item
+			@if(Session::has('compare_list'))
+			@foreach($list->items as $item)
+				$('#del-item-{{$item['item']['id']}}').click(function(){
+					$('#modal-body').load('del-compare/{{$item['item']['id']}}');
+				});
+			@endforeach
+		@endif
 		});
 	</script>
 @endsection

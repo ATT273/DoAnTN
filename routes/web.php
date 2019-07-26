@@ -31,12 +31,19 @@ Route::get('/', function () {
 	Route::get('gioi-thieu','PageController@gioiThieu');
 	//search item
 	Route::get('search', 'PageController@getSearch');
-	//add to cart
+	//cart
 	Route::get('add-to-cart/{id}','PageController@getAddToCart');
-	Route::get('session','PageController@getAddToCart2');
-	Route::get('update-cart/{id}/{new_qty}','PageController@getUpdateCart');
+	Route::get('add-one/{id}','PageController@addOneItem');
+	Route::get('sub-one/{id}','PageController@subOneItem');
+	Route::get('reload-mini','PageController@reloadMiniCart');
 	Route::get('view-cart','PageController@getCartView');
+	// Compare items
+	Route::get('compare/{id}','PageController@addToComparisonList');
+	Route::get('del-compare/{id}','PageController@delComparisonItem');
+
+	// for debug
 	Route::get('del-session', 'PageController@getdelsession');
+	Route::get('session','PageController@getAddToCart2');
 
 	//register
 	Route::get('register','PageController@getRegister');

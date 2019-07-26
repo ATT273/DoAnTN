@@ -152,4 +152,153 @@ class PromoCodeController extends Controller
         
     }
 
+    ///////////////////
+    // API Functions //
+    ///////////////////
+    public function getDanhsachApi(){
+		$pcodes = PromoCode::all();
+        $response["status"] = 200;
+        $response["pcodes"] = $pcodes;
+        return response()->json($response);
+	}
+
+	public function postAddApi(Request $request){
+
+		$rules = [
+                'code_name' => 'required',
+				'code_discount' =>'required|numeric',
+				'code_exp_date' => 'required|after:yesterday',
+            ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if($validator->passes()){
+			$pcode = new PromoCode;
+			$pcode->name = $request->code_name;
+			$pcode->expiration_date = $request->code_exp_date;
+
+		//kiem tra loai ma giam gia
+		if($request->code_type == 1){
+			$pcode->fixed = $request->code_discount;
+			$pcode->percentage = 0;
+		}elseif($request->code_type == 2){
+			$pcode->fixed = 0;
+			//kiemtra neu % giam gia lon hon 100 hoac nho hon 0
+			if($request->code_discount > 100 || $request->code_discount <= 0){
+				$response["status"] = 500;
+            	$response["message"] = 'Discount percentage must be greater than 0 and less than 100';
+            return response()->json($response);
+			//kiem tra neu % giam gia nho hon 100 va lon hon 0
+			}elseif($request->code_discount < 100 && $request->code_discount > 0){
+				$pcode->percentage = $request->code_discount;
+			}
+			
+		}
+
+		$pcode->save();
+			$response["status"] = 200;
+            $response["message"] = "success";
+            return response()->json($response);
+        } else {
+            $response["status"] = 500;
+            $response["message"] = $validator->errors()->first();
+            return response()->json($response);
+        }
+        return response()->json($response);
+	}
+
+	public function postEditApi(Request $request, $id){
+
+		$rules = [
+                'code_name' => 'required',
+				'code_discount' =>'required|numeric',
+				'code_exp_date' => 'required|after:yesterday',
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+        if($validator->passes()){
+		$checkname = PromoCode::where('name',$request->code_name)->get();
+		if(count($checkname) == 0){
+            $pcode = PromoCode::find($id);
+            $pcode->name = $request->code_name;
+			$pcode->expiration_date = $request->code_exp_date;
+			$pcode->expired = 0;
+	            //kiem tra loai ma giam gia
+			if($request->code_type == 1){
+				$pcode->fixed = $request->code_discount;
+				$pcode->percentage = 0;
+		} elseif($request->code_type == 2){
+			$pcode->fixed = 0;
+			//kiemtra neu % giam gia lon hon 100 hoac nho hon 0
+			if($request->code_discount > 100 || $request->code_discount <= 0){
+				$response["status"] = 500;
+            	$response["message"] = 'Discount percentage must be greater than 0 and less than 100';
+            	return response()->json($response);
+
+			//kiem tra neu % giam gia nho hon 100 va lon hon 0
+			}elseif($request->code_discount < 100 && $request->code_discount > 0){
+				$pcode->percentage = $request->code_discount;
+			}
+		}
+
+			$pcode->save();
+
+			$response["status"] = 200;
+            $response["message"] = "success";
+            return response()->json($response);
+        }
+
+         if($checkname[0]->id == $id){
+            $pcode = PromoCode::find($id);
+            $pcode->name = $request->code_name;
+			$pcode->expiration_date = $request->code_exp_date;
+			$pcode->expired = 0;
+	            //kiem tra loai ma giam gia
+			if($request->code_type == 1){
+				$pcode->fixed = $request->code_discount;
+				$pcode->percentage = 0;
+		}elseif($request->code_type == 2){
+			$pcode->fixed = 0;
+			//kiemtra neu % giam gia lon hon 100 hoac nho hon 0
+			if($request->code_discount > 100 || $request->code_discount <= 0){
+				$response["status"] = 500;
+            	$response["message"] = 'Discount percentage must be greater than 0 and less than 100';
+            	return response()->json($response);
+
+			//kiem tra neu % giam gia nho hon 100 va lon hon 0
+			}elseif($request->code_discount < 100 && $request->code_discount > 0){
+				$pcode->percentage = $request->code_discount;
+			}
+		}
+
+			$pcode->save();
+
+			$response["status"] = 200;
+            $response["message"] = "success";
+            return response()->json($response);
+
+        } elseif ($checkname[0]->id !== $id) {
+			$response["status"] = 500;
+            $response["message"] = 'This code has already been existed';
+            return response()->json($response);
+        }
+
+        } else {
+            $response["status"] = 500;
+            $response["message"] = $validator->errors()->first();
+            return response()->json($response);
+        }
+        return response()->json($response);
+	}
+
+	public function getDelApi($id){
+		$pcode = PromoCode::find($id);
+		$pcode->delete();
+
+		$response["status"] = 200;
+        $response["message"] = "success";
+
+        return response()->json($response);
+	}
 }

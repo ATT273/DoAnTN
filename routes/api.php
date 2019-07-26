@@ -87,5 +87,44 @@ Route::group(['prefix'=>'admin'],function(){
 		Route::get('detail/{id}','BillController@getDetailApi');
 		Route::get('confirm/{id}','BillController@getConfirmApi');
 	});
+
+	//Users
+	Route::group(['prefix'=>'user'],function(){
+		Route::get('danhsach-users','UserController@getDanhsachApi');
+
+		Route::get('p/{id}','UserController@getUserProfileApi');
+
+		Route::get('add','UserController@getAdd');
+		Route::post('add','UserController@postAdd');
+
+		Route::get('edit/{id}','UserController@getEdit');
+		Route::post('edit/{id}','UserController@postEdit');
+
+		Route::get('del/{id}','UserController@getDel');
+
+		Route::get('search','UserController@getSearchUser');
+	});
+
+	//Promo Code
+	Route::group(['prefix'=>'promo_code'], function(){
+		Route::get('danhsach-code','PromoCodeController@getDanhsachApi');
+		Route::post('add','PromoCodeController@postAddApi');
+
+		
+		Route::post('edit/{id}','PromoCodeController@postEditApi');
+
+		Route::get('del/{id}','PromoCodeController@getDelApi');
+
+		Route::get('search','PromoCodeController@getSearchCode');
+	});
+
+	// Report
+	Route::group(['prefix' => 'report'],function(){
+
+		Route::get('weekly-report','ReportController@getWeeklyReportApi');
+		Route::get('monthly-report','ReportController@getMonthlyReportApi');
+		Route::get('daily-report/today','ReportController@getDailyReportTodayApi');
+		Route::post('daily-report/other','ReportController@getDailyReportOtherApi');
+	});
 });
 

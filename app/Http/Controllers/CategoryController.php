@@ -111,7 +111,7 @@ class CategoryController extends Controller
     // Api function //
     //////////////////
 
-    public function getDanhSachApi(){
+     public function getDanhSachApi(){
         $category = Category::all();
         $response["status"] = 200;
         $response["category"] = $category;
@@ -172,10 +172,10 @@ class CategoryController extends Controller
                 return response()->json($response);
             }elseif ($checkname[0]->id !== $id) {
                 $response["status"] = 500;
-                $response["message"] = 'This category has already been existed';\
+                $response["message"] = 'This category has already been existed';
                 return response()->json($response);
             }
-
+            
         } else {
             $response["status"] = 500;
             $response["message"] = $validator->errors()->first();

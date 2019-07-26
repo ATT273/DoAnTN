@@ -19,7 +19,8 @@
 					<button type="button" class="btn btn-warning pull-left" id="add-to-cart-{{$newPr->id}}">
 						<i class="fa fa-shopping-cart"></i>
 					</button>&nbsp;
-					<a class="beta-btn primary" href="product/{{$newPr->id}}">Details <i class="fa fa-chevron-right"></i></a>
+					<button type="button" class="btn btn-default" id="compare-{{$newPr->id}}">Add to compare</button>
+					<a  href="product/{{$newPr->id}}"><button type="button" class="btn btn-default" >Details<i class="fa fa-chevron-right"></i></button></a>
 					<div class="clearfix"></div>
 				</div>
 			</div>

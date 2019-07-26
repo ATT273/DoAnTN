@@ -45,8 +45,7 @@
 			<div class="clearfix"></div>
 		</div> <!-- .container -->
 	</div> <!-- .copyright -->
-
-
+	
 	<!-- include js files -->
 	<script src="js/jquery-3.4.1.min.js"></script>
 	{{-- <script src="js/jquery-ui-1.10.4.custom.min.js"></script> --}}
@@ -61,6 +60,10 @@
 				$(".header-bottom").removeClass('fixNav')
 			}}
 		)
+
+		$('#myModal').on('shown.bs.modal', function () {
+		  $('#myInput').focus()
+		})
 	})
 	</script>
 </body>

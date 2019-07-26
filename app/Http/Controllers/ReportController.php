@@ -157,4 +157,89 @@ class ReportController extends Controller
     		})->export('xlsx');
     	}
     }
+
+    //api function
+    // Daily Report
+	public function getDailyReportTodayApi(){
+		$today = date('Y-m-d');
+		$bills =  Bill::where('created_at', '=', $today)->get();
+		$this->checkReport($today);
+
+		$topProducts = Product::orderBy('sold','DESC')->take(4)->get();
+
+		$response['status'] = 200;
+		$response['bills'] = $bills;
+		$response['topProducts'] = $topProducts;
+
+		return response()->json($response);
+	}
+
+	public function getDailyReportOtherApi(Request $request){
+		$day = $request->date;
+		$bills =  Bill::where('created_at', 'like', $day.'%')->get();
+		$report = Report::where('date',$day)->get();
+		$this->checkReport($day);
+
+		$response['status'] = 200;
+		$response['bills'] = $bills;
+		$response['report'] = $report;
+		
+		return response()->json($response);
+	}
+
+	public function getWeeklyReportApi(){
+		$daysOfWeek = [];
+		$today = Carbon::now();
+		$week = $today->weekOfYear;
+		$firstDay = $today->startOfWeek();
+		$day1 = $firstDay;
+		array_push($daysOfWeek, $day1->toDateString());
+		for ($i=0; $i < 6; $i++) { 
+			$day = $firstDay->addDay()->toDateString();
+			array_push($daysOfWeek, $day);
+		}
+		
+		$reports = Report::whereBetween('date',[$daysOfWeek[0],$daysOfWeek[6]])->get();
+		$reportDates=[];
+		foreach ($reports as $report) {
+			array_push($reportDates,$report->date);
+		}
+
+		$response['status'] = 200;
+		$response['reports'] = $reports;
+		$response['days'] = $daysOfWeek;
+		$response['week'] = $week;
+		$response['reportDates'] = $reportDates;
+		
+		return response()->json($response);
+	}
+
+	public function getMonthlyReportApi(){
+		$today = Carbon::now();
+		$daysOfMonth = [];
+		$month = $today->month;
+		$daysInMonth = $today->daysInMonth;
+		$start = Carbon::parse($today)->startOfMonth();
+		$end = Carbon::parse($today)->endOfMonth();
+		$day1 = Carbon::parse($start)->toDateString();
+		array_push($daysOfMonth, $day1);
+		for ($i=0; $i < $daysInMonth-1 ; $i++) { 
+			$day = $start->addDay()->toDateString();
+			array_push($daysOfMonth, $day);
+		}
+
+		$reports = Report::whereBetween('date',[$daysOfMonth[0],$daysOfMonth[$daysInMonth-1]])->get();
+		$reportDates=[];
+		foreach ($reports as $report) {
+			array_push($reportDates,$report->date);
+		}
+
+		$response['status'] = 200;
+		$response['reports'] = $reports;
+		$response['days'] = $daysOfMonth;
+		$response['month'] = $month;
+		$response['reportDates'] = $reportDates;
+		
+		return response()->json($response);
+	}
 }

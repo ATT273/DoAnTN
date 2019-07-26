@@ -156,7 +156,6 @@ class TagController extends Controller
                 $response["status"] = 200;
                 $response["message"] = "success";
                 return response()->json($response);
-                
             }elseif ($checkname[0]->id !== $id) {
                 $response["status"] = 500;
                 $response["message"] = 'This tag has already been existed';

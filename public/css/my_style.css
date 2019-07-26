@@ -10,15 +10,34 @@
 	--success:#00a65a;
 	--warning:#f39c12;
 	--default:#dddddd;
+	--other-btn:#e8416c;
 }
 
 body{
 	background-color: var(--body-color);
 }
-
+body.modal-open {
+    overflow: visible;
+}
 .login-admin{
 	width: 300px;
 	margin: auto;
+}
+.status-default{
+	color: var(--default);
+}
+
+.status-success{
+	color: var(--success);
+}
+.status-danger{
+	color: var(--danger);
+}
+.status-warning{
+	color: var(--warning);
+}
+.btn-other{
+	background-color: var(--other-btn);
 }
 .login-btn{
 	width: 150px;
@@ -123,7 +142,13 @@ p.single-item-price{
 .beta-products-list .row .item-block{
 	border: 0.5px solid #ddd;
 }
+.compare-btn{
+	position: fixed;
+	z-index: 2000;
+	top: 300px;
+	right: 10px;
 
+}
 /*Search sortby*/
 .filter{
 	height: 50px;
@@ -135,7 +160,20 @@ p.single-item-price{
 	text-align: center;
 	line-height: 50px;
 }
-
+/*COMPARE LIST*/
+.modal-dialog{
+	width: 900px;
+}
+.compare-item{
+	border-right: 0.5px solid var(--border-color);
+}
+.compare-item-del{
+	width: 50px;
+	height: 50px;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
 /*CART*/
 .cart{
 	border: none !important;
@@ -454,19 +492,7 @@ section .section-title {
 	float: right;
 	line-height: 20px;
 }
-.status-default{
-	color: var(--default);
-}
 
-.status-success{
-	color: var(--success);
-}
-.status-danger{
-	color: var(--danger);
-}
-.status-warning{
-	color: var(--warning);
-}
 /*Report*/
 .small-box .inner a h3,
 .small-box .inner a h4{

@@ -72,7 +72,7 @@
                     if(int_qty > 1){
                         int_qty--;
                         $('input#qty-{{$item['item']['id']}}').val(int_qty);
-                        $('#sub-total').load('update-cart/{{$item['item']['id']}}/'+int_qty);
+                        $('#sub-total').load('sub-one/{{$item['item']['id']}}');
                      }
                      if(int_qty <= 1){
                         int_qty = 1;
@@ -88,13 +88,17 @@
                      if(int_qty < 10){
                         int_qty++;
                         $('input#qty-{{$item['item']['id']}}').val(int_qty);
-                        $('#sub-total').load('update-cart/{{$item['item']['id']}}/'+int_qty);
+                        $('#sub-total').load('add-one/{{$item['item']['id']}}');
                      }
                 });
             @endforeach
         @endif
 
     });
+    
+    setInterval(function(){
+        $('#cart-button').load('reload-mini');
+    },1000);
 </script>
 @endsection
 

@@ -101,7 +101,7 @@ class UserController extends Controller
 
 
 
-    // Api function
+   // Api function
     public function postAdminLoginApi(Request $request){
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
             $admin  = Auth::user();
@@ -118,6 +118,22 @@ class UserController extends Controller
             $response["status"] = 205;
             $response["message"] = 'Login Fail';
         }
+
+        return response()->json($response);
+    }
+
+    public function getDanhsachApi(){
+        $users = User::paginate(5);
+        $response["status"] = 200;
+        $response["users"] = $users;
+        return response()->json($response);
+    }
+
+    public function getUserProfileApi($id){
+        $bills = Bill::where('user_id',$id)->get();
+
+        $response["status"] = 200;
+        $response["bills"] = $bills;
 
         return response()->json($response);
     }

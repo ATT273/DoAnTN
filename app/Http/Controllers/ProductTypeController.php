@@ -155,7 +155,7 @@ class ProductTypeController extends Controller
 
         if($validator->passes()){
             $checkname = ProductType::where('name',$request->product_type)->get();
-
+            
             if(count($checkname) == 0){
                 $productType = ProductType::find($id);
                 $productType->category_id = $request->category;
