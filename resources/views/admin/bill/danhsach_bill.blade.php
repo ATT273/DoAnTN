@@ -12,16 +12,6 @@
             </ol>
         </div>
         <div class="col-md-5">
-            {{-- <form action="admin/product/search" method="Get">
-                <div class="input-group">
-                    <input type="text" name="keyword" id="search-box" placeholder="Search..." class="form-control">
-                    <span class="input-group-btn">
-                        <button type="submit" class="btn btn-default">
-                            <i class="fa fa-search" aria-hidden="true"></i>
-                        </button>
-                    </span>
-                </div>
-            </form> --}}
         </div>
     </div>
 </section>

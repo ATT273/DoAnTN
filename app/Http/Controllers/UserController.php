@@ -100,8 +100,7 @@ class UserController extends Controller
     }
 
 
-
-   // Api function
+ // Api function
     public function postAdminLoginApi(Request $request){
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
             $admin  = Auth::user();
@@ -122,6 +121,20 @@ class UserController extends Controller
         return response()->json($response);
     }
 
+    public function postLoginApi(Request $request){
+        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+            $user  = Auth::user();
+            $response["status"] = 200;
+            $response["message"] = 'Login Success';
+            $response["user"] = $user;
+        }
+        else{
+            $response["status"] = 205;
+            $response["message"] = 'Login Fail';
+        }
+    return response()->json($response);
+    }
+
     public function getDanhsachApi(){
         $users = User::paginate(5);
         $response["status"] = 200;
@@ -134,6 +147,31 @@ class UserController extends Controller
 
         $response["status"] = 200;
         $response["bills"] = $bills;
+
+        return response()->json($response);
+    }
+
+    public function postRegisterApi(Request $request){
+        $rules = [
+                'username' => 'required|unique:users,username',
+                 'fullname' => 'required|regex:/^[a-zA-Z][a-zA-Z\s]*$/',
+            ];
+        $validator = Validator::make($request->all(), $rules);
+
+        if($validator->passes()){
+            $user = new User;
+            $user->username = $request->username;
+            $user->name = $request->fullname;
+            $user->email = $request->email;
+            $user->password = bcrypt($request->password);
+            $user->save();
+
+            $response["status"] = 200;
+            $response["message"] = "success";
+        } else {
+            $response["status"] = 500;
+            $response["message"] = $validator->errors()->first();
+        }
 
         return response()->json($response);
     }

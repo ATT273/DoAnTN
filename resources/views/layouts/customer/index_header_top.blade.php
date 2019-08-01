@@ -9,7 +9,7 @@
 		<div class="pull-right auto-width-right">
 			@if(Auth::check())
 				<ul class="top-details menu-beta l-inline">
-					<li><a href="profile/{{Auth::user()->name}}"><i class="fa fa-user"></i>{{Auth::user()->name}}</a></li>
+					<li><a href="profile/{{Auth::user()->id}}"><i class="fa fa-user"></i>{{Auth::user()->name}}</a></li>
 					@if(Auth::user()->role == 1)
 					<li><a href="admin/dashboard">Admin Dashboard</a></li>
 

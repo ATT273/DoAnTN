@@ -18,6 +18,46 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
+///////////////////////////
+//customer route//
+///////////////////////////
+
+	//index
+	Route::get('index','PageController@getIndex');
+	//ProductType
+	Route::get('loai-sp','PageController@getLoaisp');
+	//Prodct Detail
+	Route::get('product/{id}','PageController@getDetailProduct');
+	//Other
+	Route::get('lien-he','PageController@lienHe');
+	Route::get('gioi-thieu','PageController@gioiThieu');
+	//search item
+	Route::get('search', 'PageController@getSearch');
+	//cart
+	Route::get('add-to-cart/{id}','PageController@getAddToCart');
+	Route::get('add-one/{id}','PageController@addOneItem');
+	Route::get('sub-one/{id}','PageController@subOneItem');
+	Route::get('reload-mini','PageController@reloadMiniCart');
+	Route::get('view-cart','PageController@getCartView');
+	// Compare items
+	Route::get('compare/{id}','PageController@addToComparisonList');
+	Route::get('del-compare/{id}','PageController@delComparisonItem');
+
+	// for debug
+	Route::get('del-session', 'PageController@getdelsession');
+	Route::get('session','PageController@getAddToCart2');
+
+	//register
+	Route::post('register','UserController@postRegisterApi');
+	//Login
+	Route::post('login','UserController@postLoginApi');
+	//Logout
+	Route::get('logout','UserController@getLogout');
+
+
+///////////////////////////
+//admin routes//
+///////////////////////////
 //admin login
 Route::post('admin/login','UserController@postAdminLoginApi');
 Route::get('admin/login','PageController@getAdminloginApi');

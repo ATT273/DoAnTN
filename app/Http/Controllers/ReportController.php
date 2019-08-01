@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Bill;
 use App\BillDetail;
 use App\Report;
+use App\Product
 use Validator;
 use Excel;
 use Carbon\Carbon;
@@ -158,7 +159,7 @@ class ReportController extends Controller
     	}
     }
 
-    //api function
+     //api function
     // Daily Report
 	public function getDailyReportTodayApi(){
 		$today = date('Y-m-d');

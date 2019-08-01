@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Auth;
 use App\User;
 use App\Bill;
 use App\BillDetail;
@@ -9,6 +10,7 @@ use App\Product;
 use App\Slide;
 use App\ProductType;
 use App\ProductImage;
+use App\PromoCode;
 use App\Tag;
 use App\Cart;
 use App\Compare;
@@ -18,9 +20,11 @@ use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
-    //
-    // re-used function
-    // 
+    //////////////////////
+    // re-used function////
+    /// //////////////////
+
+    // money formating
     public function money($m){
        return number_format($m).' VND';
     }
@@ -58,7 +62,7 @@ class PageController extends Controller
                     </li>';
         }
         echo '  <li><a><strong>Subtotal:</strong>&nbsp; <div class="pull-right">'.$totalPrice.'</div></a></li>
-                <li role="separator" class="divider"></li><li><a href="#">To Checkout</a></li></ul>';
+                <li role="separator" class="divider"></li><li><a href="checkout">To Checkout</a></li></ul>';
     }
 
     // reload comparison list
@@ -100,6 +104,13 @@ class PageController extends Controller
                 </div>';
         }
     }
+
+
+
+
+
+
+
     public function getAdminDashboard(){
         $user = User::all();
         $bill = Bill::all();
@@ -112,14 +123,25 @@ class PageController extends Controller
     // Customer login
     public function getlogin(){
         $categories = Category::all();
-    	return view('customer.login',['categories' => $categories]);
+        $oldCart  = Session::get('cart');
+        $cart = new Cart($oldCart);
+    	return view('customer.login',['categories' => $categories,'cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice]);
     }
 
     public function getRegister(){
         $categories = Category::all();
-        return view('customer.register',['categories' => $categories]);
+        $oldCart  = Session::get('cart');
+        $cart = new Cart($oldCart);
+        return view('customer.register',['categories' => $categories,'cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice]);
     }
-
+    // profile
+    public function getProfile($id){
+        $user = User::findOrFail($id);
+        $bills = Bill::where('user_id',$id)->get();
+        $oldCart  = Session::get('cart');
+        $cart = new Cart($oldCart);
+        return view('customer.profile',['user' => $user, 'bills' => $bills, 'cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice]);
+    }
     // Index
     public function getIndex(){
         $categories = Category::all();
@@ -135,13 +157,6 @@ class PageController extends Controller
         $list = new Compare($oldList);
 
         return view('customer.index',['categories' => $categories, 'banners' => $banners, 'newProducts' => $newProducts, 'topProducts' => $topProducts, 'cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice, 'list' => $list]);
-        
-        // if (Session::has('cart')) {
-        //     $oldCart  = Session::get('cart');
-        //     $cart = new Cart($oldCart);
-
-        //     return view('customer.index',['categories' => $categories, 'banners' => $banners, 'newProducts' => $newProducts, 'topProducts' => $topProducts, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice, 'cart' => $cart]);
-        // }
     }
     
 
@@ -254,24 +269,25 @@ class PageController extends Controller
         
     }
     public function reloadMiniCart(){
-        $oldCart = Session::has('cart') ? Session::get('cart') : null;
+        $oldCart =  Session::get('cart');
         $cart = new Cart($oldCart);
-        Session::put('cart',$cart);
-        // echo 'hello';
         $this->ajaxReloadCart($cart->totalQty, $this->money($cart->totalPrice), $cart->items);
     }
     public function getCartView(){
 
         if(!Session::has('cart')){
-            return view('customer.cart',['products' => null]);
+            return view('customer.cart');
         }
-
-        $oldCart  = Session::get('cart');
-        $cart = new Cart($oldCart);
-        return view('customer.cart',['cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice]);
-
+        if(Session::has('cart')){
+            $oldCart  = Session::get('cart');
+            $cart = new Cart($oldCart);
+            return view('customer.cart',['cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice]);
+        }
     }
 
+    //////////////////
+    // Comapre list//
+    /////////////////
     public function addToComparisonList(Request $request, $id){
         $product = Product::findOrFail($id);
         $oldList = Session::has('compare_list') ? Session::get('compare_list') : null;
@@ -302,6 +318,42 @@ class PageController extends Controller
         Session::put('compare_list',$list);
         $this->ajaxReloadComparionList($list->items);
     }
+
+
+    ////////////////////
+    // Checkout//
+    ////////////////
+    public function getCheckOut(){
+        if(Auth::check()){
+            $oldCart  = Session::get('cart');
+            $cart = new Cart($oldCart);
+            return view('customer.checkout',['cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice]);
+        }else{
+            return redirect('login');
+        }
+    }
+
+    public function applyPromoCode(Request $request){
+        $oldCart  = Session::get('cart');
+        $cart = new Cart($oldCart);
+        $codes = PromoCode::where('name',$request->promo_code)->get();
+        $code = $codes[0];
+        if($code->fixed != 0){
+            $amount = $code->fixed;
+            if($cart->totalPrice > $amount){
+                $totalAfterDicount = $cart->totalPrice - $amount;
+            }elseif ($cat->totalPrice <= $amount) {
+                $totalAfterDicount = 0;
+            }
+        }elseif ($code->percentage != 0) {
+            $amount = $cart->totalPrice * $code->percentage / 100;
+            $totalAfterDicount = $cart->totalPrice -  $amount;
+        }
+
+       return view('customer.checkout',['cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice,'totalAfterDicount' => $totalAfterDicount]);
+    }
+
+
     // for debug
     public function getdelsession(Request $request){
         $request->session()->flush();

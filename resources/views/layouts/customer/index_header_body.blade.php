@@ -52,7 +52,7 @@
 						@endforeach
 						<li><a><strong>Subtotal:</strong>&nbsp; <div class="pull-right">@money($totalPrice)</div></a></li>
 						<li role="separator" class="divider"></li>
-						<li><a href="#" disabled>To Checkout</a></li>
+						<li><a href="checkout">To Checkout</a></li>
 					@endif
 					@if(!Session::has('cart'))
 						<li><a>No item in your cart</a></li>

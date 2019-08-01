@@ -37,14 +37,15 @@ Route::get('/', function () {
 	Route::get('sub-one/{id}','PageController@subOneItem');
 	Route::get('reload-mini','PageController@reloadMiniCart');
 	Route::get('view-cart','PageController@getCartView');
+	Route::get('checkout','PageController@getCheckOut');
+	Route::get('apply-code','PageController@applyPromoCode');
 	// Compare items
 	Route::get('compare/{id}','PageController@addToComparisonList');
 	Route::get('del-compare/{id}','PageController@delComparisonItem');
 
-	// for debug
-	Route::get('del-session', 'PageController@getdelsession');
-	Route::get('session','PageController@getAddToCart2');
-
+	
+	// Profile
+	Route::get('profile/{id}','PageController@getProfile');
 	//register
 	Route::get('register','PageController@getRegister');
 	Route::post('register','UserController@postRegister');
@@ -54,7 +55,9 @@ Route::get('/', function () {
 	//Logout
 	Route::get('logout','UserController@getLogout');
 
-
+	// for debug
+	Route::get('del-session', 'PageController@getdelsession');
+	Route::get('session','PageController@getAddToCart2');
 
 ///////////////////////////
 //admin routes//

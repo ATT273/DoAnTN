@@ -6,10 +6,12 @@
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 <p><h4><strong>Your Cart</strong> - @if(Session::has('cart')){{$cart->totalQty}}@elseif(!Session::has('cart')){{0}}@endif items</h4></p>        
             </div>
+            @if(Session::has('cart'))
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 pull-right" style="margin-top: 10px;">
                 <a href=""><button type="button" class="btn btn-danger pull-right">Delete Cart</button></a>
-                <button type="button" class="btn btn-success pull-right">To Checkout</button>
+                <a href="checkout"><button type="button" class="btn btn-success pull-right">To Checkout</button></a>
             </div>
+            @endif
         </div>
         <div class="cart">
             @if(Session::has('cart'))

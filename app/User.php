@@ -26,4 +26,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function bill(){
+        return $this->hasMany('App\Bill','user_id','id');
+    }
 }
