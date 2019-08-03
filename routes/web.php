@@ -35,9 +35,12 @@ Route::get('/', function () {
 	Route::get('add-to-cart/{id}','PageController@getAddToCart');
 	Route::get('add-one/{id}','PageController@addOneItem');
 	Route::get('sub-one/{id}','PageController@subOneItem');
+	Route::get('cart-item-delete/{id}','PageController@getDeleteItem');
+	Route::get('cart-delete','PageController@getDeleteCart');
 	Route::get('reload-mini','PageController@reloadMiniCart');
 	Route::get('view-cart','PageController@getCartView');
 	Route::get('checkout','PageController@getCheckOut');
+	Route::post('post-placeorder','PageController@postPlaceOrder');
 	Route::get('apply-code','PageController@applyPromoCode');
 	// Compare items
 	Route::get('compare/{id}','PageController@addToComparisonList');

@@ -11,6 +11,7 @@
 	--warning:#f39c12;
 	--default:#dddddd;
 	--other-btn:#e8416c;
+	high-
 }
 
 body{
@@ -143,7 +144,7 @@ p.single-item-price{
 	color: #fff;
 }
 .beta-products-list .row .item-block{
-	border: 0.5px solid #ddd;
+	border-right: 0.5px solid #ddd;
 }
 .compare-btn{
 	position: fixed;
@@ -217,6 +218,13 @@ p.single-item-price{
 .box-body.checkout{
 	padding-right: 0;
 	padding-left: 0;
+}
+.btn-place-order h4{
+	color: #fff;
+}
+.row.change-info{
+	margin-right: 0px;
+	margin-left: 0px;
 }
 /*tabs detail products*/
 /* Tabs*/

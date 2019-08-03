@@ -45,6 +45,7 @@ class PageController extends Controller
         echo '  <ul class="dropdown-menu cart-items-list" id="cart-items-list">';
         foreach($items as $item){
             $price = $this->money($item['item']['price']);
+            $promo_price = $this->money($item['item']['promo_price']);
             echo '  <li>
                     <div class="row" style="margin-left:0; margin-top:10px;">
                         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
@@ -53,13 +54,22 @@ class PageController extends Controller
                         <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                             <div class="row">
                                 <a href="product/'.$item['item']['id'].'"><strong>'.$item['item']['name'].'</strong></a>
-                            </div>
-                            <div class="row">'
-                                .$price.' X '.$item['qty'].
-                            '</div>
+                            </div>';
+            if($item['item']['promo_price'] != 0){
+                echo    '<div class="row">
+                                <strike>'.$price.'</strike> X '.$item['qty'].'
                         </div>
-                    </div>
-                    </li>';
+                        <div class="row status-danger">
+                            '.$promo_price.' X '.$item['qty'].'
+                        </div>';
+            }
+            else{
+                echo    '<div class="row">'
+                            .$price.' X '.$item['qty'].
+                        '</div>';
+            }
+            echo  '</div></div></li>';
+                            
         }
         echo '  <li><a><strong>Subtotal:</strong>&nbsp; <div class="pull-right">'.$totalPrice.'</div></a></li>
                 <li role="separator" class="divider"></li><li><a href="checkout">To Checkout</a></li></ul>';
@@ -248,7 +258,7 @@ class PageController extends Controller
 
         $totalPrice = $this->money($cart->totalPrice);
 
-        // display mini cart and total price
+        // display and total price
         echo $totalPrice;
         
     }
@@ -258,15 +268,36 @@ class PageController extends Controller
         $cart = new Cart($oldCart);
 
         $cart->subOne($product, $id);
-        Session::put('cart',$cart);
-        Session::save();
-
-
+        if(count($cart->items) > 0){
+            Session::put('cart',$cart);
+            Session::save();
+        }else{
+            Session::forget('cart');
+        }
         $totalPrice = $this->money($cart->totalPrice);
         // display mini cart and total price
         echo $totalPrice;
         // $this->ajaxReloadCart($cart->totalQty, $this->money($cart->totalPrice), $cart->items);
         
+    }
+
+    public function getDeleteItem($id){
+        $oldCart = Session::has('cart') ? Session::get('cart') : null;
+        $cart = new Cart($oldCart);
+        $cart->delete($id);
+        if(count($cart->items) > 0){
+            Session::put('cart',$cart);
+            Session::save();
+        }else{
+            Session::forget('cart');
+        }
+        
+        return redirect('view-cart');
+    }
+
+    public function getDeleteCart(Request $request){
+        $request->session()->forget('cart');
+        return redirect('index');
     }
     public function reloadMiniCart(){
         $oldCart =  Session::get('cart');
@@ -323,13 +354,29 @@ class PageController extends Controller
     ////////////////////
     // Checkout//
     ////////////////
-    public function getCheckOut(){
+    public function getCheckOut(Request $request){
         if(Auth::check()){
+            $receiver = $payer = Auth::user()->name;
+            $receiver_phone = $payer_phone =  Auth::user()->phone;
+            $shipping_add = $billing_add = Auth::user()->address;
+
+            if ($request->has('change_info')) {
+                if($request->change_info == 'billing'){
+                    $payer = $request->payer_name;
+                    $payer_phone = $request->payer_phone;
+                    $billing_add = $request->billing_address;
+                }elseif ($request->change_info == 'shipping') {
+                    $receiver = $request->receiver_name;
+                    $receiver_phone = $request->receiver_phone;
+                    $shipping_add = $request->shipping_address;
+                }
+            }
+            
             $oldCart  = Session::get('cart');
             $cart = new Cart($oldCart);
-            return view('customer.checkout',['cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice]);
+            return view('customer.checkout',['cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice, 'receiver' => $receiver, 'payer' => $payer, 'receiver_phone' => $receiver_phone, 'payer_phone' => $payer_phone, 'shipping_add' => $shipping_add, 'billing_add' => $billing_add]);
         }else{
-            return redirect('login');
+            return redirect('login')->with('loi','Please login your account');
         }
     }
 
@@ -342,7 +389,7 @@ class PageController extends Controller
             $amount = $code->fixed;
             if($cart->totalPrice > $amount){
                 $totalAfterDicount = $cart->totalPrice - $amount;
-            }elseif ($cat->totalPrice <= $amount) {
+            }elseif ($cart->totalPrice <= $amount) {
                 $totalAfterDicount = 0;
             }
         }elseif ($code->percentage != 0) {
@@ -350,10 +397,49 @@ class PageController extends Controller
             $totalAfterDicount = $cart->totalPrice -  $amount;
         }
 
-       return view('customer.checkout',['cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice,'totalAfterDicount' => $totalAfterDicount]);
+       return view('customer.checkout',['cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice, 'amount' => $amount, 'totalAfterDicount' => $totalAfterDicount]);
     }
 
+    public function postPlaceOrder(Request $request){
+        $oldCart  = Session::get('cart');
+        $cart = new Cart($oldCart);
+        $user_id = Auth::user()->id;
 
+        $bill = new Bill;
+        $bill->user_id = $user_id;
+        $bill->sub_total = $cart->totalPrice;
+        if($request->has('amount')){
+            $bill->total = $request->total;
+            $bill->discount_amount = $request->amount;
+        }elseif (!$request->has('amount')) {
+            $bill->total = $cart->totalPrice;
+            $bill->discount_amount = 0;
+        }
+        
+        $bill->order_date = date('Y-m-d');
+        $bill->receiver = $request->receiver_name;
+        $bill->receiver_phone = $request->receiver_phone;
+        $bill->shipping_address = $request->shipping_address;
+        $bill->payer = $request->payer_name;
+        $bill->payer_phone = $request->payer_phone;
+        $bill->billing_address = $request->billing_address;
+        $bill->save();
+
+        $latest_bill_id = Bill::where('user_id',Auth::user()->id)->orderBy('created_at','DESC')->first()->id;
+        foreach ($cart->items as $item) {
+            $bill_detail = new BillDetail;
+            $bill_detail->bill_id = $latest_bill_id;
+            $bill_detail->product_id = $item['item']->id;
+            $bill_detail->product_name = $item['item']->name;
+            $bill_detail->quantity = $item['qty'];
+            $bill_detail->product_price = $item['price'] / $item['qty'];
+            $bill_detail->save();
+        }
+        
+        $request->session()->forget('cart');
+        return redirect('index');
+
+    }
     // for debug
     public function getdelsession(Request $request){
         $request->session()->flush();

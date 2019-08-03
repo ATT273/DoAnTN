@@ -12,7 +12,17 @@
 				<div class="single-item-body">
 					<p class="single-item-title"><a href="product/{{$topPr->id}}">{{$topPr->name}}</a></p>
 					<p class="single-item-price">
-						<span>@money($topPr->price)</span>
+						@if($topPr->promo_price != 0)
+							<span>
+								<strike>@money($topPr->price)</strike>
+							</span>
+							&nbsp;
+							<span class="status-danger">
+								@money($topPr->promo_price)
+							</span>
+						@else
+							<span>@money($topPr->price)</span>
+						@endif
 					</p>
 				</div>
 				<div class="single-item-caption">

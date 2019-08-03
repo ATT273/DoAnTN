@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Bill;
 use App\BillDetail;
 use App\Report;
-use App\Product
+use App\Product;
 use Validator;
 use Excel;
 use Carbon\Carbon;

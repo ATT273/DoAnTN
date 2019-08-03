@@ -42,9 +42,18 @@
 										<div class="row">
 											<a href="product/{{$item['item']['id']}}"><strong>{{$item['item']['name']}}</strong></a>
 										</div>
-										<div class="row">
-											@money($item['item']['price']) X {{$item['qty']}}
-										</div>
+										@if($item['item']['promo_price'] != 0)
+											<div class="row">
+												<strike>@money($item['item']['price'])</strike> X {{$item['qty']}}
+											</div>
+											<div class="row status-danger">
+												@money($item['item']['promo_price']) X {{$item['qty']}}
+											</div>
+										@else
+											<div class="row">
+												@money($item['item']['price']) X {{$item['qty']}}
+											</div>
+										@endif
 									</div>
 								</div>
 								

@@ -1,7 +1,7 @@
 <?php
 
 namespace App;
-
+use App\Product;
 use Illuminate\Database\Eloquent\Model;
 
 class Cart
@@ -26,11 +26,13 @@ class Cart
     //Add to cart
     public function add($item, $id){
         //tao moi san pham voi cac dac diem
-    	$storedItem = ['qty' => 0, 'price' => $item->price, 'item' => $item];
-
+        if ($item->promo_price != 0) {
+            $storedItem = ['qty' => 0, 'price' => $item->promo_price, 'item' => $item];
+        } else {
+            $storedItem = ['qty' => 0, 'price' => $item->price, 'item' => $item];
+        }
         //kiem tra da co san pham chua
     	if($this->items){
-
             //kiem tra da ton tai san pham voi id 
     		if(array_key_exists($id, $this->items)){
                 //neu co -> set san pham moi bang san pham da co san
@@ -42,7 +44,12 @@ class Cart
     	$storedItem['qty']++;
 
         //sua lai gia tien
-    	$storedItem['price'] = $item->price * $storedItem['qty'];
+        if ($item->promo_price != 0) {
+           $storedItem['price'] = $item->promo_price * $storedItem['qty'];
+        } else {
+            $storedItem['price'] = $item->price * $storedItem['qty'];
+        }
+    	
 
         //set san pham da co bang san pham moi (da tang so luong len 1 va doi gia)
     	$this->items[$id] = $storedItem;
@@ -51,13 +58,21 @@ class Cart
     	$this->totalQty++;
 
         //sua lai tong gia
-    	$this->totalPrice +=$item->price;
+        if ($item->promo_price != 0) {
+           $this->totalPrice +=$item->promo_price;
+        } else {
+            $this->totalPrice +=$item->price;
+        }
     }
 
     // Add 1
     public function addOne($item, $id){
         //tao moi san pham voi cac dac diem
-        $storedItem = ['qty' => 0, 'price' => $item->price, 'item' => $item];
+        if ($item->promo_price != 0) {
+            $storedItem = ['qty' => 0, 'price' => $item->promo_price, 'item' => $item];
+        } else {
+            $storedItem = ['qty' => 0, 'price' => $item->price, 'item' => $item];
+        }
 
         //kiem tra da co san pham chua
         if($this->items){
@@ -73,7 +88,11 @@ class Cart
         $storedItem['qty']++;
 
         //sua lai gia tien
-        $storedItem['price'] = $item->price * $storedItem['qty'];
+        if ($item->promo_price != 0) {
+           $storedItem['price'] = $item->promo_price * $storedItem['qty'];
+        } else {
+            $storedItem['price'] = $item->price * $storedItem['qty'];
+        }
 
         //set san pham da co bang san pham moi (da tang so luong len 1 va doi gia)
         $this->items[$id] = $storedItem;
@@ -82,14 +101,21 @@ class Cart
         $this->totalQty++;
 
         //sua lai tong gia
-        $this->totalPrice +=$item->price;
-        
+        if ($item->promo_price != 0) {
+           $this->totalPrice +=$item->promo_price;
+        } else {
+            $this->totalPrice +=$item->price;
+        }
     }
 
     // Sub 1
     public function subOne($item, $id){
          //tao moi san pham voi cac dac diem
-        $storedItem = ['qty' => 0, 'price' => $item->price, 'item' => $item];
+        if ($item->promo_price != 0) {
+            $storedItem = ['qty' => 0, 'price' => $item->promo_price, 'item' => $item];
+        } else {
+            $storedItem = ['qty' => 0, 'price' => $item->price, 'item' => $item];
+        }
 
         //kiem tra da co san pham chua
         if($this->items){
@@ -105,7 +131,11 @@ class Cart
         $storedItem['qty']--;
 
         //sua lai gia tien
-        $storedItem['price'] = $item->price * $storedItem['qty'];
+        if ($item->promo_price != 0) {
+           $storedItem['price'] = $item->promo_price * $storedItem['qty'];
+        } else {
+            $storedItem['price'] = $item->price * $storedItem['qty'];
+        }
 
         //set san pham da co bang san pham moi (da tang so luong len 1 va doi gia)
         $this->items[$id] = $storedItem;
@@ -114,6 +144,16 @@ class Cart
         $this->totalQty--;
 
         //sua lai tong gia
-        $this->totalPrice -=$item->price;
+        if ($item->promo_price != 0) {
+           $this->totalPrice -=$item->promo_price;
+        } else {
+            $this->totalPrice -=$item->price;
+        }
+    }
+
+    public function delete($id){
+        $this->totalQty -= $this->items[$id]['qty'];
+        $this->totalPrice -= $this->items[$id]['price'];
+        unset($this->items[$id]);
     }
 }

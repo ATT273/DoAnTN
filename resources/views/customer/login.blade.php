@@ -13,9 +13,9 @@
             {{session('thongbao')}}
         </div>
     @endif
-    @if(session('error'))
+    @if(session('loi'))
         <div class="alert alert-danger">
-            {{session('error')}}
+            {{session('loi')}}
         </div>
     @endif
 	<div id="content">

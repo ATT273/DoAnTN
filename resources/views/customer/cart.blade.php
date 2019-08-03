@@ -8,7 +8,7 @@
             </div>
             @if(Session::has('cart'))
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 pull-right" style="margin-top: 10px;">
-                <a href=""><button type="button" class="btn btn-danger pull-right">Delete Cart</button></a>
+                <a href="cart-delete"><button type="button" class="btn btn-danger pull-right">Delete Cart</button></a>
                 <a href="checkout"><button type="button" class="btn btn-success pull-right">To Checkout</button></a>
             </div>
             @endif
@@ -31,14 +31,14 @@
                                         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
                                             <div class="input-group">
                                                 <span class="input-group-addon" id="sub-1-{{$item['item']['id']}}">-</span>
-                                                <input type="text" class="form-control qty" name="qty" id="qty-{{$item['item']['id']}}" value="{{$item['qty']}}" style="width: 50px;">
+                                                <input type="text" class="form-control qty" name="qty" id="qty-{{$item['item']['id']}}" value="{{$item['qty']}}" style="width: 50px;" disabled>
                                                 <span class="input-group-addon" id="add-1-{{$item['item']['id']}}">+</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="delete-item">
-                                    <a href="cart-delete/{{$item['item']['id']}}">
+                                    <a href="cart-item-delete/{{$item['item']['id']}}">
                                         <i class="fa fa-2x fa-trash-o pull-right status-danger" aria-hidden="true"></i>
                                     </a>
                                 </div>

@@ -21,7 +21,7 @@
 			</div> <!-- .main-content -->
 		</div> 
 	</div><!-- #content -->
-	@include('layouts.customer.comparison_list')
+	@include('layouts.customer.comparison_list_modal')
 @endsection
 @section('script')
 	<script type="text/javascript" src="slick-1.8.1/slick/slick.min.js"></script>
