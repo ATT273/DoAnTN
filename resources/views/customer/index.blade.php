@@ -29,8 +29,10 @@
 		$(document).ready(function(){
 			$('.slide').slick({
 				autoplay:true,
-				arrows:true,
-				autoplaySpeed:1000,
+				arrows:false,
+				fade:true,
+				easing:'swing',
+				autoplaySpeed:2000,
 			});
 			// new product
 			@foreach($newProducts as $newPr)
@@ -40,6 +42,7 @@
 			});
 			$('#compare-{{$newPr->id}}').click(function(){
 				$('#modal-body').load('compare/{{$newPr->id}}');
+				$('#campareS').load('load-button');
 			});
 			@endforeach
 
@@ -49,16 +52,22 @@
 				$('#cart-button').load('add-to-cart/{{$topPr->id}}');
 				alert('Product is added to your cart');
 			});
+			$('#compare-{{$topPr->id}}').click(function(){
+				$('#modal-body').load('compare/{{$topPr->id}}');
+				$('#campareS').load('load-button');
+			});
 			@endforeach
-
-			// delete compare item
 			@if(Session::has('compare_list'))
-			@foreach($list->items as $item)
-				$('#del-item-{{$item['item']['id']}}').click(function(){
-					$('#modal-body').load('del-compare/{{$item['item']['id']}}');
-				});
-			@endforeach
-		@endif
+				@foreach($list->items as $item)
+					$('#del-item-{{$item['item']['id']}}').click(function(){
+						$('#modal-body').load('del-compare/{{$item['item']['id']}}');
+					});
+				@endforeach
+			@endif
 		});
 	</script>
+	<div id=compareS>
+		@include('layouts.customer.compare_script')
+	</div>
+	
 @endsection

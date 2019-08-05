@@ -26,11 +26,15 @@ Route::get('/', function () {
 	Route::get('loai-sp','PageController@getLoaisp');
 	//Prodct Detail
 	Route::get('product/{id}','PageController@getDetailProduct');
+	// Comment
+	Route::post('add-comment','CommentController@postAddComment');
 	//Other
 	Route::get('lien-he','PageController@lienHe');
 	Route::get('gioi-thieu','PageController@gioiThieu');
 	//search item
 	Route::get('search', 'PageController@getSearch');
+	Route::get('category/{category}/{id}','PageController@getCategory');
+	Route::get('product_type/{productType}/{id}','PageController@getProductType');
 	//cart
 	Route::get('add-to-cart/{id}','PageController@getAddToCart');
 	Route::get('add-one/{id}','PageController@addOneItem');
@@ -39,12 +43,16 @@ Route::get('/', function () {
 	Route::get('cart-delete','PageController@getDeleteCart');
 	Route::get('reload-mini','PageController@reloadMiniCart');
 	Route::get('view-cart','PageController@getCartView');
+
+	// checkout
 	Route::get('checkout','PageController@getCheckOut');
 	Route::post('post-placeorder','PageController@postPlaceOrder');
 	Route::get('apply-code','PageController@applyPromoCode');
+
 	// Compare items
 	Route::get('compare/{id}','PageController@addToComparisonList');
 	Route::get('del-compare/{id}','PageController@delComparisonItem');
+	Route::get('load-button','PageController@loadButton');
 
 	
 	// Profile

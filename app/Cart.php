@@ -10,7 +10,9 @@ class Cart
     public $items;
     public $totalQty = 0;
     public $totalPrice = 0;
-    public $discount = 0;
+    public $discountAmount = 0;
+    public $totalAfterDiscount = 0;
+    public $promoCode = 0;
 
     //khoi tao cart
     public function __construct($oldCart){
@@ -41,28 +43,33 @@ class Cart
     	}
 
         //tang so luong len 1
-    	$storedItem['qty']++;
+        if($this->items[$id]['qty']  < 10){
+            $storedItem['qty']++;
 
-        //sua lai gia tien
-        if ($item->promo_price != 0) {
-           $storedItem['price'] = $item->promo_price * $storedItem['qty'];
-        } else {
-            $storedItem['price'] = $item->price * $storedItem['qty'];
+            //sua lai gia tien
+            if ($item->promo_price != 0) {
+               $storedItem['price'] = $item->promo_price * $storedItem['qty'];
+            } else {
+                $storedItem['price'] = $item->price * $storedItem['qty'];
+            }
+            
+
+            //set san pham da co bang san pham moi (da tang so luong len 1 va doi gia)
+            $this->items[$id] = $storedItem;
+
+            //sua lai tong so luong
+            $this->totalQty++;
+
+            //sua lai tong gia
+            if ($item->promo_price != 0) {
+               $this->totalPrice +=$item->promo_price;
+            } else {
+                $this->totalPrice +=$item->price;
+            }
+        }elseif ($this->items[$id]['qty']  = 10) {
+            $storedItem = $this->items[$id];
         }
     	
-
-        //set san pham da co bang san pham moi (da tang so luong len 1 va doi gia)
-    	$this->items[$id] = $storedItem;
-
-        //sua lai tong so luong
-    	$this->totalQty++;
-
-        //sua lai tong gia
-        if ($item->promo_price != 0) {
-           $this->totalPrice +=$item->promo_price;
-        } else {
-            $this->totalPrice +=$item->price;
-        }
     }
 
     // Add 1
@@ -73,10 +80,8 @@ class Cart
         } else {
             $storedItem = ['qty' => 0, 'price' => $item->price, 'item' => $item];
         }
-
         //kiem tra da co san pham chua
         if($this->items){
-
             //kiem tra da ton tai san pham voi id 
             if(array_key_exists($id, $this->items)){
                 //neu co -> set san pham moi bang san pham da co san
@@ -85,26 +90,31 @@ class Cart
         }
 
         //tang so luong len 1
-        $storedItem['qty']++;
+        if($this->items[$id]['qty']  < 10){
+            $storedItem['qty']++;
 
-        //sua lai gia tien
-        if ($item->promo_price != 0) {
-           $storedItem['price'] = $item->promo_price * $storedItem['qty'];
-        } else {
-            $storedItem['price'] = $item->price * $storedItem['qty'];
-        }
+            //sua lai gia tien
+            if ($item->promo_price != 0) {
+               $storedItem['price'] = $item->promo_price * $storedItem['qty'];
+            } else {
+                $storedItem['price'] = $item->price * $storedItem['qty'];
+            }
+            
 
-        //set san pham da co bang san pham moi (da tang so luong len 1 va doi gia)
-        $this->items[$id] = $storedItem;
+            //set san pham da co bang san pham moi (da tang so luong len 1 va doi gia)
+            $this->items[$id] = $storedItem;
 
-        //sua lai tong so luong
-        $this->totalQty++;
+            //sua lai tong so luong
+            $this->totalQty++;
 
-        //sua lai tong gia
-        if ($item->promo_price != 0) {
-           $this->totalPrice +=$item->promo_price;
-        } else {
-            $this->totalPrice +=$item->price;
+            //sua lai tong gia
+            if ($item->promo_price != 0) {
+               $this->totalPrice +=$item->promo_price;
+            } else {
+                $this->totalPrice +=$item->price;
+            }
+        }elseif ($this->items[$id]['qty']  = 10) {
+            $storedItem = $this->items[$id];
         }
     }
 
@@ -150,10 +160,17 @@ class Cart
             $this->totalPrice -=$item->price;
         }
     }
-
+    // delete item
     public function delete($id){
         $this->totalQty -= $this->items[$id]['qty'];
         $this->totalPrice -= $this->items[$id]['price'];
         unset($this->items[$id]);
+    }
+
+    // apply promo code
+    public function applyPromoCode($discountAmount,$totalAfterDiscount){
+        $this->discountAmount = $discountAmount;
+        $this->totalAfterDiscount = $totalAfterDiscount;
+        $this->promoCode = 1;
     }
 }

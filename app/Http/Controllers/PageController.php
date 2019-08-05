@@ -1,11 +1,11 @@
 <?php
-
 namespace App\Http\Controllers;
 use Auth;
 use App\User;
 use App\Bill;
 use App\BillDetail;
 use App\Category;
+use App\Comment;
 use App\Product;
 use App\Slide;
 use App\ProductType;
@@ -116,11 +116,6 @@ class PageController extends Controller
     }
 
 
-
-
-
-
-
     public function getAdminDashboard(){
         $user = User::all();
         $bill = Bill::all();
@@ -173,8 +168,7 @@ class PageController extends Controller
 
     public function getDetailProduct($id){
         $product = Product::findOrFail($id);
-        
-        $relatedProducts = Product::where('type_id',$product->type_id)->take(4)->get();
+        $relatedProducts = Product::where([ ['type_id', '=', $product->type_id], ['id', '!=', $id] ])->take(4)->get();
         $categories = Category::all();
         $tags = Tag::whereIn('id',$product->tag()->allRelatedIds())->get();
         if(!Session::has('cart')){
@@ -184,14 +178,20 @@ class PageController extends Controller
             $oldCart  = Session::get('cart');
             $cart = new Cart($oldCart);
 
-            return view('customer.product_detail',['product' => $product, 'categories' => $categories, 'relatedProducts' => $relatedProducts, 'tags' => $tags, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice]);
+            return view('customer.product_detail',['cart' => $cart, 'product' => $product, 'categories' => $categories, 'relatedProducts' => $relatedProducts, 'tags' => $tags, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice]);
         }
         
     }
-
+    
     // Sorting search result
     public function getSearch(Request $request){
         $categories = Category::all();
+        // if (Session::has('cart')) {
+        //     $oldCart  = Session::get('cart');
+        //     $cart = new Cart($oldCart);
+
+        //     return view('customer.product_detail',['cart' => $cart, 'product' => $product, 'categories' => $categories, 'relatedProducts' => $relatedProducts, 'tags' => $tags, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice]);
+        // }
         if(!$request->has('sort')){
             $products = Product::where('name','LIKE', '%'.$request->keyword.'%')->orWhere('price',$request->keyword)->paginate(3);
             $products->appends(['keyword' => $request->keyword]);
@@ -224,6 +224,49 @@ class PageController extends Controller
         
    }
 
+    public function getCategory($categoryName,$id){
+        $categories = Category::all();
+        $category = Category::findOrFail($id);
+        $type_ids = ProductType::where('category_id',$id)->select('id')->get();
+        $products = Product::whereIn('type_id',$type_ids)->paginate(3);
+        return view('customer.category',['products' => $products, 'categories' => $categories]);
+
+        // if(!$request->has('sort')){
+        //     $products = Product::whereIn('type_id',$type_ids)->paginate(3);
+        //     return view('customer.category',['products' => $products, 'categories' => $categories, 'keyword' => $request->keyword]);
+        // }elseif ($request->has('sort')) {
+        //     $sortBy = $request->sort;
+        //    switch ($request->sort) {
+        //     //latest
+        //        case 'latest':
+        //             $products = Product::where('name','LIKE', '%'.$request->keyword.'%')->orWhere('price',$request->keyword)->orderBy('created_at','DESC')->paginate(3);
+        //             $products->appends(['keyword' => $request->keyword, 'sort' => $sortBy]);
+        //             return view('customer.category',['products' => $products, 'categories' => $categories, 'keyword' => $request->keyword]);
+        //             break;
+
+        //     // price ascending
+        //        case 'price-asc':
+        //             $products = Product::where('name','LIKE', '%'.$request->keyword.'%')->orWhere('price',$request->keyword)->orderBy('price','ASC')->paginate(3);
+        //             $products->appends(['keyword' => $request->keyword, 'sort' => $sortBy]);
+        //             return view('customer.category',['products' => $products, 'categories' => $categories, 'keyword' => $request->keyword]);
+        //            break;
+
+        //     // price descending
+        //        case 'price-desc':
+        //             $products = Product::where('name','LIKE', '%'.$request->keyword.'%')->orWhere('price',$request->keyword)->orderBy('price','DESC')->paginate(3);
+        //             $products->appends(['keyword' => $request->keyword, 'sort' => $sortBy]);
+        //             return view('customer.category',['products' => $products, 'categories' => $categories, 'keyword' => $request->keyword]);
+        //        break;
+        //    }
+        
+    }
+
+    public function getProductType($productTypeName, $id){
+        $categories = Category::all();
+        $products = Product::where('type_id',$id)->paginate(3);
+        
+        return view('customer.product_type',['products' => $products, 'categories' => $categories]);
+    }
    // CART functions
 
     public function getAddToCart(Request $request, $id){
@@ -320,22 +363,19 @@ class PageController extends Controller
     // Comapre list//
     /////////////////
     public function addToComparisonList(Request $request, $id){
+
         $product = Product::findOrFail($id);
         $oldList = Session::has('compare_list') ? Session::get('compare_list') : null;
 
         //tao $list = $oldList (List() = __construct())
         $list = new Compare($oldList);
-
-        if(count($list->items) == 3){
-            echo '<div class="alert alert-danger">List is full, please delete 1 item</div>';
-            $this->ajaxReloadComparionList($list->items);
-        }elseif(count($list->items) < 3){
+        if(empty($list->items) || count($list->items) < 3){
             //them san pham vao list
             $list->add($product, $product->id);
-
-            //dua $list vao session 'compare_list'
             Session::put('compare_list',$list);
-            // dd(Session::get('compare_list'));
+            $this->ajaxReloadComparionList($list->items);
+        }elseif(count($list->items) == 3 ){
+            echo '<div class="alert alert-danger">List is full, please delete 1 item</div>';
             $this->ajaxReloadComparionList($list->items);
         }
     }
@@ -350,54 +390,78 @@ class PageController extends Controller
         $this->ajaxReloadComparionList($list->items);
     }
 
+    public function loadButton(){
+        $oldList = Session::get('compare_list');
+        $list = new Compare($oldList);
+        return view('layouts.customer.compare_script','list' -> $list);
+    }
 
     ////////////////////
     // Checkout//
     ////////////////
     public function getCheckOut(Request $request){
-        if(Auth::check()){
-            $receiver = $payer = Auth::user()->name;
-            $receiver_phone = $payer_phone =  Auth::user()->phone;
-            $shipping_add = $billing_add = Auth::user()->address;
 
+        if(Auth::check()){
             if ($request->has('change_info')) {
                 if($request->change_info == 'billing'){
                     $payer = $request->payer_name;
                     $payer_phone = $request->payer_phone;
-                    $billing_add = $request->billing_address;
+                    $billing_address = $request->billing_address;
+                    Session::put('checkout_info.payer',$payer);
+                    Session::put('checkout_info.payer_phone',$payer_phone);
+                    Session::put('checkout_info.billing_address',$billing_address);
+                        
                 }elseif ($request->change_info == 'shipping') {
                     $receiver = $request->receiver_name;
                     $receiver_phone = $request->receiver_phone;
-                    $shipping_add = $request->shipping_address;
+                    $shipping_address = $request->shipping_address;
+                    Session::put('checkout_info.receiver',$receiver);
+                    Session::put('checkout_info.receiver_phone',$receiver_phone);
+                    Session::put('checkout_info.shipping_address',$shipping_address);
                 }
             }
-            
+
             $oldCart  = Session::get('cart');
             $cart = new Cart($oldCart);
-            return view('customer.checkout',['cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice, 'receiver' => $receiver, 'payer' => $payer, 'receiver_phone' => $receiver_phone, 'payer_phone' => $payer_phone, 'shipping_add' => $shipping_add, 'billing_add' => $billing_add]);
+            $checkout_info = Session::get('checkout_info');
+            return view('customer.checkout',['cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice, 'checkout_info' => $checkout_info]);
         }else{
+            Session::put('to_checkout',1);
             return redirect('login')->with('loi','Please login your account');
         }
     }
 
     public function applyPromoCode(Request $request){
+        
         $oldCart  = Session::get('cart');
         $cart = new Cart($oldCart);
         $codes = PromoCode::where('name',$request->promo_code)->get();
-        $code = $codes[0];
-        if($code->fixed != 0){
-            $amount = $code->fixed;
-            if($cart->totalPrice > $amount){
-                $totalAfterDicount = $cart->totalPrice - $amount;
-            }elseif ($cart->totalPrice <= $amount) {
-                $totalAfterDicount = 0;
-            }
-        }elseif ($code->percentage != 0) {
-            $amount = $cart->totalPrice * $code->percentage / 100;
-            $totalAfterDicount = $cart->totalPrice -  $amount;
-        }
 
-       return view('customer.checkout',['cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice, 'amount' => $amount, 'totalAfterDicount' => $totalAfterDicount]);
+        if(count($codes) > 0){
+            $code = $codes[0];
+            if($code->fixed != 0){
+                $amount = $code->fixed;
+                if($cart->totalPrice > $amount){
+                    $totalAfterDiscount = $cart->totalPrice - $amount;
+                }elseif ($cart->totalPrice <= $amount) {
+                    $totalAfterDiscount = 0;
+                }
+            }elseif ($code->percentage != 0) {
+                $amount = $cart->totalPrice * $code->percentage / 100;
+                $totalAfterDiscount = $cart->totalPrice - $amount;
+            }
+            $cart->applyPromoCode($amount,$totalAfterDiscount);
+            Session::put('cart',$cart);
+            Session::save();
+            $checkout_info = Session::get('checkout_info');
+            // $newCart = Session::get('cart');
+            // $cart = new Cart($newCart);
+            return redirect('checkout');
+            // return view('customer.checkout',['cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice, 'checkout_info' => $checkout_info]);
+        }else{
+            return redirect('checkout')->with('loi','Your code is invalid');
+        }
+        
     }
 
     public function postPlaceOrder(Request $request){
@@ -437,6 +501,7 @@ class PageController extends Controller
         }
         
         $request->session()->forget('cart');
+        $request->session()->forget('checkout_info');
         return redirect('index');
 
     }
@@ -446,9 +511,18 @@ class PageController extends Controller
     }
 
     //output session
-    public function getAddToCart2(){
-         $sid = session()->getId();
+    public function getAddToCart2(Request $request){
+        
+      Session::put('thu',['name' => 'ahhaah','age' => 100]);
+      $thu =Session::get('thu');
+      echo $thu['name'].'<br>';
+      Session::put('thu.name','hihii');
+      Session::put('thu.age',200);
+      $thu2 = Session::get('thu');
+      echo $thu2['name'];
+        $sid = session()->getId();
         echo $sid.'<br>';
+    
         dd(Session::all());
         
     }

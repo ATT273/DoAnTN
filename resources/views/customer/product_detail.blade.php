@@ -3,6 +3,23 @@
 	@include('layouts.customer.index_menu')<!-- .header-bottom - menu-->
 @endsection
 @section('content')
+@if(count($errors) > 0)
+        <div class="alert alert-danger">
+          @foreach ($errors ->all() as $err)
+              {{$err}}<br>
+          @endforeach
+        </div>
+    @endif
+    @if(session('thongbao'))
+        <div class="alert alert-success">
+            {{session('thongbao')}}
+        </div>
+    @endif
+    @if(session('loi'))
+        <div class="alert alert-danger">
+            {{session('loi')}}
+        </div>
+    @endif
 <div class="inner-header">
 	<div class="container">
 		<div class="pull-left">
@@ -65,7 +82,9 @@
 								<option value="4">4</option>
 								<option value="5">5</option>
 							</select>
-							<a class="add-to-cart" href="#"><i class="fa fa-shopping-cart"></i></a>
+							<button type="button" class="btn btn-warning pull-left" id="add-to-cart-{{$product->id}}">
+								<i class="fa fa-shopping-cart"></i>
+							</button>
 							<div class="clearfix"></div>
 						</div>
 						<br>
@@ -85,30 +104,48 @@
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 							<ul id="tabs" class="nav nav-tabs">
 								<li class="active"><a href="#desc" data-toggle="tab">Description</a></li>
-								<li><a href="#review" data-toggle="tab">Review</a></li>
+								<li><a href="#review" data-toggle="tab">Comments</a></li>
 								<li><a href="#other" data-toggle="tab">other</a></li>
 							</ul>
 						</div>
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 							<div class="tab-content">
-								<div class="tab-pane" id="desc">
+								<div class="tab-pane active" id="desc">
 									{!!$product->description!!}
 								</div>
-								<div class="tab-pane active" id="review">
+								<div class="tab-pane" id="review">
 									<div class="row">
 										<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-											<form action="comment/add" method="Post">
-												<input type="hidden" name="_token" value="{{csrf_token()}}">
-												<div class="form-group">
-													<label for="title">Title</label>
-													<input type="text" name="title" class="form-control">
-												</div>
-												<div class="form-group">
-													<label for="review">Your review</label>
-													<textarea name="review" class="form-control"></textarea>
-												</div>
-												<button type="submit" class="btn btn-success">Send</button>
-											</form>
+											@if(Auth::check())
+												<form action="add-comment" method="POST">
+													<input type="hidden" name="_token" value="{{csrf_token()}}">
+													<input type="hidden" name="product_id" value="{{$product->id}}">
+													<input type="hidden" name="user_id" value="{{Auth::user()->id}}">
+													<div class="form-group">
+														<label for="comment">Your comment</label>
+														<textarea name="comment" class="form-control" required></textarea>
+													</div>
+													<button type="submit" class="btn btn-success">Send</button>
+												</form>
+											@else
+												<p>Login to comment</p>
+											@endif
+										</div>
+										<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+											@if(count($product->comment) > 0)
+												@foreach($product->comment as $comment)
+													<p>
+														<div class="comment-user">
+															<strong>
+																<i class="fa fa-user" aria-hidden="true"></i>
+																{{$comment->user->name}}
+															</strong>
+														</div>
+														<div class="comment-content">{{$comment->content}}</div>
+													</p>
+													<br>
+												@endforeach
+											@endif
 										</div>
 									</div>
 								</div>
@@ -153,10 +190,16 @@
 				asNavFor: '.product-images-slide',
 			});
 
-			// $('#tabs li').click(function(){
-			// 	$('#tabs li').removeClass('active');
-			// 	$(this).addClass('active');
-			// });
+			$('#add-to-cart-{{$product->id}}').click(function(){
+				$('#cart-button').load('add-to-cart/{{$product->id}}');
+				alert('Product is added to your cart');
+			});
+			@foreach($relatedProducts as $relatedPr)
+			$('#add-to-cart-{{$relatedPr->id}}').click(function(){
+				$('#cart-button').load('add-to-cart/{{$relatedPr->id}}');
+				alert('Product is added to your cart');
+			});
+			@endforeach
 		});
 	</script>
 @endsection

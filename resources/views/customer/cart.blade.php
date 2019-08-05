@@ -25,9 +25,21 @@
                                 <h5><a href="product/{{$item['item']['id']}}">{{$item['item']['name']}}</a></h5>
                                 <div class="item-price">
                                     <div class="row">
-                                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                            @money($item['item']['price']) &nbsp;
-                                        </div>
+                                        @if($item['item']['promo_price'] != 0)
+                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <strike>@money($item['item']['price'])</strike>
+                                            </div>
+                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 status-danger">
+                                                @money($item['item']['promo_price'])
+                                            </div>
+                                        @else
+                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                @money($item['item']['price']) &nbsp;
+                                            </div>
+                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                
+                                            </div>
+                                        @endif
                                         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
                                             <div class="input-group">
                                                 <span class="input-group-addon" id="sub-1-{{$item['item']['id']}}">-</span>

@@ -24,4 +24,7 @@ class Product extends Model
     public function tag(){
         return $this->belongsToMany('App\Tag','product_tag');
     }
+    public function comment(){
+        return $this->hasMany('App\Comment','product_id','id');
+    }
 }

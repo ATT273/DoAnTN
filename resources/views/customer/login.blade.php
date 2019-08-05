@@ -21,6 +21,9 @@
 	<div id="content">
 		<form action="login" method="post" class="beta-form-checkout">
 			<input type="hidden" name="_token" value="{{csrf_token()}}">
+			@if(Session::has('to_checkout'))
+				<input type="hidden" name="to_checkout" value="1">
+			@endif
 			<div class="row">
 				<div class="col-sm-3"></div>
 				<div class="col-sm-6 form-login">

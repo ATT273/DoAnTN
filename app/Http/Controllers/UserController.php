@@ -8,6 +8,7 @@ use App\Product;
 use App\Bill;
 use App\Http\Requests;
 use Validator;
+use Session;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -18,12 +19,31 @@ class UserController extends Controller
     	
     	
     	if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
-    		return redirect('index');
+            $receiver = $payer = Auth::user()->name;
+            $receiver_phone = $payer_phone =  Auth::user()->phone;
+            $shipping_address = $billing_address = Auth::user()->address;
+            Session::put('checkout_info',
+                [
+                    'receiver' => $receiver,
+                    'receiver_phone' => $receiver_phone,
+                    'shipping_address' => $shipping_address,
+                    'payer' => $payer,
+                    'payer_phone' => $payer_phone,
+                    'billing_address' => $billing_address,
+                ]);
+            Session::save();
+            if($request->has('to_checkout')){
+                Session::forget('to_checkout');
+                
+                return redirect('checkout');
+            }else{
+                return redirect('index');
+            }
+    		
     	}
     	else{
-    		return redirect('login')->with('thongbao','Failed to login '.$request->email.' '.$request->password);
+    		return redirect('login')->with('thongbao','Failed to login ');
     	}
-    // 	echo $request->username.' '.$request->password;
     }
 
     public function postAdminLogin(Request $request){
@@ -35,7 +55,6 @@ class UserController extends Controller
         else{
             return redirect('admin/login')->with('thongbao','Failed to login: Email or password is invalid');
         }
-    //  echo $request->username.' '.$request->password;
     }
 
     public function postRegister(Request $request){
@@ -68,6 +87,7 @@ class UserController extends Controller
     }
     public function getLogout(){
         Auth::logout();
+        Session::forget('cart');
         return redirect('index');
     }
 

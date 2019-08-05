@@ -30,4 +30,7 @@ class User extends Authenticatable
     public function bill(){
         return $this->hasMany('App\Bill','user_id','id');
     }
+     public function comment(){
+        return $this->hasMany('App\Comment','user_id','id');
+    }
 }

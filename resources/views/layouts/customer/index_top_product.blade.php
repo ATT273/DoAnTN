@@ -26,9 +26,10 @@
 					</p>
 				</div>
 				<div class="single-item-caption">
-					<button type="button" class="btn btn-warning pull-left" href="add-to-cart/{{$topPr->id}}" id="add-to-cart-{{$topPr->id}}">
+					<button type="button" class="btn btn-warning pull-left" id="add-to-cart-{{$topPr->id}}">
 						<i class="fa fa-shopping-cart"></i>
 					</button>&nbsp;
+					<button type="button" class="btn btn-default" id="compare-{{$topPr->id}}">Add to compare</button>
 					<a class="beta-btn primary" href="product/{{$topPr->id}}">Details <i class="fa fa-chevron-right"></i></a>
 					<div class="clearfix"></div>
 				</div>

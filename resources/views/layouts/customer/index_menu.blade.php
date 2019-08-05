@@ -6,24 +6,17 @@
 				@foreach($categories as $cat)
 					@if(count($cat->product_type) > 0)
 						<li class="has_sub">
-							<a href="#"> {{$cat->name}}</a>
+							<a href="category/{{$cat->name}}/{{$cat->id}}"> {{$cat->name}}</a>
 							<ul>
 								@foreach($cat->product_type as $prType)
-									<li><a href="#">{{$prType->name}}</a></li>
+									<li><a href="product_type/{{$prType->name}}/{{$prType->id}}">{{$prType->name}}</a></li>
 								@endforeach
 							</ul>
 						</li>
 					@else
-						<li><a href="#"> {{$cat->name}}</a></li>
+						<li><a href="category/{{$cat->name}}/{{$cat->id}}"> {{$cat->name}}</a></li>
 					@endif
 				@endforeach
-				<li><a href="#"> Product 1</a></li>
-				<li class="has_sub"><a href="#"> Product 2</a>
-					<ul>
-						<li><a href="#">Product 2.2</a></li>
-						<li><a href="#">Product 2.3</a></li>
-					</ul>
-				</li>
 			</ul>
 		</li>
 		<li><a href="#">About</a></li>

@@ -17,15 +17,13 @@ class AdminMiddleware
     {
        if(Auth::check()){
             $user = Auth::user();
-            if($user->role ==1){
+            if($user->role == 1){
                 return $next($request);
             }else{
-                return redirect('admin/dashboard');
+                return redirect('admin/login');
             }
-            
         }
         else{
-            
             return redirect('admin/login');
         }
     }
