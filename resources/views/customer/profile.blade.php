@@ -98,18 +98,18 @@
 				                </div>
 				                <br>
 				                <div class="bill-detail" id="detail-{{$bill->id}}">
-				                	@foreach($bill->product as $pr)
+				                	@foreach($bill->bill_detail as $detail)
 				                	<div class="row">
 				                		<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-				                			<img src="upload/product/{{$pr->productimg->first()->name}}" width="70">
+				                			<img src="upload/product/{{$detail->product->productimg->first()->name}}" width="70">
 				                		</div>
 				                		<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
 				                			<div class="row">
 				                				<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-				                					<h5><strong>{{$pr->name}}</strong></h5><br>
+				                					<h5><strong>{{$detail->product->name}}</strong></h5><br>
 				                				</div>
 				                				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-				                					<p class="">@money($pr->price) X {{$pr->bill_detail->first()->quantity}}</p>
+				                					<p class="">@money($detail->product_price) X {{$detail->quantity}}</p>
 				                				</div>
 				                			</div>
 				                		</div>

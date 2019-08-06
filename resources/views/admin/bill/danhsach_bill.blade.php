@@ -79,6 +79,7 @@
                   @endforeach
                 </tbody>
               </table>
+              {{$bills->links()}}
             </div>
             <!-- /.box-body -->
           </div>

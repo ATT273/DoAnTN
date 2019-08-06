@@ -186,87 +186,194 @@ class PageController extends Controller
     // Sorting search result
     public function getSearch(Request $request){
         $categories = Category::all();
-        // if (Session::has('cart')) {
-        //     $oldCart  = Session::get('cart');
-        //     $cart = new Cart($oldCart);
+        // neu co session cart
+        if (Session::has('cart')) {
+            $oldCart  = Session::get('cart');
+            $cart = new Cart($oldCart);
 
-        //     return view('customer.product_detail',['cart' => $cart, 'product' => $product, 'categories' => $categories, 'relatedProducts' => $relatedProducts, 'tags' => $tags, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice]);
-        // }
-        if(!$request->has('sort')){
-            $products = Product::where('name','LIKE', '%'.$request->keyword.'%')->orWhere('price',$request->keyword)->paginate(3);
-            $products->appends(['keyword' => $request->keyword]);
-            return view('customer.search_result',['products' => $products, 'categories' => $categories, 'keyword' => $request->keyword]);
-        }elseif ($request->has('sort')) {
-            $sortBy = $request->sort;
-           switch ($request->sort) {
-            //latest
-               case 'latest':
-                    $products = Product::where('name','LIKE', '%'.$request->keyword.'%')->orWhere('price',$request->keyword)->orderBy('created_at','DESC')->paginate(3);
-                    $products->appends(['keyword' => $request->keyword, 'sort' => $sortBy]);
-                    return view('customer.search_result',['products' => $products, 'categories' => $categories, 'keyword' => $request->keyword]);
-                    break;
+            if(!$request->has('sort')){
+                $products = Product::where('name','LIKE', '%'.$request->keyword.'%')->orWhere('price',$request->keyword)->paginate(3);
+                $products->appends(['keyword' => $request->keyword]);
+                return view('customer.search_result',['products' => $products, 'categories' => $categories, 'keyword' => $request->keyword, 'cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice]);
+            }elseif ($request->has('sort')) {
+                $sortBy = $request->sort;
+               switch ($request->sort) {
+                //latest
+                   case 'latest':
+                        $products = Product::where('name','LIKE', '%'.$request->keyword.'%')->orWhere('price',$request->keyword)->orderBy('created_at','DESC')->paginate(3);
+                        $products->appends(['keyword' => $request->keyword, 'sort' => $sortBy]);
+                        return view('customer.search_result',['products' => $products, 'categories' => $categories, 'keyword' => $request->keyword,'cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice]);
+                        break;
 
-            // price ascending
-               case 'price-asc':
-                    $products = Product::where('name','LIKE', '%'.$request->keyword.'%')->orWhere('price',$request->keyword)->orderBy('price','ASC')->paginate(3);
-                    $products->appends(['keyword' => $request->keyword, 'sort' => $sortBy]);
-                    return view('customer.search_result',['products' => $products, 'categories' => $categories, 'keyword' => $request->keyword]);
+                // price ascending
+                   case 'price-asc':
+                        $products = Product::where('name','LIKE', '%'.$request->keyword.'%')->orWhere('price',$request->keyword)->orderBy('price','ASC')->paginate(3);
+                        $products->appends(['keyword' => $request->keyword, 'sort' => $sortBy]);
+                        return view('customer.search_result',['products' => $products, 'categories' => $categories, 'keyword' => $request->keyword, 'cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice]);
+                       break;
+
+                // price descending
+                   case 'price-desc':
+                        $products = Product::where('name','LIKE', '%'.$request->keyword.'%')->orWhere('price',$request->keyword)->orderBy('price','DESC')->paginate(3);
+                        $products->appends(['keyword' => $request->keyword, 'sort' => $sortBy]);
+                        return view('customer.search_result',['products' => $products, 'categories' => $categories, 'keyword' => $request->keyword, 'cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice]);
                    break;
+               }
+            }
+            // neu ko co session cart
+        }elseif (!Session::has('cart')) {
+            if(!$request->has('sort')){
+                $products = Product::where('name','LIKE', '%'.$request->keyword.'%')->orWhere('price',$request->keyword)->paginate(3);
+                $products->appends(['keyword' => $request->keyword]);
+                return view('customer.search_result',['products' => $products, 'categories' => $categories, 'keyword' => $request->keyword]);
+            }elseif ($request->has('sort')) {
+                $sortBy = $request->sort;
+               switch ($request->sort) {
+                //latest
+                   case 'latest':
+                        $products = Product::where('name','LIKE', '%'.$request->keyword.'%')->orWhere('price',$request->keyword)->orderBy('created_at','DESC')->paginate(3);
+                        $products->appends(['keyword' => $request->keyword, 'sort' => $sortBy]);
+                        return view('customer.search_result',['products' => $products, 'categories' => $categories, 'keyword' => $request->keyword]);
+                        break;
 
-            // price descending
-               case 'price-desc':
-                    $products = Product::where('name','LIKE', '%'.$request->keyword.'%')->orWhere('price',$request->keyword)->orderBy('price','DESC')->paginate(3);
-                    $products->appends(['keyword' => $request->keyword, 'sort' => $sortBy]);
-                    return view('customer.search_result',['products' => $products, 'categories' => $categories, 'keyword' => $request->keyword]);
-               break;
-           }
+                // price ascending
+                   case 'price-asc':
+                        $products = Product::where('name','LIKE', '%'.$request->keyword.'%')->orWhere('price',$request->keyword)->orderBy('price','ASC')->paginate(3);
+                        $products->appends(['keyword' => $request->keyword, 'sort' => $sortBy]);
+                        return view('customer.search_result',['products' => $products, 'categories' => $categories, 'keyword' => $request->keyword]);
+                       break;
+
+                // price descending
+                   case 'price-desc':
+                        $products = Product::where('name','LIKE', '%'.$request->keyword.'%')->orWhere('price',$request->keyword)->orderBy('price','DESC')->paginate(3);
+                        $products->appends(['keyword' => $request->keyword, 'sort' => $sortBy]);
+                        return view('customer.search_result',['products' => $products, 'categories' => $categories, 'keyword' => $request->keyword]);
+                   break;
+               }
+            }
         }
-        
-   }
+    }
 
-    public function getCategory($categoryName,$id){
+    public function getCategory($categoryName,$id,Request $request){
         $categories = Category::all();
         $category = Category::findOrFail($id);
-        $type_ids = ProductType::where('category_id',$id)->select('id')->get();
-        $products = Product::whereIn('type_id',$type_ids)->paginate(3);
-        return view('customer.category',['products' => $products, 'categories' => $categories]);
+        if(Session::has('cart')){
+            $oldCart  = Session::get('cart');
+            $cart = new Cart($oldCart);
+            if(!$request->has('sort')){
+                $products = $category->product()->paginate(8);
+                return view('customer.category',['products' => $products, 'categories' => $categories, 'category' => $category, 'cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice]);
+            }elseif ($request->has('sort')) {
+                $sortBy = $request->sort;
+               switch ($request->sort) {
+                //latest
+                   case 'latest':
+                        $products = $category->product()->orderBy('created_at','DESC')->paginate(8);
+                        return view('customer.category',['products' => $products, 'categories' => $categories, 'category' => $category, 'cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice]);
+                        break;
 
-        // if(!$request->has('sort')){
-        //     $products = Product::whereIn('type_id',$type_ids)->paginate(3);
-        //     return view('customer.category',['products' => $products, 'categories' => $categories, 'keyword' => $request->keyword]);
-        // }elseif ($request->has('sort')) {
-        //     $sortBy = $request->sort;
-        //    switch ($request->sort) {
-        //     //latest
-        //        case 'latest':
-        //             $products = Product::where('name','LIKE', '%'.$request->keyword.'%')->orWhere('price',$request->keyword)->orderBy('created_at','DESC')->paginate(3);
-        //             $products->appends(['keyword' => $request->keyword, 'sort' => $sortBy]);
-        //             return view('customer.category',['products' => $products, 'categories' => $categories, 'keyword' => $request->keyword]);
-        //             break;
+                // price ascending
+                   case 'price-asc':
+                        $products = $category->product()->orderBy('price','ASC')->paginate(8);
+                        return view('customer.category',['products' => $products, 'categories' => $categories, 'category' => $category, 'cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice]);
+                       break;
 
-        //     // price ascending
-        //        case 'price-asc':
-        //             $products = Product::where('name','LIKE', '%'.$request->keyword.'%')->orWhere('price',$request->keyword)->orderBy('price','ASC')->paginate(3);
-        //             $products->appends(['keyword' => $request->keyword, 'sort' => $sortBy]);
-        //             return view('customer.category',['products' => $products, 'categories' => $categories, 'keyword' => $request->keyword]);
-        //            break;
+                // price descending
+                   case 'price-desc':
+                        $products = $category->product()->orderBy('price','DESC')->paginate(8);
+                        return view('customer.category',['products' => $products, 'categories' => $categories, 'category' => $category, 'cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice]);
+                   break;
+               }
+            }
+        }elseif (!Session::has('cart')) {
+            if(!$request->has('sort')){
+                $products = $category->product()->paginate(8);
+                return view('customer.category',['products' => $products, 'categories' => $categories, 'category' => $category]);
+            }elseif ($request->has('sort')) {
+                $sortBy = $request->sort;
+               switch ($request->sort) {
+                //latest
+                   case 'latest':
+                        $products = $category->product()->orderBy('created_at','DESC')->paginate(8);
+                        return view('customer.category',['products' => $products, 'categories' => $categories, 'category' => $category]);
+                        break;
 
-        //     // price descending
-        //        case 'price-desc':
-        //             $products = Product::where('name','LIKE', '%'.$request->keyword.'%')->orWhere('price',$request->keyword)->orderBy('price','DESC')->paginate(3);
-        //             $products->appends(['keyword' => $request->keyword, 'sort' => $sortBy]);
-        //             return view('customer.category',['products' => $products, 'categories' => $categories, 'keyword' => $request->keyword]);
-        //        break;
-        //    }
-        
+                // price ascending
+                   case 'price-asc':
+                        $products = $category->product()->orderBy('price','ASC')->paginate(8);
+                        return view('customer.category',['products' => $products, 'categories' => $categories, 'category' => $category]);
+                       break;
+
+                // price descending
+                   case 'price-desc':
+                        $products = $category->product()->orderBy('price','DESC')->paginate(8);
+                        return view('customer.category',['products' => $products, 'categories' => $categories, 'category' => $category]);
+                   break;
+               }
+            }
+        }
     }
-
-    public function getProductType($productTypeName, $id){
+    public function getProductType($productTypeName, $id, Request $request){
         $categories = Category::all();
-        $products = Product::where('type_id',$id)->paginate(3);
-        
-        return view('customer.product_type',['products' => $products, 'categories' => $categories]);
+        $productType = ProductType::findOrFail($id);
+        if(Session::has('cart')){
+            $oldCart  = Session::get('cart');
+            $cart = new Cart($oldCart);
+            if(!$request->has('sort')){
+                $products = Product::where('type_id',$id)->paginate(8);
+                return view('customer.product_type',['products' => $products, 'categories' => $categories, 'productType' => $productType, 'cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice]);
+            }elseif ($request->has('sort')) {
+                $sortBy = $request->sort;
+               switch ($request->sort) {
+                //latest
+                   case 'latest':
+                        $products = Product::where('type_id',$id)->orderBy('created_at','DESC')->paginate(8);
+                        return view('customer.product_type',['products' => $products, 'categories' => $categories, 'productType' => $productType, 'cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice]);
+                        break;
+
+                // price ascending
+                   case 'price-asc':
+                        $products = Product::where('type_id',$id)->orderBy('price','ASC')->paginate(8);
+                        return view('customer.product_type',['products' => $products, 'categories' => $categories, 'productType' => $productType, 'cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice]);
+                       break;
+
+                // price descending
+                   case 'price-desc':
+                        $products = Product::where('type_id',$id)->orderBy('price','DESC')->paginate(8);
+                        return view('customer.product_type',['products' => $products, 'categories' => $categories, 'productType' => $productType, 'cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice]);
+                   break;
+               }
+            }
+        }elseif (!Session::has('cart')) {
+            if(!$request->has('sort')){
+                $products = Product::where('type_id',$id)->paginate(8);
+                return view('customer.category',['products' => $products, 'categories' => $categories, 'productType' => $productType,]);
+            }elseif ($request->has('sort')) {
+                $sortBy = $request->sort;
+               switch ($request->sort) {
+                //latest
+                   case 'latest':
+                        $products = Product::where('type_id',$id)->orderBy('created_at','DESC')->paginate(8);
+                        return view('customer.category',['products' => $products, 'categories' => $categories, 'productType' => $productType,]);
+                        break;
+
+                // price ascending
+                   case 'price-asc':
+                        $products = Product::where('type_id',$id)->orderBy('price','ASC')->paginate(8);
+                        return view('customer.category',['products' => $products, 'categories' => $categories, 'productType' => $productType,]);
+                       break;
+
+                // price descending
+                   case 'price-desc':
+                        $products = Product::where('type_id',$id)->orderBy('price','DESC')->paginate(8);
+                        return view('customer.category',['products' => $products, 'categories' => $categories, 'productType' => $productType,]);
+                   break;
+               }
+            }
+        }
     }
+
+
    // CART functions
 
     public function getAddToCart(Request $request, $id){
@@ -279,7 +386,7 @@ class PageController extends Controller
         $cart = new Cart($oldCart);
 
         //them san pham vao cart
-        $cart->add($product, $product->id);
+        $cart->add($product, $id);
 
         //dua $cart vao session 'cart'
         Session::put('cart',$cart);
@@ -400,8 +507,12 @@ class PageController extends Controller
     // Checkout//
     ////////////////
     public function getCheckOut(Request $request){
-
         if(Auth::check()){
+            $oldCart  = Session::get('cart');
+            // dd($oldCart);
+            $cart = new Cart($oldCart);
+            // dd($cart);
+            $checkout_info = Session::get('checkout_info');
             if ($request->has('change_info')) {
                 if($request->change_info == 'billing'){
                     $payer = $request->payer_name;
@@ -452,7 +563,6 @@ class PageController extends Controller
             }
             $cart->applyPromoCode($amount,$totalAfterDiscount);
             Session::put('cart',$cart);
-            Session::save();
             $checkout_info = Session::get('checkout_info');
             // $newCart = Session::get('cart');
             // $cart = new Cart($newCart);
@@ -465,21 +575,33 @@ class PageController extends Controller
     }
 
     public function postPlaceOrder(Request $request){
+        $this->validate($request,
+            [
+                'receiver_name' => 'required',
+                'receiver_phone'=> 'required',
+                'shipping_address' => 'required',
+                'payer_name' => 'required',
+                'payer_phone' => 'required',
+                'billing_address' => 'required',
+            ],
+            [
+                'receiver_name.required' => 'Receiver name is required',
+                'receiver_phone.required'=> 'Receiver phone is required',
+                'shipping_address.required' => 'Shipping address is required',
+                'payer_name.required' => ' Payer name is required',
+                'payer_phone.required' => ' Payer phone is required',
+                'billing_address.required' => 'Billing address is required',
+            ]);
         $oldCart  = Session::get('cart');
         $cart = new Cart($oldCart);
         $user_id = Auth::user()->id;
 
+        // dd($cart);
         $bill = new Bill;
         $bill->user_id = $user_id;
         $bill->sub_total = $cart->totalPrice;
-        if($request->has('amount')){
-            $bill->total = $request->total;
-            $bill->discount_amount = $request->amount;
-        }elseif (!$request->has('amount')) {
-            $bill->total = $cart->totalPrice;
-            $bill->discount_amount = 0;
-        }
-        
+        $bill->total = $cart->totalAfterDiscount;
+        $bill->discount_amount = $cart->discountAmount;
         $bill->order_date = date('Y-m-d');
         $bill->receiver = $request->receiver_name;
         $bill->receiver_phone = $request->receiver_phone;

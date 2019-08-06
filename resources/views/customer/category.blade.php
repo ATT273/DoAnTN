@@ -6,10 +6,10 @@
 	<div class="filter">
 	<div class="row">
 		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-			
+			<h4>{{$category->name}}</h4>
 		</div>
 		<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 pull-right">
-			<form action="search" method="GET" role="form">
+			<form action="category/{{$category->name}}/{{$category->id}}" method="GET" role="form">
 				<div class="row" style="margin-top: 10px">
 					<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
 						<select class="form-control" name="sort">

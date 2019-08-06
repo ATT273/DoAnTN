@@ -1,4 +1,4 @@
-@foreach ($products->chunk(3) as $chunk)
+@foreach ($products->chunk(4) as $chunk)
 	<div class="row">
 		@foreach ($chunk as $product)
 			<div class="col-sm-3 item-block">
@@ -13,9 +13,11 @@
 						</p>
 					</div>
 					<div class="single-item-caption">
-						<a class="add-to-cart pull-left" href="shopping_cart.html"><i class="fa fa-shopping-cart"></i></a>
-						<a class="beta-btn primary" href="product/{{$product->id}}">Details <i class="fa fa-chevron-right"></i></a>
-						<div class="clearfix"></div>
+						<button type="button" class="btn btn-warning pull-left" id="add-to-cart-{{$product->id}}">
+							<i class="fa fa-shopping-cart"></i>
+						</button>&nbsp;
+						<a  href="product/{{$product->id}}"><button type="button" class="btn btn-default" >Details<i class="fa fa-chevron-right"></i></button></a>
+					<div class="clearfix"></div>
 					</div>
 				</div>
 			</div>

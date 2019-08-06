@@ -30,7 +30,7 @@
 						<i class="fa fa-shopping-cart"></i>
 					</button>&nbsp;
 					<button type="button" class="btn btn-default" id="compare-{{$topPr->id}}">Add to compare</button>
-					<a class="beta-btn primary" href="product/{{$topPr->id}}">Details <i class="fa fa-chevron-right"></i></a>
+					<a  href="product/{{$topPr->id}}"><button type="button" class="btn btn-default" >Details<i class="fa fa-chevron-right"></i></button></a>
 					<div class="clearfix"></div>
 				</div>
 			</div>

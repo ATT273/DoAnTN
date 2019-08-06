@@ -85,11 +85,13 @@
                     var int_qty = parseInt(qty);
                     if(int_qty > 1){
                         int_qty--;
+                        $('#sub-1-{{$item['item']['id']}}').attr("disabled",false);
                         $('input#qty-{{$item['item']['id']}}').val(int_qty);
                         $('#sub-total').load('sub-one/{{$item['item']['id']}}');
                      }
                      if(int_qty <= 1){
                         int_qty = 1;
+                        $('#sub-1-{{$item['item']['id']}}').attr("disabled",true);
                      }
                    
                 });
@@ -97,9 +99,12 @@
                     var qty = $('#qty-{{$item['item']['id']}}').val();
                     var int_qty = parseInt(qty);
                     if(int_qty >= 10){
-                         int_qty = 10;
+                        
+                        int_qty = 10;
+                         
                      }
                      if(int_qty < 10){
+                        $('#add-1-{{$item['item']['id']}}').attr("disabled",true);
                         int_qty++;
                         $('input#qty-{{$item['item']['id']}}').val(int_qty);
                         $('#sub-total').load('add-one/{{$item['item']['id']}}');

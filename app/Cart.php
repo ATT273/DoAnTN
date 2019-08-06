@@ -22,6 +22,9 @@ class Cart
     		$this->items = $oldCart->items;
     		$this->totalQty = $oldCart->totalQty;
     		$this->totalPrice = $oldCart->totalPrice;
+            $this->discountAmount = $oldCart->discountAmount;
+            $this->totalAfterDiscount = $oldCart->totalAfterDiscount;
+            $this->promoCode = $oldCart->promoCode;
     	}
     }
 
@@ -39,37 +42,30 @@ class Cart
     		if(array_key_exists($id, $this->items)){
                 //neu co -> set san pham moi bang san pham da co san
     			$storedItem = $this->items[$id];
-    		}
+            }
     	}
 
-        //tang so luong len 1
-        if($this->items[$id]['qty']  < 10){
-            $storedItem['qty']++;
+        $storedItem['qty']++;
 
-            //sua lai gia tien
-            if ($item->promo_price != 0) {
-               $storedItem['price'] = $item->promo_price * $storedItem['qty'];
-            } else {
-                $storedItem['price'] = $item->price * $storedItem['qty'];
-            }
-            
-
-            //set san pham da co bang san pham moi (da tang so luong len 1 va doi gia)
-            $this->items[$id] = $storedItem;
-
-            //sua lai tong so luong
-            $this->totalQty++;
-
-            //sua lai tong gia
-            if ($item->promo_price != 0) {
-               $this->totalPrice +=$item->promo_price;
-            } else {
-                $this->totalPrice +=$item->price;
-            }
-        }elseif ($this->items[$id]['qty']  = 10) {
-            $storedItem = $this->items[$id];
+        //sua lai gia tien
+        if ($item->promo_price != 0) {
+           $storedItem['price'] = $item->promo_price * $storedItem['qty'];
+        } else {
+            $storedItem['price'] = $item->price * $storedItem['qty'];
         }
-    	
+        //set san pham da co bang san pham moi (da tang so luong len 1 va doi gia)
+        $this->items[$id] = $storedItem;
+
+        //sua lai tong so luong
+        $this->totalQty++;
+
+        //sua lai tong gia
+        if ($item->promo_price != 0) {
+           $this->totalPrice +=$item->promo_price;
+        } else {
+            $this->totalPrice +=$item->price;
+        }
+        // dd($this->items);
     }
 
     // Add 1
@@ -89,33 +85,27 @@ class Cart
             }
         }
 
-        //tang so luong len 1
-        if($this->items[$id]['qty']  < 10){
-            $storedItem['qty']++;
+        $storedItem['qty']++;
 
-            //sua lai gia tien
-            if ($item->promo_price != 0) {
-               $storedItem['price'] = $item->promo_price * $storedItem['qty'];
-            } else {
-                $storedItem['price'] = $item->price * $storedItem['qty'];
-            }
-            
-
-            //set san pham da co bang san pham moi (da tang so luong len 1 va doi gia)
-            $this->items[$id] = $storedItem;
-
-            //sua lai tong so luong
-            $this->totalQty++;
-
-            //sua lai tong gia
-            if ($item->promo_price != 0) {
-               $this->totalPrice +=$item->promo_price;
-            } else {
-                $this->totalPrice +=$item->price;
-            }
-        }elseif ($this->items[$id]['qty']  = 10) {
-            $storedItem = $this->items[$id];
+        //sua lai gia tien
+        if ($item->promo_price != 0) {
+           $storedItem['price'] = $item->promo_price * $storedItem['qty'];
+        } else {
+            $storedItem['price'] = $item->price * $storedItem['qty'];
         }
+        //set san pham da co bang san pham moi (da tang so luong len 1 va doi gia)
+        $this->items[$id] = $storedItem;
+
+        //sua lai tong so luong
+        $this->totalQty++;
+
+        //sua lai tong gia
+        if ($item->promo_price != 0) {
+           $this->totalPrice +=$item->promo_price;
+        } else {
+            $this->totalPrice +=$item->price;
+        }
+        // dd($this->items);
     }
 
     // Sub 1

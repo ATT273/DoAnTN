@@ -72,18 +72,10 @@
 							<p>@excerpt($product->description)</p>
 						</div>
 						<div class="space20">&nbsp;</div>
-						<p>Options:</p>
+						<hr>
 						<div class="single-item-options">
-							<select class="wc-select" name="color">
-								<option>Qty</option>
-								<option value="1">1</option>
-								<option value="2">2</option>
-								<option value="3">3</option>
-								<option value="4">4</option>
-								<option value="5">5</option>
-							</select>
-							<button type="button" class="btn btn-warning pull-left" id="add-to-cart-{{$product->id}}">
-								<i class="fa fa-shopping-cart"></i>
+							<button type="button" class="btn btn-warning pull-left btn-lg col-md-3" id="add-to-cart-{{$product->id}}">
+								<i class="fa fa-shopping-cart"></i> Add to cart
 							</button>
 							<div class="clearfix"></div>
 						</div>
@@ -105,7 +97,7 @@
 							<ul id="tabs" class="nav nav-tabs">
 								<li class="active"><a href="#desc" data-toggle="tab">Description</a></li>
 								<li><a href="#review" data-toggle="tab">Comments</a></li>
-								<li><a href="#other" data-toggle="tab">other</a></li>
+								{{-- <li><a href="#other" data-toggle="tab">other</a></li> --}}
 							</ul>
 						</div>
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -149,9 +141,9 @@
 										</div>
 									</div>
 								</div>
-								<div class="tab-pane" id="other">
+								{{-- <div class="tab-pane" id="other">
 									fasdfa
-								</div>
+								</div> --}}
 							</div>
 						</div>
 					</div>

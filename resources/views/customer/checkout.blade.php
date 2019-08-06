@@ -63,7 +63,6 @@
 	    				</div>
 	    			</div>
 	    			{{-- Calculate discount --}}
-	    			{{$cart->promoCode}}
 	    			@if($cart->promoCode != 0)
 		    			<form id="calculate-total" action="post-placeorder" method="POST">
 		    				<input type="hidden" name="_token" value="{{csrf_token()}}">
