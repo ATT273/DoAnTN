@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Controllers;
+use App\Http\Controllers\ReportController;
 use Auth;
 use App\User;
 use App\Bill;
@@ -14,12 +15,14 @@ use App\PromoCode;
 use App\Tag;
 use App\Cart;
 use App\Compare;
+use App\WishList;
 use Validator;
 use Session;
 use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
+    
     //////////////////////
     // re-used function////
     /// //////////////////
@@ -141,11 +144,16 @@ class PageController extends Controller
     }
     // profile
     public function getProfile($id){
-        $user = User::findOrFail($id);
-        $bills = Bill::where('user_id',$id)->get();
-        $oldCart  = Session::get('cart');
-        $cart = new Cart($oldCart);
-        return view('customer.profile',['user' => $user, 'bills' => $bills, 'cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice]);
+        if($id == Auth::user()->id){
+            $user = User::findOrFail($id);
+            $bills = Bill::where('user_id',$id)->get();
+            $oldCart  = Session::get('cart');
+            $cart = new Cart($oldCart);
+            return view('customer.profile',['user' => $user, 'bills' => $bills, 'cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice]);
+        }else{
+            return redirect()->back();
+        }
+        
     }
     // Index
     public function getIndex(){
@@ -373,6 +381,25 @@ class PageController extends Controller
         }
     }
 
+    // Wishlist
+    public function postAddToWishList(Request $request){
+        if(Auth::check()){
+            $product_id = $request->id;
+            $user_id = Auth::user()->id;
+            $wishlist_item = WishList::where([['product_id',$product_id],['user_id',$user_id]])->get();
+            if (count($wishlist_item) == 0) {
+                $new_wishlist = new WishList;
+                $new_wishlist->product_id = $product_id;
+                $new_wishlist->user_id = $user_id;
+                $new_wishlist->save();
+                return response()->json(['success'=>'Added to your wishlist','status' =>'1']);
+            } elseif(count($wishlist_item) != 0) {
+                return response()->json(['error'=>'Already in your wishlist','status' =>'0']);
+            }
+        }elseif(!Auth::check()){
+            return response()->json(['error'=>'please login first','status' =>'0']);
+        }
+    }
 
    // CART functions
 
@@ -597,6 +624,7 @@ class PageController extends Controller
         $user_id = Auth::user()->id;
 
         // dd($cart);
+        // create bill
         $bill = new Bill;
         $bill->user_id = $user_id;
         $bill->sub_total = $cart->totalPrice;
@@ -611,6 +639,7 @@ class PageController extends Controller
         $bill->billing_address = $request->billing_address;
         $bill->save();
 
+        // create bill detail
         $latest_bill_id = Bill::where('user_id',Auth::user()->id)->orderBy('created_at','DESC')->first()->id;
         foreach ($cart->items as $item) {
             $bill_detail = new BillDetail;
@@ -620,10 +649,19 @@ class PageController extends Controller
             $bill_detail->quantity = $item['qty'];
             $bill_detail->product_price = $item['price'] / $item['qty'];
             $bill_detail->save();
+
+            $product = Product::find($item['item']->id);
+            $product->quantity = $product->quantity - $item['qty'];
+            $product->sold = $product->sold + $item['qty'];
+            $product->save();
         }
         
+        // create ReportController
+        $today = date('Y-m-d');
+        ReportController::checkReport($today);
         $request->session()->forget('cart');
-        $request->session()->forget('checkout_info');
+        
+        // $request->session()->forget('checkout_info');
         return redirect('index');
 
     }

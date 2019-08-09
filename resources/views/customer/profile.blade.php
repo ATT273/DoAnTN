@@ -15,7 +15,7 @@
     @endif
     @if(session('error'))
         <div class="alert alert-danger">
-            {{session('error')}}
+            {{session('loi')}}
         </div>
     @endif
 	<div id="content">
@@ -42,12 +42,15 @@
 		                        <b>Address:</b> &nbsp <a>{{$user->address}}</a>
 		                    </li>
 		                </ul>
-		                <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
+		                <button class="btn btn-default2 btn-block" id="btn-order"><b>Orders</b></button>
+		                <button class="btn btn-default2 btn-block" id="btn-wishlist"><b>Wishlist</b></button>
+		                {{-- <a href="#" class="btn btn-default2 btn-block"><b>Change password</b></a> --}}
+		                <button class="btn btn-default2 btn-block" id="btn-info"><b>Change information</b></button>
 		            </div>
 		        </div>
 		        <!-- About Me Box -->
 		    </div>
-		    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+		    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 " id="order-sec">
 		    	<div class="box box-success">
 		    		<div class="box-body">
 		                @if(count($bills) > 0)
@@ -88,7 +91,7 @@
 				                		</div>
 				                		<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
 				                			<div class="pull-right">
-				                				<strong>Subtotal: </strong>@money($bill->total)
+				                				<strong>Total: </strong>@money($bill->total)
 				                			</div>
 				                		</div>
 				                		<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
@@ -106,7 +109,7 @@
 				                		<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
 				                			<div class="row">
 				                				<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-				                					<h5><strong>{{$detail->product->name}}</strong></h5><br>
+				                					<h5><strong class="item-name">{{$detail->product->name}}</strong></h5><br>
 				                				</div>
 				                				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 				                					<p class="">@money($detail->product_price) X {{$detail->quantity}}</p>
@@ -114,13 +117,84 @@
 				                			</div>
 				                		</div>
 				                	</div>
-				                	<hr>
 				                	@endforeach
+				                	<div class="row bill-total" style="margin-left: 0px; margin-right: 0px;">
+				                		<div class="pull-right">
+					                		<div><p class="pull-right"><strong>Subtotal: </strong>@money($bill->sub_total)</p></div>
+					                		<div><p class="pull-right"><strong>Discount: </strong>@money($bill->discount_amount)</p></div>
+					                		<div><p class="pull-right"><strong>Total: </strong>@money($bill->total)</p></div>
+					                	</div>
+				                	</div>
 				                </div>
 			                @endforeach
 		                @endif
 		            </div>
 		        </div>
+		    </div>
+		    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 " id="wishlist-sec">
+		    	<div class="box box-success">
+		    		<div class="box-header"><h4>Wishlist</h4></div>
+		    		<div class="box-body">
+		    			@if(count(Auth::user()->wishlist) != 0)
+			    			@foreach(Auth::user()->wishlist as $item)
+			    				<div class="row wishlist-item">
+			    					<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+			    						<img src="upload/product/{{$item->product->productimg->first()->name}}" width="70">
+			    					</div>
+			    					<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+			    						<div class="row">
+			    							<h5 class="item-name">{{$item->product->name}}</h5>
+			    						</div>
+			    						<div class="row">
+			    							<p>
+			    								@if($item->product->promo_price != 0)
+			    									<strike>@money($item->product->price)</strike>
+			    									{{'---'}}
+			    									@money($item->product->promo_price)
+		    									@elseif($item->product->promo_price == 0)
+			    									@money($item->product->price)
+			    								@endif
+			    							</p>
+			    						</div>
+			    						
+			    					</div>
+			    					<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+			    						<div class="row">
+			    							<a href="product/{{$item->product_id}}"><button type="button" class="btn btn-success">Detail</button></a>
+			    						</div>
+			    						<div class="row">
+			    							
+			    						</div>
+			    						
+			    					</div>
+			    				</div>
+			    			@endforeach
+		    			@else
+		    				{{'chua co sp'}}
+		    			@endif
+		    		</div>
+		    	</div>
+		    </div>
+		    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 " id="info-sec">
+		    	<div class="box box-success">
+		    		<div class="box-header">
+		    			<h4>Profile Information</h4>
+		    		</div>
+		    		<div class="box-body">
+		    			<form action="u/edit-profile/{{Auth::user()->id}}" method="POST" role="form">
+		    				<input type="hidden" name="_token" value="{{csrf_token()}}">
+		    				<div class="form-group">
+		    					<label for="">Address</label>
+		    					<input type="text" name="address" class="form-control" id="" value="{{Auth::user()->address}}" required>
+		    				</div>
+		    				<div class="form-group">
+		    					<label for="">Phone</label>
+		    					<input type="text" name="phone" class="form-control" id="" value="{{Auth::user()->phone}}" required>
+		    				</div>
+		    				<button type="submit" class="btn btn-primary">Submit</button>
+		    			</form>
+		    		</div>
+		    	</div>
 		    </div>
 		</div>
 	</div>
@@ -128,6 +202,23 @@
 @endsection
 @section('script')
 <script type="text/javascript">
+	$(document).ready(function(){
+		$('#btn-wishlist').click(function(){
+			$('#wishlist-sec').show();
+			$('#order-sec').hide();
+			$('#info-sec').hide();
+		});
+		$('#btn-order').click(function(){
+			$('#wishlist-sec').hide();
+			$('#order-sec').show();
+			$('#info-sec').hide();
+		});
+		$('#btn-info').click(function(){
+			$('#wishlist-sec').hide();
+			$('#order-sec').hide();
+			$('#info-sec').show();
+		});
+	});
 	@if(count($bills) > 0)
 		@foreach($bills as $bill)
 		$(document).ready(function(){

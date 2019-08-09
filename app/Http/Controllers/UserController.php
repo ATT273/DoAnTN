@@ -88,6 +88,7 @@ class UserController extends Controller
     public function getLogout(){
         Auth::logout();
         Session::forget('cart');
+        Sesion::forget('checkout_info');
         return redirect('index');
     }
 
@@ -119,7 +120,20 @@ class UserController extends Controller
         }
     }
 
-
+    public function postEditProfile(Request $request,$id){
+        $this->validate($request,
+            [
+                'phone' => 'numeric',
+            ],
+            [
+                'phone.numeric' => 'Phone must be number',
+            ]);
+        $user = User::find($id);
+        $user->address = $request->address;
+        $user->phone = $request->phone;
+        $user->save();
+        return redirect()->back()->with('thongbao','Updated successfully');
+    }
  // Api function
     public function postAdminLoginApi(Request $request){
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){

@@ -14,11 +14,14 @@ use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
-
-	private function checkReport($day){
+	public static function out(){
+		echo 'ahaha';
+	}
+	public static function checkReport($day){
 		$check_report = Report::where('date',$day)->get();
-		
-		if (count($check_report) > 0) {
+		$today_bill = Bill::where('order_date',$day)->get();
+		// tao report sau khi dat hang
+		if (count($today_bill) > 0) {
 
 			$bills =  Bill::where('order_date',$day)->get();
 			$number_of_orders = count($bills);
@@ -39,17 +42,27 @@ class ReportController extends Controller
 					$received = $received;
 				}
 			}
-
-			$report = Report::find($check_report[0]->id);
-			$report->date = $day;
-			$report->gross_revenue = $gross_revenue;
-			$report->number_of_orders = $number_of_orders;
-			$report->discount_amount = $discount_amount;
-			$report->received = $received;
-			$report->number_products_sold = $number_products_sold;
-			$report->save();
-		
-		}elseif( count($check_report) == 0 ){
+			if(count($check_report) == 0){
+				$report = new Report;
+				$report->date = $day;
+				$report->gross_revenue = $gross_revenue;
+				$report->number_of_orders = $number_of_orders;
+				$report->discount_amount = $discount_amount;
+				$report->received = $received;
+				$report->number_products_sold = $number_products_sold;
+				$report->save();
+			}elseif(count($check_report) > 0){
+				$report = Report::find($check_report[0]->id);
+				$report->date = $day;
+				$report->gross_revenue = $gross_revenue;
+				$report->number_of_orders = $number_of_orders;
+				$report->discount_amount = $discount_amount;
+				$report->received = $received;
+				$report->number_products_sold = $number_products_sold;
+				$report->save();
+			}
+		// tao report khi o trang quan ly
+		}elseif( count($today_bill) == 0 ){
 
 			$new_report = new Report;
 			$new_report->date = $day;
@@ -72,15 +85,17 @@ class ReportController extends Controller
 	// Daily Report
 	public function getDailyReportToday(){
 		$today = date('Y-m-d');
-		$bills =  Bill::where('created_at', '=', $today)->get();
+		$bills =  Bill::where('order_date', '=', $today)->get();
+
 		$this->checkReport($today);
-		return view('admin.report.daily_report',['bills' => $bills]);
+		$report = Report::where('date',$today)->get();
+		return view('admin.report.daily_report',['bills' => $bills, 'report' => $report]);
 	}
 	public function getDailyReportOther(Request $request){
 		$day = $request->date;
-		$bills =  Bill::where('created_at', 'like', $day.'%')->get();
 		$report = Report::where('date',$day)->get();
 		$this->checkReport($day);
+		$bills =  Bill::where('created_at', 'like', $day.'%')->get();
 		return view('admin.report.daily_report',['bills' => $bills,'report' => $report]);
 	}
 

@@ -33,4 +33,7 @@ class User extends Authenticatable
      public function comment(){
         return $this->hasMany('App\Comment','user_id','id');
     }
+    public function wishlist(){
+        return $this->hasMany('App\WishList','user_id','id');
+    }
 }

@@ -26,7 +26,18 @@
 @section('script')
 	<script type="text/javascript" src="slick-1.8.1/slick/slick.min.js"></script>
 	<script type="text/javascript">
+		
+
+
+
 		$(document).ready(function(){
+
+			$.ajaxSetup({
+				headers: {
+		            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		        }
+		    });
+
 			$('.slide').slick({
 				autoplay:true,
 				arrows:false,
@@ -44,6 +55,29 @@
 				$('#modal-body').load('compare/{{$newPr->id}}');
 				$('#campareS').load('load-button');
 			});
+
+			$('#heart-{{$newPr->id}}').click(function(e){
+				$(this).addClass('status-danger');
+		    	e.preventDefault();
+		    	
+		    	var pid = {{$newPr->id}};
+				$.ajax({
+					type: "POST",
+					url: "post-wishlist",
+					data:{id:pid},
+					success:function(data){
+						if(data.status == 1){
+							alert(data.success);
+						}
+						if(data.status == 0){
+							alert(data.error);
+						}
+					},
+					error:function(data){
+						alert(this.data);
+					}
+				});
+			});
 			@endforeach
 
 			// top product
@@ -56,7 +90,31 @@
 				$('#modal-body').load('compare/{{$topPr->id}}');
 				$('#campareS').load('load-button');
 			});
+			$('#heart-{{$topPr->id}}').click(function(e){
+				$(this).addClass('status-danger');
+		    	e.preventDefault();
+		    	
+		    	var pid = {{$topPr->id}};
+				$.ajax({
+					type: "POST",
+					url: "post-wishlist",
+					data:{id:pid},
+					success:function(data){
+						if(data.status == 1){
+							alert(data.success);
+						}
+						if(data.status == 0){
+							alert(data.error);
+						}
+					},
+					error:function(data){
+						alert("fail "+this.data);
+					}
+				});
+			});
 			@endforeach
+
+			// compare list
 			@if(Session::has('compare_list'))
 				@foreach($list->items as $item)
 					$('#del-item-{{$item['item']['id']}}').click(function(){

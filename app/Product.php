@@ -27,4 +27,7 @@ class Product extends Model
     public function comment(){
         return $this->hasMany('App\Comment','product_id','id');
     }
+    public function wishlist(){
+        return $this->hasMany('App\WishList','product_id','id');
+    }
 }

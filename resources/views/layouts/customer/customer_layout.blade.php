@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="csrf-token" content="{{ csrf_token() }}">
 	<title>Laravel </title>
 	<base href="{{asset('')}}">
 	<link href='http://fonts.googleapis.com/css?family=Dosis:300,400' rel='stylesheet' type='text/css'>

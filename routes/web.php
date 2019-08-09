@@ -19,6 +19,7 @@ Route::get('/', function () {
 ///////////////////////////
 //customer route//
 ///////////////////////////
+Route::post('/post-wishlist','PageController@postAddToWishList');
 
 	//index
 	Route::get('index','PageController@getIndex');
@@ -56,7 +57,10 @@ Route::get('/', function () {
 
 	
 	// Profile
-	Route::get('profile/{id}','PageController@getProfile');
+	Route::group(['prefix'=>'u', 'middleware'=>'user-middleware'],function(){
+		Route::get('profile/{id}','PageController@getProfile');
+		Route::post('edit-profile/{id}','UserController@postEditProfile');
+	});
 	//register
 	Route::get('register','PageController@getRegister');
 	Route::post('register','UserController@postRegister');

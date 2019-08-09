@@ -5,13 +5,15 @@
 	--product-block:#fff;
 	--border-color:#dddddd;
 	--filter-section:#b54a90; 
+	--item-name:#ff776b;
+	--item-background:#eeeeee;
 
 	--danger:#dd4b39;
 	--success:#00a65a;
 	--warning:#f39c12;
 	--default:#dddddd;
 	--other-btn:#e8416c;
-	high-
+	
 }
 
 body{
@@ -37,6 +39,10 @@ body.modal-open {
 .status-warning{
 	color: var(--warning);
 }
+.btn-default2{
+	background-color: var(--main-color);
+	border-color: var(--main-color);
+}
 .btn-other{
 	background-color: var(--other-btn);
 }
@@ -52,7 +58,14 @@ li.user-footer ul li{
 li.user-footer ul li a{
 	width: 138px;
 }
-
+.df{
+	position: absolute;
+	right: 10px;
+	top:10px;
+	width: 30px;
+	height: 30px;
+	cursor: pointer;
+}
 
 /*register page*/
 .single-item-header{
@@ -412,6 +425,21 @@ section .section-title {
 }
 
 /*Profile page*/
+#wishlist-sec{
+	display: none;
+}
+#info-sec{
+	display: none;
+}
+.wishlist-item{
+	min-height: 100px;
+	padding: 5px 10px 5px 10px;
+	margin: 0px 0px 10px 0px;
+	background-color: var(--item-background);
+}
+.item-name{
+	color: var(--item-name);
+}
 .bill-overview{
 	border-bottom:0.5px solid var(--border-color);
 	min-height: 50px;
@@ -419,8 +447,12 @@ section .section-title {
 	padding: 10px 5px 10px 5px;
 	
 }
-.bill-overview .row{
-
+.bill-detail .row{
+	margin-left: 0px;
+	margin-right: 0px;
+}
+.bill-total{
+	border-top:0.5px solid var(--border-color);
 }
 .bill-detail{
 	display: none;

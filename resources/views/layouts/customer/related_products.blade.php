@@ -9,7 +9,12 @@
 						<a href="product/{{$relatedPr->id}}"><img src="upload/product/{{$relatedPr->productimg->first()["name"]}}" alt=""></a>
 					</div>
 					<div class="single-item-body">
-						<p class="single-item-title"><a href="product/{{$relatedPr->id}}">{{$relatedPr->name}}</a></p>
+						<p class="single-item-title">
+							<a href="product/{{$relatedPr->id}}">{{$relatedPr->name}}</a>
+							@if ($relatedPr->quantity == 0) 
+								<span class="pull-right"><i class="fa fa-phone" aria-hidden="true"></i> - Please contact</span>
+							@endif
+						</p>
 						<p class="single-item-price">
 							
 							@if($relatedPr->promo_price != 0)
@@ -26,7 +31,7 @@
 						</p>
 					</div>
 					<div class="single-item-caption">
-						<button type="button" class="btn btn-warning pull-left" id="add-to-cart-{{$relatedPr->id}}">
+						<button type="button" class="btn btn-warning pull-left" id="add-to-cart-{{$relatedPr->id}}" @if ($relatedPr->quantity == 0) disabled @endif>
 							<i class="fa fa-shopping-cart"></i>
 						</button>&nbsp;
 						<a class="beta-btn primary" href="product/{{$relatedPr->id}}">Details <i class="fa fa-chevron-right"></i></a>

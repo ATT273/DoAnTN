@@ -73,10 +73,15 @@
 						</div>
 						<div class="space20">&nbsp;</div>
 						<hr>
+						@if ($product->quantity == 0) 
+							<h5><span><i class="fa fa-phone" aria-hidden="true"></i> - Please contact</span></h5><br>
+						@endif
 						<div class="single-item-options">
-							<button type="button" class="btn btn-warning pull-left btn-lg col-md-3" id="add-to-cart-{{$product->id}}">
+
+							<button type="button" class="btn btn-warning pull-left btn-lg col-md-3" id="add-to-cart-{{$product->id}}" @if ($product->quantity == 0) disabled @endif>
 								<i class="fa fa-shopping-cart"></i> Add to cart
 							</button>
+							
 							<div class="clearfix"></div>
 						</div>
 						<br>
