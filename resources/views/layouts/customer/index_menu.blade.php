@@ -1,7 +1,7 @@
 <div id="main_menu">
 	<ul>
-		<li><a href="#">Home</a></li>
-		<li><a href="#">Products</a>
+		<li><a href="index">Home</a></li>
+		<li><a href="index">Products</a>
 			<ul>
 				@foreach($categories as $cat)
 					@if(count($cat->product_type) > 0)
@@ -19,8 +19,7 @@
 				@endforeach
 			</ul>
 		</li>
-		<li><a href="#">About</a></li>
-		<li><a href="#">Contact</a></li>
-		<li><a href="#">News</a></li>
+		<li><a href="index">About</a></li>
+		<li><a href="index">Contact</a></li>
 	</ul>
 </div>

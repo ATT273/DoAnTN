@@ -1,71 +1,39 @@
 @extends('layouts.admin.admin_layout') 
 @section('main_content')
-    <section class="content">
-      <!-- Small boxes (Stat box) -->
-      <div class="row">
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-aqua">
-            <div class="inner">
-              <h3>{{count($bills)}}</h3>
+<section class="content">
+@include('admin.dashboard.dashboard_overview')
+@include('admin.dashboard.dashboard_detail')
 
-              <p>New Orders</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-bag"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-green">
-            <div class="inner">
-              <h3>53<sup style="font-size: 20px">%</sup></h3>
+</section>
+@endsection
+@section('script')
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('#show-orders').click(function(){
+				$('#orders-sec').show();
+				$('#users-sec').hide();
+				$('#report-sec').hide();
+				$('#products-sec').hide();
+			});
+			$('#show-report').click(function(){
+				$('#orders-sec').hide();
+				$('#users-sec').hide();
+				$('#report-sec').show();
+				$('#products-sec').hide();
+			});
+			$('#show-users').click(function(){
+				$('#orders-sec').hide();
+				$('#users-sec').show();
+				$('#report-sec').hide();
+				$('#products-sec').hide();
+			});
+			$('#show-products').click(function(){
+				$('#orders-sec').hide();
+				$('#users-sec').hide();
+				$('#report-sec').hide();
+				$('#products-sec').show();
+			});
 
-              <p>Bounce Rate</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-stats-bars"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-yellow">
-            <div class="inner">
-              <h3>{{count($users)}}</h3>
-
-              <p>User Registrations</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-person-add"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-red">
-            <div class="inner">
-              <h3>65</h3>
-
-              <p>Unique Visitors</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-pie-graph"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-      </div>
-      <!-- /.row -->
-      
-
-    </section>
+		});
+	</script>
 @endsection

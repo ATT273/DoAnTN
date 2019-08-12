@@ -9,6 +9,7 @@ use App\Category;
 use App\Comment;
 use App\Product;
 use App\Slide;
+use App\News;
 use App\ProductType;
 use App\ProductImage;
 use App\PromoCode;
@@ -16,6 +17,7 @@ use App\Tag;
 use App\Cart;
 use App\Compare;
 use App\WishList;
+use App\Report;
 use Validator;
 use Session;
 use Illuminate\Http\Request;
@@ -120,9 +122,13 @@ class PageController extends Controller
 
 
     public function getAdminDashboard(){
-        $user = User::all();
-        $bill = Bill::all();
-    	return view('admin.dashboard.dashboard',['users'=>$user, 'bills'=>$bill]);
+        $today = date('Y-m-d');
+        $users = User::all();
+        $bills = Bill::where('order_date',$today)->get();
+        $topProducts = Product::orderBy('sold','DESC')->take(4)->get();
+        ReportController::checkReport($today);
+        $report = Report::where('date',$today)->first();
+    	return view('admin.dashboard.dashboard',['users' => $users, 'bills' => $bills, 'topProducts' => $topProducts, 'report' => $report]);
     }
     // Admin login
     public function getAdminlogin(){
@@ -172,7 +178,14 @@ class PageController extends Controller
         return view('customer.index',['categories' => $categories, 'banners' => $banners, 'newProducts' => $newProducts, 'topProducts' => $topProducts, 'cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice, 'list' => $list]);
     }
     
-
+    // NEws
+    public function getNews($id){
+        $news = News::findOrFail($id);
+        $categories = Category::all();
+        $oldCart  = Session::get('cart');
+        $cart = new Cart($oldCart);
+        return view('customer.news',['news' => $news, 'categories' => $categories, 'cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice]);
+    }
 
     public function getDetailProduct($id){
         $product = Product::findOrFail($id);
@@ -355,26 +368,26 @@ class PageController extends Controller
         }elseif (!Session::has('cart')) {
             if(!$request->has('sort')){
                 $products = Product::where('type_id',$id)->paginate(8);
-                return view('customer.category',['products' => $products, 'categories' => $categories, 'productType' => $productType,]);
+                return view('customer.product_type',['products' => $products, 'categories' => $categories, 'productType' => $productType,]);
             }elseif ($request->has('sort')) {
                 $sortBy = $request->sort;
                switch ($request->sort) {
                 //latest
                    case 'latest':
                         $products = Product::where('type_id',$id)->orderBy('created_at','DESC')->paginate(8);
-                        return view('customer.category',['products' => $products, 'categories' => $categories, 'productType' => $productType,]);
+                        return view('customer.product_type',['products' => $products, 'categories' => $categories, 'productType' => $productType,]);
                         break;
 
                 // price ascending
                    case 'price-asc':
                         $products = Product::where('type_id',$id)->orderBy('price','ASC')->paginate(8);
-                        return view('customer.category',['products' => $products, 'categories' => $categories, 'productType' => $productType,]);
+                        return view('customer.product_type',['products' => $products, 'categories' => $categories, 'productType' => $productType,]);
                        break;
 
                 // price descending
                    case 'price-desc':
                         $products = Product::where('type_id',$id)->orderBy('price','DESC')->paginate(8);
-                        return view('customer.category',['products' => $products, 'categories' => $categories, 'productType' => $productType,]);
+                        return view('customer.product_type',['products' => $products, 'categories' => $categories, 'productType' => $productType,]);
                    break;
                }
             }
@@ -535,10 +548,11 @@ class PageController extends Controller
     ////////////////
     public function getCheckOut(Request $request){
         if(Auth::check()){
+            if(Session::has('checkout_info')){
+                $checkout_info = Session::get('checkout_info');
+            }
             $oldCart  = Session::get('cart');
-            // dd($oldCart);
             $cart = new Cart($oldCart);
-            // dd($cart);
             $checkout_info = Session::get('checkout_info');
             if ($request->has('change_info')) {
                 if($request->change_info == 'billing'){
@@ -628,7 +642,11 @@ class PageController extends Controller
         $bill = new Bill;
         $bill->user_id = $user_id;
         $bill->sub_total = $cart->totalPrice;
-        $bill->total = $cart->totalAfterDiscount;
+        if($cart->promoCode == 0){
+            $bill->total = $cart->totalPrice;
+        }elseif($cart->promoCode == 1){
+            $bill->total = $cart->totalAfterDiscount;
+        }
         $bill->discount_amount = $cart->discountAmount;
         $bill->order_date = date('Y-m-d');
         $bill->receiver = $request->receiver_name;
@@ -685,5 +703,36 @@ class PageController extends Controller
     
         dd(Session::all());
         
+    }
+
+
+    // API function
+    // Index
+    public function getIndexApi(){
+        $categories = Category::all();
+        $newProducts = Product::orderBy('id','DESC')->take(4)->get();
+        $topProducts = Product::orderBy('sold','DESC')->take(4)->get();
+        $banners  = Slide::all();
+
+        foreach ($newProducts as $newProduct) { 
+            $newProduct->productimg; 
+            $newProduct->product_type->first(); 
+            $newProduct->tag; 
+        } 
+
+        foreach ($topProducts as $topProduct) { 
+            $topProduct->productimg; 
+            $topProduct->product_type->first(); 
+            $newProduct->tag; 
+        } 
+
+        $response["status"] = 200;
+        $response["message"] = "success";
+        $response["categories"] = $categories;
+        $response["newProducts"] = $newProducts;
+        $response["topProducts"] = $topProducts;
+        $response["banners"] = $banners;
+
+        return response()->json($response);
     }
 }

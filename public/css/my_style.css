@@ -501,8 +501,13 @@ section .section-title {
 	float: right;
 }
 
-
-
+/*Dashboard*/
+.topPr-img{
+	min-height: 250px;
+}
+#users-sec, #products-sec, #report-sec{
+	display: none;
+}
 /*Product detail*/
 .buy-now{
 	background-color:#aa0000;

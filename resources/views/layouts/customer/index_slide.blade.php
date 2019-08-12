@@ -4,7 +4,7 @@
 		<div class="slide">
 			@foreach( $banners as $banner)
 				<div>
-					<a href="#">
+					<a href="news/{{$banner->news->id}}">
 						<img src="upload/slide/{{$banner->image}}" alt="{{$banner->image}}" height="530" >
 					</a>
 				</div>

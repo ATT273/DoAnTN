@@ -50,6 +50,19 @@ class UserController extends Controller
         
         
         if(Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password])){
+            $receiver = $payer = Auth::user()->name;
+            $receiver_phone = $payer_phone =  Auth::user()->phone;
+            $shipping_address = $billing_address = Auth::user()->address;
+            Session::put('checkout_info',
+                [
+                    'receiver' => $receiver,
+                    'receiver_phone' => $receiver_phone,
+                    'shipping_address' => $shipping_address,
+                    'payer' => $payer,
+                    'payer_phone' => $payer_phone,
+                    'billing_address' => $billing_address,
+                ]);
+            Session::save();
             return redirect('admin/dashboard');
         }
         else{
@@ -88,7 +101,7 @@ class UserController extends Controller
     public function getLogout(){
         Auth::logout();
         Session::forget('cart');
-        Sesion::forget('checkout_info');
+        Session::forget('checkout_info');
         return redirect('index');
     }
 
@@ -133,6 +146,19 @@ class UserController extends Controller
         $user->phone = $request->phone;
         $user->save();
         return redirect()->back()->with('thongbao','Updated successfully');
+    }
+
+
+    public function getSetAdmin($id){
+        $user = User::find($id);
+        if($user->role == 1){
+            $user->role = 0;
+            $user->save();
+        }elseif ($user->role == 0) {
+            $user->role = 1;
+            $user->save();
+        }
+        return redirect('admin/user/danhsach-users')->with('thongbao','Set role successfully');
     }
  // Api function
     public function postAdminLoginApi(Request $request){

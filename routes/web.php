@@ -19,7 +19,7 @@ Route::get('/', function () {
 ///////////////////////////
 //customer route//
 ///////////////////////////
-Route::post('/post-wishlist','PageController@postAddToWishList');
+	Route::post('/post-wishlist','PageController@postAddToWishList');
 
 	//index
 	Route::get('index','PageController@getIndex');
@@ -27,6 +27,8 @@ Route::post('/post-wishlist','PageController@postAddToWishList');
 	Route::get('loai-sp','PageController@getLoaisp');
 	//Prodct Detail
 	Route::get('product/{id}','PageController@getDetailProduct');
+	// news
+	Route::get('news/{id}','PageController@getNews');
 	// Comment
 	Route::post('add-comment','CommentController@postAddComment');
 	//Other
@@ -223,6 +225,8 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin-middleware'],function(){
 		Route::get('del/{id}','UserController@getDel');
 
 		Route::get('search','UserController@getSearchUser');
+
+		Route::get('set-admin/{id}','UserController@getSetAdmin');
 	});
 
 	

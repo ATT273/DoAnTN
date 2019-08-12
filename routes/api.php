@@ -23,7 +23,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 ///////////////////////////
 
 	//index
-	Route::get('index','PageController@getIndex');
+	Route::get('index','PageController@getIndexApi');
 	//ProductType
 	Route::get('loai-sp','PageController@getLoaisp');
 	//Prodct Detail
