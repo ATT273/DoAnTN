@@ -9,8 +9,19 @@ use Illuminate\Http\Request;
 
 class PromoCodeController extends Controller
 {
+	public function checkExpired(){
+		$codes = PromoCode::all();
+		$today = date('Y-m-d');
+		foreach($codes as $code){
+			if($code->expiration_date < $today){
+				$code->expired = 1;
+				$code->save();
+			}
+		}
+	}
 
 	public function getDanhsach(){
+		$this->checkExpired();
 		$pcodes = PromoCode::paginate(5);
 		return view('admin.promo_code.danhsach_code',['pcodes'=>$pcodes]);
 	}

@@ -160,6 +160,8 @@ class UserController extends Controller
         }
         return redirect('admin/user/danhsach-users')->with('thongbao','Set role successfully');
     }
+
+    
  // Api function
     public function postAdminLoginApi(Request $request){
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){

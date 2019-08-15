@@ -95,7 +95,7 @@
                   <button id="btn_huy" class="btn btn-danger btn-xs"> Huy</button>
                 </div>
                 <div class="status">
-                  <div class="confirmation-st">
+                  <div id="transfer_status" class="confirmation-st">
                     <strong>Transfer status: </strong>
                     @if($bill->transfer_status == 0)
                       <span class="label label-danger">{{'Chua gui'}}</span>
@@ -104,10 +104,10 @@
                       <span class="label label-success">{{'Da gui'}}</span>
                     @endif
                   </div>
-
+                    <button id="btn_transfer" class="btn btn-success btn-xs" @if($bill->transfer_status == 1){{'disabled'}}@endif> Xac nhan</button>
                 </div>
                 <div class="status">
-                  <div class="confirmation-st">
+                  <div id="payment_status" class="confirmation-st">
                     <strong>Payment status: </strong>
                     @if($bill->payment_status == 0)
                       <span class="label label-danger">{{'Chua thanh toan'}}</span>
@@ -116,6 +116,7 @@
                       <span class="label label-success">{{'Da thanh toan'}}</span>
                     @endif
                   </div>
+                  <button id="btn_payment" class="btn btn-success btn-xs" @if($bill->payment_status == 1){{'disabled'}}@endif> Xac nhan</button>
                 </div>
   	    			</div>
   	    		</div>
@@ -160,8 +161,26 @@
             $("#btn_xacnhan").click(function(){
               
                //gọi trang ajax lên ,trang ajax tạo trong route
-                $.get("admin/bill/ajax/confirm/"+{{$bill->id}},function(data){
+                $.get("admin/bill/ajax/confirm/1/"+{{$bill->id}},function(data){
                     $("#confirm_status").html(data);
+                });
+
+                $(this).attr('disabled',true);
+            });
+            $("#btn_transfer").click(function(){
+              
+               //gọi trang ajax lên ,trang ajax tạo trong route
+                $.get("admin/bill/ajax/confirm/2/"+{{$bill->id}},function(data){
+                    $("#transfer_status").html(data);
+                });
+
+                $(this).attr('disabled',true);
+            });
+            $("#btn_payment").click(function(){
+              
+               //gọi trang ajax lên ,trang ajax tạo trong route
+                $.get("admin/bill/ajax/confirm/3/"+{{$bill->id}},function(data){
+                    $("#payment_status").html(data);
                 });
 
                 $(this).attr('disabled',true);

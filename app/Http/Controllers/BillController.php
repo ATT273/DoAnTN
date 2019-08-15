@@ -22,12 +22,32 @@ class BillController extends Controller
     	return view('admin.bill.bill_detail',['bill' => $bill, 'billDetails' => $billDetails]);
     }
 
-    public function getConfirm($id){
+    public function getConfirm($action, $id){
         $bill = Bill::find($id);
-        $bill->confirmation = 1;
-        $bill->save();
+        switch ($action) {
+            // confirm
+            case '1':
+                $bill->confirmation = 1;
+                $bill->save();
 
-        echo '<strong>Confirmation: </strong>'.'<span class="label label-success">Da xac nhan</span>';
+                echo '<strong>Confirmation: </strong>'.'<span class="label label-success">Da xac nhan</span>';
+                break;
+            // transfer
+            case '2':
+                $bill->transfer_status = 1;
+                $bill->save();
+
+                echo '<strong>Transfer status: </strong>'.'<span class="label label-success">Dang van chuyen</span>';
+                break;
+            // payment
+            case '3':
+                $bill->payment_status = 1;
+                $bill->save();
+
+                echo '<strong>Payment status: </strong>'.'<span class="label label-success">Da thanh toan</span>';
+            break;
+        }
+        
     }
 
 
@@ -50,15 +70,41 @@ class BillController extends Controller
         return response()->json($response);
     }
 
-    public function getConfirmApi($id){
+    public function getConfirmApi($action, $id){
         $bill = Bill::find($id);
-        $bill->confirmation = 1;
-        $bill->save();
+        switch ($action) {
+            // confirm
+            case '1':
+                $bill->confirmation = 1;
+                $bill->save();
 
-        $response["status"] = 200;
-        $response["message"] = "success";
+                $response["status"] = 200;
+                $response["message"] = "success";
 
-        return response()->json($response);
+                return response()->json($response);
+                break;
+            // transfer
+            case '2':
+                $bill->transfer_status = 1;
+                $bill->save();
+
+                $response["status"] = 200;
+                $response["message"] = "success";
+
+                return response()->json($response);
+                break;
+            // payment
+            case '3':
+                $bill->payment_status = 1;
+                $bill->save();
+
+                $response["status"] = 200;
+                $response["message"] = "success";
+
+                return response()->json($response);
+                break;
+        }
+        
     }
 
 }

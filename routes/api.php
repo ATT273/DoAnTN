@@ -26,6 +26,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 	Route::get('index','PageController@getIndexApi');
 	//ProductType
 	Route::get('loai-sp','PageController@getLoaisp');
+	//Category
+	Route::get('inside-category/{id}','PageController@getInsideCategoryApi');
 	//Prodct Detail
 	Route::get('product/{id}','PageController@getDetailProduct');
 	//Other
@@ -33,12 +35,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 	Route::get('gioi-thieu','PageController@gioiThieu');
 	//search item
 	Route::get('search', 'PageController@getSearch');
-	//cart
-	Route::get('add-to-cart/{id}','PageController@getAddToCart');
-	Route::get('add-one/{id}','PageController@addOneItem');
-	Route::get('sub-one/{id}','PageController@subOneItem');
-	Route::get('reload-mini','PageController@reloadMiniCart');
-	Route::get('view-cart','PageController@getCartView');
+	//bill
+	Route::post('create-bill', 'PageController@createBillApi');
 	// Compare items
 	Route::get('compare/{id}','PageController@addToComparisonList');
 	Route::get('del-compare/{id}','PageController@delComparisonItem');
@@ -125,7 +123,7 @@ Route::group(['prefix'=>'admin'],function(){
 
 		//BIll detail
 		Route::get('detail/{id}','BillController@getDetailApi');
-		Route::get('confirm/{id}','BillController@getConfirmApi');
+		Route::get('confirm/{action}/{id}','BillController@getConfirmApi');
 	});
 
 	//Users

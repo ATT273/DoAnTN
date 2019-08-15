@@ -584,34 +584,44 @@ class PageController extends Controller
     }
 
     public function applyPromoCode(Request $request){
-        
         $oldCart  = Session::get('cart');
         $cart = new Cart($oldCart);
-        $codes = PromoCode::where('name',$request->promo_code)->get();
+        $today = date('Y-m-d');
+        if($cart->promoCode == 0){
+            $codes = PromoCode::where('name',$request->promo_code)->get();
 
-        if(count($codes) > 0){
-            $code = $codes[0];
-            if($code->fixed != 0){
-                $amount = $code->fixed;
-                if($cart->totalPrice > $amount){
-                    $totalAfterDiscount = $cart->totalPrice - $amount;
-                }elseif ($cart->totalPrice <= $amount) {
-                    $totalAfterDiscount = 0;
+            if(count($codes) > 0){
+                $code = $codes[0];
+                if($code->expiration_date < $today){
+                    $code->expired = 1;
+                    $code->save();
+                    return redirect('checkout')->with('loi','this code is expired');
+                }elseif($code->expiration_date >= $today){
+                    if($code->fixed != 0){
+                        $amount = $code->fixed;
+                        if($cart->totalPrice > $amount){
+                            $totalAfterDiscount = $cart->totalPrice - $amount;
+                        }elseif ($cart->totalPrice <= $amount) {
+                            $totalAfterDiscount = 0;
+                        }
+                    }elseif ($code->percentage != 0) {
+                        $amount = $cart->totalPrice * $code->percentage / 100;
+                        $totalAfterDiscount = $cart->totalPrice - $amount;
+                    }
+                    $cart->applyPromoCode($amount,$totalAfterDiscount);
+                    Session::put('cart',$cart);
+                    $checkout_info = Session::get('checkout_info');
+                    // $newCart = Session::get('cart');
+                    // $cart = new Cart($newCart);
+                    return redirect('checkout');
                 }
-            }elseif ($code->percentage != 0) {
-                $amount = $cart->totalPrice * $code->percentage / 100;
-                $totalAfterDiscount = $cart->totalPrice - $amount;
+            }else{
+                return redirect('checkout')->with('loi','Your code is invalid');
             }
-            $cart->applyPromoCode($amount,$totalAfterDiscount);
-            Session::put('cart',$cart);
-            $checkout_info = Session::get('checkout_info');
-            // $newCart = Session::get('cart');
-            // $cart = new Cart($newCart);
-            return redirect('checkout');
-            // return view('customer.checkout',['cart' => $cart, 'items' => $cart->items, 'totalPrice' => $cart->totalPrice, 'checkout_info' => $checkout_info]);
-        }else{
-            return redirect('checkout')->with('loi','Your code is invalid');
+        }elseif($cart->promoCode == 1){
+            return redirect('checkout')->with('loi','Only use 1 code for this order');
         }
+        
         
     }
 
@@ -734,5 +744,80 @@ class PageController extends Controller
         $response["banners"] = $banners;
 
         return response()->json($response);
+    }
+
+    public function getInsideCategoryApi($id){
+        $category = Category::find($id);
+        $products = $category->product()->get();
+        $productType = $category->product_type()->get();
+
+        foreach ($products as $product) { 
+            $product->productimg; 
+            $product->product_type->first(); 
+            $product->tag; 
+        } 
+
+        $response["status"] = 200;
+        $response["message"] = "success";
+        $response["category"] = $category->name;
+        $response["products"] = $products;
+        $response["productType"] = $productType;
+
+        return response()->json($response);
+    }
+
+
+    public function postPlaceOrderApi(Request $request){
+        
+        $user_id = $request->user_id; 
+
+        $cart = json_decode($request->cart,true);
+        // dd($cart);
+        // create bill
+        $bill = new Bill;
+        $bill->user_id = $user_id;
+        $bill->sub_total = $cart['totalPrice'];
+        if($cart['promoCode'] == 0){
+            $bill->total = $cart['totalPrice'];
+        }elseif($cart['promoCode'] == 1){
+            $bill->total = $cart['totalAfterDiscount'];
+        }
+        $bill->discount_amount = $cart['discountAmount'];
+        $bill->order_date = date('Y-m-d');
+
+        // chua co
+        $bill->receiver = $request->receiver_name;
+        $bill->receiver_phone = $request->receiver_phone;
+        $bill->shipping_address = $request->shipping_address;
+        $bill->payer = $request->payer_name;
+        $bill->payer_phone = $request->payer_phone;
+        $bill->billing_address = $request->billing_address;
+        $bill->save();
+
+        // create bill detail
+        $latest_bill_id = Bill::where('user_id',$user_id)->orderBy('created_at','DESC')->first()->id;
+        foreach ($cart['items'] as $item) {
+            $bill_detail = new BillDetail;
+            $bill_detail->bill_id = $latest_bill_id;
+            $bill_detail->product_id = $item['item']['id'];
+            $bill_detail->product_name = $item['item']['name'];
+            $bill_detail->quantity = $item['qty'];
+            $bill_detail->product_price = $item['price'] / $item['qty'];
+            $bill_detail->save();
+
+            $product = Product::find($item['item']['id']);
+            $product->quantity = $product->quantity - $item['qty'];
+            $product->sold = $product->sold + $item['qty'];
+            $product->save();
+        }
+        
+        // create ReportController
+        $today = date('Y-m-d');
+        ReportController::checkReport($today);
+        $request->session()->forget('cart');
+        
+        // $request->session()->forget('checkout_info');
+        return redirect('index');
+
     }
 }

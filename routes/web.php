@@ -197,18 +197,18 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin-middleware'],function(){
 	Route::group(['prefix'=>'bill'], function(){
 		Route::get('danhsach-bill','BillController@getDanhsach');
 
-		Route::get('add','BillController@getAdd');
-		Route::post('add','BillController@postAdd');
+		// Route::get('add','BillController@getAdd');
+		// Route::post('add','BillController@postAdd');
 
-		Route::get('edit/{id}','BillController@getEdit');
-		Route::post('edit/{id}','BillController@postEdit');
+		// Route::get('edit/{id}','BillController@getEdit');
+		// Route::post('edit/{id}','BillController@postEdit');
 
-		Route::get('del/{id}','BillController@getDel');
+		// Route::get('del/{id}','BillController@getDel');
 
 
 		//BIll detail
 		Route::get('detail/{id}','BillController@getDetail');
-		Route::get('ajax/confirm/{id}','BillController@getConfirm');
+		Route::get('ajax/confirm/{action}/{id}','BillController@getConfirm');
 	});
 	//Users
 	Route::group(['prefix'=>'user'],function(){
