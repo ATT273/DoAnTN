@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\Tag;
-use App\ProductTag;
 use Validator;
+use App\ProductTag;
 use Illuminate\Http\Request;
 
 class TagController extends Controller
@@ -76,13 +76,12 @@ class TagController extends Controller
     
     public function getDel($id){
         $tag = Tag::find($id);
+        // dd($tag);
         $productTags = ProductTag::where('tag_id',$id)->get();
-
-        $tag->delete();
         foreach ($productTags as $pt) {
             $pt->delete();
         }
-
+         $tag->delete();
         return redirect('admin/tag/danhsach-tag')->with('thongbao', 'Deleted Successfully');
 
     }

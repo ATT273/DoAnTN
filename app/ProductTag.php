@@ -8,5 +8,9 @@ class ProductTag extends Model
 {
     //
     protected $table = "product_tag";
+    
+    public function tag(){
+
+    }
 
 }

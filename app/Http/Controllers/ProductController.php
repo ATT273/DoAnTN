@@ -5,6 +5,7 @@ use App\Product;
 use App\Category;
 use App\ProductType;
 use App\ProductImage;
+use App\ProductTag;
 use App\Comment;
 use App\Tag;
 use Validator;
@@ -200,15 +201,24 @@ class ProductController extends Controller
     public function getDel($id){
         $product = Product::find($id);
         $images = ProductImage::where('product_id',$id)->get();
-        foreach ($images as $img) {
-            unlink('upload/product/'.$img->name);
-            $img->delete();
+        if(count($images) > 0){
+            foreach ($images as $img) {
+                unlink('upload/product/'.$img->name);
+                $img->delete();
+            }
         }
         
         $comments = Comment::where('product_id',$id)->get();
         if(count($comments) > 0){
             foreach($comments as $comment){
                 $comment->delete();
+            }
+        }
+
+        $tags = ProductTag::where('product_id',$id)->get();
+        if(count($tags) > 0){
+            foreach($tags as $tag){
+                $tag->delete();
             }
         }
 
