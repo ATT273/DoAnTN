@@ -78,7 +78,7 @@
                     <td width="200">{{$banner->news->title}}</td>
                     <td>@excerpt($banner->news->content)</td>
                     <td width="80"><i class="fa fa-pencil"></i> <a href="admin/slide/edit/{{$banner->id}}">Edit</a></td>
-                    <td width="80"><i class="fa fa-trash-o"></i> <a href="admin/slide/del/{{$banner->id}}" onclick="return confirm('Ban co muon xoa danh muc nay khong?')">Delete</a></td>
+                    <td width="80"><i class="fa fa-trash-o"></i> <a href="admin/slide/del/{{$banner->id}}" onclick="return confirm('Ban co muon xoa muc nay khong?')">Delete</a></td>
                   </tr>
                   @endforeach
                 </tbody>

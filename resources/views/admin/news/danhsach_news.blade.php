@@ -76,7 +76,7 @@
 					</td>
 					<td>{{$n->title}}</td>
 					<td width="100"><i class="fa fa-pencil"></i> <a href="admin/news/edit/{{$n->id}}">Edit</a></td>
-					<td width="100"><i class="fa fa-trash-o"></i> <a href="admin/news/del/{{$n->id}}" onclick="return confirm('Ban co muon xoa danh muc nay khong?')">Delete</a></td>
+					<td width="100"><i class="fa fa-trash-o"></i> <a href="admin/news/del/{{$n->id}}" onclick="return confirm('Ban co muon xoa muc nay khong?')">Delete</a></td>
 					</tr>
 					@endforeach
                 </tbody>

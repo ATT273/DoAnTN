@@ -72,7 +72,7 @@
                     <td>{{$type->name}}</td>
                     <td>{{$type->category->name}}</td>
                     <td><i class="fa fa-pencil"></i> <a href="admin/product_type/edit/{{$type->id}}">Edit</a></td>
-                    <td><i class="fa fa-trash-o"></i> <a href="admin/product_type/del/{{$type->id}}" onclick="return confirm('Ban co muon xoa danh muc nay khong?')">Delete</a></td>
+                    <td><i class="fa fa-trash-o"></i> <a href="admin/product_type/del/{{$type->id}}" onclick="return confirm('Ban co muon xoa muc nay khong?')">Delete</a></td>
                   </tr>
                   @endforeach
                 </tbody>

@@ -89,6 +89,11 @@ class CategoryController extends Controller
         if ($count > 0) {
             return redirect('admin/category/danhsach-danhmuc')->with('loi','cannot delete because there are many products belong to this category');
         }elseif ($count == 0) {
+            if(count($category->product_type) > 0){
+                foreach ($category->product_type as $ptype) {
+                    $ptype->delete();
+                }
+            }
             $category->delete();
             return redirect('admin/category/danhsach-danhmuc')->with('thongbao','Delete  Successfully');
         }

@@ -79,7 +79,7 @@
                       @if($pcode->expired == 1) - <i class="fa fa-ban status-danger" aria-hidden="true"></i>@endif
                     </td>
                     <td><i class="fa fa-pencil"></i> <a href="admin/promo_code/edit/{{$pcode->id}}">Edit</a></td>
-                    <td><i class="fa fa-trash-o"></i> <a href="admin/promo_code/del/{{$pcode->id}}" onclick="return confirm('Ban co muon xoa danh muc nay khong?')">Delete</a></td>
+                    <td><i class="fa fa-trash-o"></i> <a href="admin/promo_code/del/{{$pcode->id}}" onclick="return confirm('Ban co muon xoa muc nay khong?')">Delete</a></td>
                   </tr>
                   @endforeach
                 </tbody>

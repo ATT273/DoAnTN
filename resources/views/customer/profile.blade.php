@@ -104,12 +104,16 @@
 				                	@foreach($bill->bill_detail as $detail)
 				                	<div class="row">
 				                		<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-				                			<img src="upload/product/{{$detail->product->productimg->first()->name}}" width="70">
+				                			@if($detail->product)
+				                				<img src="upload/product/{{$detail->product->productimg->first()->name}}" width="70">
+				                			@else
+				                				<i class="fa fa-question fa-5x" aria-hidden="true"></i>
+				                			@endif
 				                		</div>
 				                		<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
 				                			<div class="row">
 				                				<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-				                					<h5><strong class="item-name">{{$detail->product->name}}</strong></h5><br>
+				                					<h5><strong class="item-name">{{$detail->product_name}}</strong></h5><br>
 				                				</div>
 				                				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 				                					<p class="">@money($detail->product_price) X {{$detail->quantity}}</p>

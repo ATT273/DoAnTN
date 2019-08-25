@@ -63,15 +63,16 @@ class ReportController extends Controller
 			}
 		// tao report khi o trang quan ly
 		}elseif( count($today_bill) == 0 ){
-
-			$new_report = new Report;
-			$new_report->date = $day;
-			$new_report->number_of_orders = 0;
-			$new_report->gross_revenue = 0;
-			$new_report->discount_amount = 0;
-			$new_report->received = 0;
-			$new_report->number_products_sold = 0;
-			$new_report->save();
+			if(count($check_report) == 0){
+				$new_report = new Report;
+				$new_report->date = $day;
+				$new_report->number_of_orders = 0;
+				$new_report->gross_revenue = 0;
+				$new_report->discount_amount = 0;
+				$new_report->received = 0;
+				$new_report->number_products_sold = 0;
+				$new_report->save();
+			}
 		}
 	}
 
@@ -91,6 +92,7 @@ class ReportController extends Controller
 		$report = Report::where('date',$today)->get();
 		return view('admin.report.daily_report',['bills' => $bills, 'report' => $report]);
 	}
+
 	public function getDailyReportOther(Request $request){
 		$day = $request->date;
 		$report = Report::where('date',$day)->get();

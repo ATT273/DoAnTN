@@ -46,6 +46,7 @@
                                                 <input type="text" class="form-control qty" name="qty" id="qty-{{$item['item']['id']}}" value="{{$item['qty']}}" style="width: 50px;" disabled>
                                                 <span class="input-group-addon" id="add-1-{{$item['item']['id']}}">+</span>
                                             </div>
+                                            <input type="hidden" id="in-stock-{{$item['item']['id']}}" value="{{$item['item']['quantity']}}">
                                         </div>
                                     </div>
                                 </div>
@@ -98,17 +99,21 @@
                $('#add-1-{{$item['item']['id']}}').click(function(){
                     var qty = $('#qty-{{$item['item']['id']}}').val();
                     var int_qty = parseInt(qty);
-                    if(int_qty >= 10){
-                        
-                        int_qty = 10;
-                         
-                     }
-                     if(int_qty < 10){
-                        $('#add-1-{{$item['item']['id']}}').attr("disabled",true);
-                        int_qty++;
-                        $('input#qty-{{$item['item']['id']}}').val(int_qty);
-                        $('#sub-total').load('add-one/{{$item['item']['id']}}');
-                     }
+                    var in_stock = parseInt({{$item['item']['quantity']}});
+                    if(int_qty >= in_stock){
+                        alert('Not enough items in stock');
+                    }else if(int_qty < in_stock){
+                        if(int_qty >= 10){
+                            int_qty = 10;
+                        }
+                        if(int_qty < 10){
+                            
+                            int_qty++;
+                            $('input#qty-{{$item['item']['id']}}').val(int_qty);
+                            $('#sub-total').load('add-one/{{$item['item']['id']}}');
+                        }
+                    }
+                    
                 });
             @endforeach
         @endif

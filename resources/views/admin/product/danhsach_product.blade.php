@@ -75,7 +75,7 @@
                                     <td>{{$product->product_type->category->name}}</td>
                                     <td>@money($product->price)</td>
                                     <td><i class="fa fa-pencil"></i> <a href="admin/product/edit/{{$product->id}}">Edit</a></td>
-                                    <td><i class="fa fa-trash-o"></i> <a href="admin/product/del/{{$product->id}}" onclick="return confirm('Ban co muon xoa danh muc nay khong?')">Delete</a></td>
+                                    <td><i class="fa fa-trash-o"></i> <a href="admin/product/del/{{$product->id}}" onclick="return confirm('Ban co muon xoa muc nay khong?')">Delete</a></td>
                                 </tr>
                             @endforeach
                         </tbody>

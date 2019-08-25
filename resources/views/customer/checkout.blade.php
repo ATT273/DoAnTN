@@ -141,7 +141,7 @@
 			<form action="apply-code" method="GET">
 				<div class="row">
 					<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-						<input type="text" name="promo_code" id="promo_code" class="form-control" placeholder="Enter Promo CODE">
+						<input type="text" name="promo_code" id="promo_code" class="form-control" placeholder="Enter Promo CODE" required>
 					</div>
 					<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
 						<button type="submit" class="btn btn-default" @if ($cart->promoCode == 1) disabled @endif>Apply</button>

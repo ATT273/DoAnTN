@@ -5,6 +5,7 @@ use App\Product;
 use App\Category;
 use App\ProductType;
 use App\ProductImage;
+use App\Comment;
 use App\Tag;
 use Validator;
 use Illuminate\Http\Request;
@@ -203,6 +204,14 @@ class ProductController extends Controller
             unlink('upload/product/'.$img->name);
             $img->delete();
         }
+        
+        $comments = Comment::where('product_id',$id)->get();
+        if(count($comments) > 0){
+            foreach($comments as $comment){
+                $comment->delete();
+            }
+        }
+
         $product->delete();
 
         return redirect('admin/product/danhsach-sp')->with('thongbao','Deleted Successfully');
