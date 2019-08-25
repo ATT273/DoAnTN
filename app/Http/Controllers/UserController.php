@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Product;
 use App\Bill;
+use App\WishList;
 use App\Http\Requests;
 use Validator;
 use Session;
@@ -148,7 +149,11 @@ class UserController extends Controller
         return redirect()->back()->with('thongbao','Updated successfully');
     }
 
-
+    public function getDelWishListItem($id){
+        $item = WishList::find($id);
+        $item->delete();
+        return redirect()->back()->with('thongbao','Deleted successfully');
+    }
     public function getSetAdmin($id){
         $user = User::find($id);
         if($user->role == 1){

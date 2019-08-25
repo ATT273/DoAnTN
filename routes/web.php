@@ -62,6 +62,7 @@ Route::get('/', function () {
 	Route::group(['prefix'=>'u', 'middleware'=>'user-middleware'],function(){
 		Route::get('profile/{id}','PageController@getProfile');
 		Route::post('edit-profile/{id}','UserController@postEditProfile');
+		Route::get('del-wishlist-item/{id}','UserController@getDelWishListItem');
 	});
 	//register
 	Route::get('register','PageController@getRegister');

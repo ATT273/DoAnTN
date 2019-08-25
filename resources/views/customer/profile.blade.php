@@ -13,7 +13,7 @@
             {{session('thongbao')}}
         </div>
     @endif
-    @if(session('error'))
+    @if(session('loi'))
         <div class="alert alert-danger">
             {{session('loi')}}
         </div>
@@ -141,37 +141,47 @@
 		    		<div class="box-body">
 		    			@if(count(Auth::user()->wishlist) != 0)
 			    			@foreach(Auth::user()->wishlist as $item)
+			    			
 			    				<div class="row wishlist-item">
-			    					<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-			    						<img src="upload/product/{{$item->product->productimg->first()->name}}" width="70">
-			    					</div>
-			    					<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-			    						<div class="row">
-			    							<h5 class="item-name">{{$item->product->name}}</h5>
-			    						</div>
-			    						<div class="row">
-			    							<p>
-			    								@if($item->product->promo_price != 0)
-			    									<strike>@money($item->product->price)</strike>
-			    									{{'---'}}
-			    									@money($item->product->promo_price)
-		    									@elseif($item->product->promo_price == 0)
-			    									@money($item->product->price)
-			    								@endif
-			    							</p>
-			    						</div>
-			    						
-			    					</div>
+			    					@if($item->product)
+				    					<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+				    						<img src="upload/product/{{$item->product->productimg->first()->name}}" width="70">
+				    					</div>
+				    					<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+				    						<div class="row">
+				    							<h5 class="item-name">{{$item->product->name}}</h5>
+				    						</div>
+				    						<div class="row">
+				    							<p>
+				    								@if($item->product->promo_price != 0)
+				    									<strike>@money($item->product->price)</strike>
+				    									{{'---'}}
+				    									@money($item->product->promo_price)
+			    									@elseif($item->product->promo_price == 0)
+				    									@money($item->product->price)
+				    								@endif
+				    							</p>
+				    						</div>
+				    						
+				    					</div>
+				    				@else
+				    					<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+				    						<i class="fa fa-question fa-5x" aria-hidden="true"></i>
+				    					</div>
+				    					<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+				    						<h3>san pham ma {{$item->product_id}} khong ton tai</h3>
+				    					</div>
+					    			@endif
 			    					<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
 			    						<div class="row">
 			    							<a href="product/{{$item->product_id}}"><button type="button" class="btn btn-success">Detail</button></a>
 			    						</div>
 			    						<div class="row">
-			    							
+			    							<a href="u/del-wishlist-item/{{$item->id}}"><i class="fa fa-trash fa-2x status-danger" aria-hidden="true"></i></a>
 			    						</div>
-			    						
 			    					</div>
 			    				</div>
+			    			
 			    			@endforeach
 		    			@else
 		    				{{'chua co sp'}}
