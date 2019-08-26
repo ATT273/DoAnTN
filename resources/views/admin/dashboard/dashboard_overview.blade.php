@@ -23,7 +23,7 @@
              <div class="small-box-footer" id="show-report">Show <i class="fa fa-arrow-circle-right"></i></div>
         </div>
     </div>
-    <div class="col-lg-3 col-xs-6">
+{{--     <div class="col-lg-3 col-xs-6">
         <div class="small-box bg-yellow">
             <div class="inner">
                 <h3>{{count($users)}}</h3>
@@ -34,7 +34,7 @@
             </div>
              <div class="small-box-footer" id="show-users">Show <i class="fa fa-arrow-circle-right"></i></div>
         </div>
-    </div>
+    </div> --}}
     <div class="col-lg-3 col-xs-6">
         <div class="small-box bg-red">
             <div class="inner">

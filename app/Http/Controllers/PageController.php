@@ -728,12 +728,24 @@ class PageController extends Controller
             $newProduct->productimg; 
             $newProduct->product_type->first(); 
             $newProduct->tag; 
+            $newProduct->comment;
+            $newProduct->wishlist;
+
+            foreach ($newProduct->comment as $cmt) {
+                $cmt->user;
+            }
         } 
 
         foreach ($topProducts as $topProduct) { 
             $topProduct->productimg; 
             $topProduct->product_type->first(); 
-            $newProduct->tag; 
+            $topProduct->tag; 
+            $topProduct->comment;
+            $topProduct->wishlist;
+
+            foreach ($topProduct->comment as $cmt) {
+                $cmt->user;
+            }
         } 
 
         $response["status"] = 200;
@@ -755,6 +767,12 @@ class PageController extends Controller
             $product->productimg; 
             $product->product_type->first(); 
             $product->tag; 
+            $product->comment;
+            $product->wishlist;
+
+            foreach ($product->comment as $cmt) {
+                $cmt->user;
+            }
         } 
 
         $response["status"] = 200;
@@ -785,7 +803,6 @@ class PageController extends Controller
         $bill->discount_amount = $cart['discountAmount'];
         $bill->order_date = date('Y-m-d');
 
-        // chua co
         $bill->receiver = $request->receiver_name;
         $bill->receiver_phone = $request->receiver_phone;
         $bill->shipping_address = $request->shipping_address;
@@ -814,10 +831,117 @@ class PageController extends Controller
         // create ReportController
         $today = date('Y-m-d');
         ReportController::checkReport($today);
-        $request->session()->forget('cart');
         
-        // $request->session()->forget('checkout_info');
-        return redirect('index');
+        $response["status"] = 200;
+        $response["message"] = "success";
 
+        return response()->json($response);
+    }
+
+    public function applyPromoCodeApi(Request $request){
+        $codes = PromoCode::where('name',$request->promo_code)->get();
+        if(count($codes) > 0){
+            $code = $codes[0];
+            $response["status"] = 200;
+            $response["message"] = "success";
+            $response["code"] = $code;
+
+            return response()->json($response);
+        } else {
+            $response["status"] = 201;
+            $response["message"] = "Your code is invalid";
+            return response()->json($response);
+        }
+
+    }
+
+    public function postSearchApi(Request $request){
+        $products = Product::where('name','LIKE', '%'.$request->keyword.'%')->orWhere('price',$request->keyword)->get();
+        foreach ($products as $product) { 
+            $product->productimg; 
+            $product->product_type->first(); 
+            $product->tag; 
+            $product->comment;
+            $product->wishlist;
+
+            foreach ($product->comment as $cmt) {
+                $cmt->user;
+            }
+        }
+            $response["status"] = 200;
+            $response["message"] = "success";
+            $response["products"] = $products;
+
+            return response()->json($response);
+    }
+
+    public function getUserBillsApi($id){
+        $bills = Bill::where('user_id',$id)->get();
+            $response["status"] = 200;
+            $response["message"] = 'Success';
+            $response["bills"] = $bills;
+
+            return response()->json($response);
+    }
+
+    // NEws
+    public function getNewsApi($id){
+        $news = News::findOrFail($id);
+        $response["status"] = 200;
+            $response["message"] = 'Success';
+            $response["news"] = $news;
+
+            return response()->json($response);
+    }
+
+    // wishlist
+    public function getWishListApi($id){
+        $user = User::where('id',$id)->first();
+        $list = [];
+        foreach ($user->wishlist as $wl) {
+            array_push($list, $wl->product_id);
+        }
+        $products = Product::whereIn('id', $list)->get();
+        foreach ($products as $product) { 
+            $product->productimg; 
+            $product->product_type->first(); 
+            $product->tag; 
+            $product->comment;
+            $product->wishlist;
+
+            foreach ($product->comment as $cmt) {
+                $cmt->user;
+            }
+        } 
+            $response["status"] = 200;
+            $response["message"] = 'Success';
+            $response["products"] = $products;
+
+            return response()->json($response);   
+    }
+
+    public function postAddToWishListApi(Request $request){
+        $product_id = $request->id;
+        $user_id = $request->user_id;
+        $wishlist_item = WishList::where([['product_id',$product_id],['user_id',$user_id]])->first();
+        if ($wishlist_item == null) {
+            $new_wishlist = new WishList;
+            $new_wishlist->product_id = $product_id;
+            $new_wishlist->user_id = $user_id;
+            $new_wishlist->save();
+
+            $response["status"] = 200;
+            $response["message"] = 'Success';
+            $response["wishlist"] = $new_wishlist;
+
+            return response()->json($response); 
+        } else {
+            $wishlist_item->delete();
+            $response["status"] = 200;
+            $response["message"] = 'Success';
+            $response["wishlist"] = null;
+
+        return response()->json($response); 
+        }
     }
 }

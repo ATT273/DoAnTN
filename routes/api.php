@@ -52,6 +52,29 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 	//Logout
 	Route::get('logout','UserController@getLogout');
 
+	//checkout
+	Route::post('post-placeorder','PageController@postPlaceOrderApi');
+	Route::post('apply-code','PageController@applyPromoCodeApi');
+
+	// Profile
+	Route::post('edit-profile','UserController@postEditProfileApi');
+
+	//search item
+	Route::post('search', 'PageController@postSearchApi');
+
+	//bill
+	Route::get('user-bill/{id}', 'PageController@getUserBillsApi');
+
+	// Comment
+	Route::post('add-comment','CommentController@postAddCommentApi');
+
+	// news
+	Route::get('news/{id}','PageController@getNewsApi');
+
+	//wishlist
+	Route::get('wishlist/{id}','PageController@getWishListApi');
+	Route::post('post-wishlist','PageController@postAddToWishListApi');
+
 
 ///////////////////////////
 //admin routes//

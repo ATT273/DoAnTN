@@ -154,6 +154,7 @@ class UserController extends Controller
         $item->delete();
         return redirect()->back()->with('thongbao','Deleted successfully');
     }
+
     public function getSetAdmin($id){
         $user = User::find($id);
         if($user->role == 1){
@@ -239,6 +240,17 @@ class UserController extends Controller
             $response["status"] = 500;
             $response["message"] = $validator->errors()->first();
         }
+
+        return response()->json($response);
+    }
+    public function postEditProfileApi(Request $request){
+        $user = User::find($request->id);
+        $user->address = $request->address;
+        $user->phone = $request->phone;
+        $user->save();
+        
+        $response["status"] = 200;
+        $response["message"] = "success";
 
         return response()->json($response);
     }

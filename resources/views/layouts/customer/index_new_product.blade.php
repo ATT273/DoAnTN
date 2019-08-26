@@ -47,7 +47,7 @@
 					<button type="button" class="btn btn-warning pull-left" id="add-to-cart-{{$newPr->id}}" @if ($newPr->quantity == 0) disabled @endif>
 						<i class="fa fa-shopping-cart"></i>
 					</button>&nbsp;
-					<button type="button" class="btn btn-default" id="compare-{{$newPr->id}}">Add to compare</button>
+					{{-- <button type="button" class="btn btn-default" id="compare-{{$newPr->id}}">Add to compare</button> --}}
 					<a  href="product/{{$newPr->id}}"><button type="button" class="btn btn-default" >Details<i class="fa fa-chevron-right"></i></button></a>
 					<div class="clearfix"></div>
 				</div>
