@@ -180,7 +180,7 @@ class ReportController extends Controller
     // Daily Report
 	public function getDailyReportTodayApi(){
 		$today = date('Y-m-d');
-		$bills =  Bill::where('created_at', '=', $today)->get();
+		$bills =  Bill::where('order_date', '=', $today)->get();
 		$this->checkReport($today);
 
 		$topProducts = Product::orderBy('sold','DESC')->take(4)->get();

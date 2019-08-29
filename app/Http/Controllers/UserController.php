@@ -43,7 +43,7 @@ class UserController extends Controller
     		
     	}
     	else{
-    		return redirect('login')->with('thongbao','Failed to login ');
+    		return redirect('login')->with('loi','Failed to login: Password or Email is invalid');
     	}
     }
 
@@ -77,7 +77,7 @@ class UserController extends Controller
             'password' => 'required|min:6|confirmed',
             'username' => 'required|unique:users,username',
             'fullname' => 'required|regex:/^[a-zA-Z][a-zA-Z\s]*$/',
-            'email' => 'required'
+            'email' => 'required|unique:users,email'
         ],
         [
             'password.required' => 'Type in your Password',
@@ -87,7 +87,8 @@ class UserController extends Controller
             'username.unique' => 'username has been used',
             'fullname.required' => 'Input your fullname',
             'fullname.regex' => 'no special characters and numbers are allowed',
-            'email.required' => 'input your email'
+            'email.required' => 'input your email',
+            'email.unique' => 'email is invalid'
 
         ]);
         $user = new User;

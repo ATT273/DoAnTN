@@ -695,7 +695,8 @@ class PageController extends Controller
     }
     // for debug
     public function getdelsession(Request $request){
-        $request->session()->flush();
+        $request->session()->regenerate();
+        // $request->session()->flush();
     }
 
     //output session
