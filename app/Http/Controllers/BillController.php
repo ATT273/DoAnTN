@@ -82,7 +82,6 @@ class BillController extends Controller
                 $response["message"] = "success";
 
                 return response()->json($response);
-                break;
             // transfer
             case '2':
                 $bill->transfer_status = 1;
@@ -92,7 +91,6 @@ class BillController extends Controller
                 $response["message"] = "success";
 
                 return response()->json($response);
-                break;
             // payment
             case '3':
                 $bill->payment_status = 1;
@@ -102,7 +100,6 @@ class BillController extends Controller
                 $response["message"] = "success";
 
                 return response()->json($response);
-                break;
         }
         
     }

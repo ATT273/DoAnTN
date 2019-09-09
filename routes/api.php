@@ -51,6 +51,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 	Route::post('login','UserController@postLoginApi');
 	//Logout
 	Route::get('logout','UserController@getLogout');
+	Route::post('logout-api','UserController@getLogoutApi');
 
 	//checkout
 	Route::post('post-placeorder','PageController@postPlaceOrderApi');

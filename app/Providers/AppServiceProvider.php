@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
         Blade::directive('excerpt', function($str){
             return "<?php  echo explode('---',$str)[0]; ?>";
         });
+
+        Schema::defaultStringLength(191);
     }
 
     /**

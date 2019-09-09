@@ -8,16 +8,17 @@ use App\Product;
 use App\Bill;
 use App\WishList;
 use App\Http\Requests;
+use Carbon\Carbon;
 use Validator;
 use Session;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\TokenGuard;
 
 class UserController extends Controller
 {
     //
     
     public function postLogin(Request $request){
-    	
     	
     	if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
             $receiver = $payer = Auth::user()->name;
@@ -170,9 +171,24 @@ class UserController extends Controller
 
     
  // Api function
+    protected function outputJSON($result = null, $message = '', $responseCode = 200) {
+        if ($message != '') $response["message"] = $message;
+        if ($result != null) $response["result"] = $result;
+        return response()->json(
+        $response, 
+        $responseCode);
+    }
+
+    
     public function postAdminLoginApi(Request $request){
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
-            $admin  = Auth::user();
+            $now = Carbon::now();
+            $hex = bin2hex($now);
+            $log_user = User::where('email',$request->email)->first();
+            $token = $log_user->id."_".$hex;
+            $log_user->api_token = $token;
+            $log_user->save();
+            $admin  =  $log_user;
             $user = User::all();
             $bill = Bill::all();
             $user_count = count($user);
@@ -192,6 +208,12 @@ class UserController extends Controller
 
     public function postLoginApi(Request $request){
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+            $now = Carbon::now();
+            $hex = bin2hex($now);
+            $log_user = User::where('email',$request->email)->first();
+            $token = $log_user->id."_".$hex;
+            $log_user->api_token = $token;
+            $log_user->save();
             $user  = Auth::user();
             $response["status"] = 200;
             $response["message"] = 'Login Success';
@@ -255,4 +277,12 @@ class UserController extends Controller
 
         return response()->json($response);
     }
+
+    public function getLogoutApi(Request $request){
+        $user = User::where('email',$request->email)->first();
+        $user->api_token = null;
+        $user->save();
+        
+    }
+
 }

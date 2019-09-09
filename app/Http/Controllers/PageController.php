@@ -132,10 +132,16 @@ class PageController extends Controller
     }
     // Admin login
     public function getAdminlogin(){
+        if(Auth::check()){
+            return redirect('index');
+        }
     	return view('layouts.admin.admin_login');
     }
     // Customer login
     public function getlogin(){
+        if(Auth::check()){
+            return redirect('index');
+        }
         $categories = Category::all();
         $oldCart  = Session::get('cart');
         $cart = new Cart($oldCart);
