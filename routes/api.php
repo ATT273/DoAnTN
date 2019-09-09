@@ -57,24 +57,29 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 	Route::post('post-placeorder','PageController@postPlaceOrderApi');
 	Route::post('apply-code','PageController@applyPromoCodeApi');
 
-	// Profile
-	Route::post('edit-profile','UserController@postEditProfileApi');
+	
 
 	//search item
 	Route::post('search', 'PageController@postSearchApi');
 
-	//bill
-	Route::get('user-bill/{id}', 'PageController@getUserBillsApi');
+	
 
 	// Comment
 	Route::post('add-comment','CommentController@postAddCommentApi');
 
 	// news
 	Route::get('news/{id}','PageController@getNewsApi');
-
-	//wishlist
-	Route::get('wishlist/{id}','PageController@getWishListApi');
-	Route::post('post-wishlist','PageController@postAddToWishListApi');
+	
+	Route::group(['prefix' => 'u', 'middleware' => 'user-middleware-api'],function(){
+		//wishlist
+		Route::get('wishlist/{id}','PageController@getWishListApi');
+		Route::post('post-wishlist','PageController@postAddToWishListApi');
+		// Profile
+		Route::post('edit-profile','UserController@postEditProfileApi');
+		//bill
+		Route::get('user-bill/{id}', 'PageController@getUserBillsApi');
+	});
+	
 
 
 ///////////////////////////
@@ -84,7 +89,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('admin/login','UserController@postAdminLoginApi');
 Route::get('admin/login','PageController@getAdminloginApi');
 
-Route::group(['prefix'=>'admin'],function(){
+Route::group(['prefix'=>'admin','middleware'=>'admin-middleware-api'],function(){
 	
 	//DashBoard
 	Route::get('dashboard','PageController@getAdminDashboardApi');
