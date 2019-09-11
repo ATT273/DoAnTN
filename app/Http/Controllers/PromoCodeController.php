@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Tag;
 use App\ProductTag;
 use App\PromoCode;
+use App\User;
 use Validator;
 use Illuminate\Http\Request;
 
@@ -162,8 +163,7 @@ class PromoCodeController extends Controller
         }
         
     }
-
-    ///////////////////
+///////////////////
     // API Functions //
     ///////////////////
     public function getDanhsachApi(){
@@ -174,7 +174,13 @@ class PromoCodeController extends Controller
 	}
 
 	public function postAddApi(Request $request){
-
+		$id = explode('_', $request->apiToken)[0];
+        $user = User::find($id);
+        if ($request->apiToken != $user->api_token) {
+            $response["status"] = 250;
+            $response["message"] = 'token timeout';
+            return response()->json($response);
+        }
 		$rules = [
                 'code_name' => 'required',
 				'code_discount' =>'required|numeric',
@@ -219,7 +225,13 @@ class PromoCodeController extends Controller
 	}
 
 	public function postEditApi(Request $request, $id){
-
+		$uid = explode('_', $request->apiToken)[0];
+        $user = User::find($uid);
+        if ($request->apiToken != $user->api_token) {
+            $response["status"] = 250;
+            $response["message"] = 'token timeout';
+            return response()->json($response);
+        }
 		$rules = [
                 'code_name' => 'required',
 				'code_discount' =>'required|numeric',

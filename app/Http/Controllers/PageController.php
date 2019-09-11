@@ -554,6 +554,9 @@ class PageController extends Controller
     ////////////////
     public function getCheckOut(Request $request){
         if(Auth::check()){
+            if(!Session::has('cart')){
+                return redirect('index');
+            }
             if(Session::has('checkout_info')){
                 $checkout_info = Session::get('checkout_info');
             }
@@ -793,7 +796,13 @@ class PageController extends Controller
 
 
     public function postPlaceOrderApi(Request $request){
-        
+        $id = explode('_', $request->apiToken)[0];
+        $user = User::find($id);
+        if ($request->apiToken != $user->api_token) {
+            $response["status"] = 250;
+            $response["message"] = 'token timeout';
+            return response()->json($response);
+        }
         $user_id = $request->user_id; 
 
         $cart = json_decode($request->cart,true);
@@ -846,6 +855,13 @@ class PageController extends Controller
     }
 
     public function applyPromoCodeApi(Request $request){
+        $id = explode('_', $request->apiToken)[0];
+        $user = User::find($id);
+        if ($request->apiToken != $user->api_token) {
+            $response["status"] = 250;
+            $response["message"] = 'token timeout';
+            return response()->json($response);
+        }
         $codes = PromoCode::where('name',$request->promo_code)->get();
         if(count($codes) > 0){
             $code = $codes[0];
@@ -863,6 +879,13 @@ class PageController extends Controller
     }
 
     public function postSearchApi(Request $request){
+        $id = explode('_', $request->apiToken)[0];
+        $user = User::find($id);
+        if ($request->apiToken != $user->api_token) {
+            $response["status"] = 250;
+            $response["message"] = 'token timeout';
+            return response()->json($response);
+        }
         $products = Product::where('name','LIKE', '%'.$request->keyword.'%')->orWhere('price',$request->keyword)->get();
         foreach ($products as $product) { 
             $product->productimg; 
@@ -928,6 +951,13 @@ class PageController extends Controller
     }
 
     public function postAddToWishListApi(Request $request){
+        $id = explode('_', $request->apiToken)[0];
+        $user = User::find($id);
+        if ($request->apiToken != $user->api_token) {
+            $response["status"] = 250;
+            $response["message"] = 'token timeout';
+            return response()->json($response);
+        }
         $product_id = $request->id;
         $user_id = $request->user_id;
         $wishlist_item = WishList::where([['product_id',$product_id],['user_id',$user_id]])->first();

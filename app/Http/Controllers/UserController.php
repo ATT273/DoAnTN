@@ -214,7 +214,7 @@ class UserController extends Controller
             $token = $log_user->id."_".$hex;
             $log_user->api_token = $token;
             $log_user->save();
-            $user  = Auth::user();
+            $user  = $log_user;
             $response["status"] = 200;
             $response["message"] = 'Login Success';
             $response["user"] = $user;
@@ -267,6 +267,13 @@ class UserController extends Controller
         return response()->json($response);
     }
     public function postEditProfileApi(Request $request){
+        $id = explode('_', $request->apiToken)[0];
+        $user = User::find($id);
+        if ($request->apiToken != $user->api_token) {
+            $response["status"] = 250;
+            $response["message"] = 'token timeout';
+            return response()->json($response);
+        }
         $user = User::find($request->id);
         $user->address = $request->address;
         $user->phone = $request->phone;
@@ -283,6 +290,10 @@ class UserController extends Controller
         $user->api_token = null;
         $user->save();
         
+        $response["status"] = 200;
+        $response["message"] = "success";
+
+        return response()->json($response);
     }
 
 }

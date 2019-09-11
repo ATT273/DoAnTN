@@ -8,6 +8,7 @@ use App\ProductImage;
 use App\ProductTag;
 use App\Comment;
 use App\Tag;
+use App\User;
 use Validator;
 use Illuminate\Http\Request;
 
@@ -266,6 +267,13 @@ class ProductController extends Controller
     }
 
     public function postAddApi(Request $request){
+        $id = explode('_', $request->apiToken)[0];
+        $user = User::find($id);
+        if ($request->apiToken != $user->api_token) {
+            $response["status"] = 250;
+            $response["message"] = 'token timeout';
+            return response()->json($response);
+        }
         $rules = [
                 'product_name' => 'required|unique:product,name|min:10|max:200',
                 'product_type' => 'required',

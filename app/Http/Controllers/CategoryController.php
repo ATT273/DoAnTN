@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\ProductType;
 use App\Product;
+use App\User;
 use Validator;
 use Illuminate\Http\Request;
 
@@ -112,7 +113,7 @@ class CategoryController extends Controller
     }
 
 
-    //////////////////
+   //////////////////
     // Api function //
     //////////////////
 
@@ -124,6 +125,13 @@ class CategoryController extends Controller
     }
 
     public function postAddApi(Request $request){
+        $id = explode('_', $request->apiToken)[0];
+        $user = User::find($id);
+        if ($request->apiToken != $user->api_token) {
+            $response["status"] = 250;
+            $response["message"] = 'token timeout';
+            return response()->json($response);
+        }
         $rules = [
                 'category'=>'required|unique:category,name| min:3| max:100'
             ];
@@ -146,6 +154,13 @@ class CategoryController extends Controller
     }
 
     public function postEditApi(Request $request, $id){
+        $uid = explode('_', $request->apiToken)[0];
+        $user = User::find($uid);
+        if ($request->apiToken != $user->api_token) {
+            $response["status"] = 250;
+            $response["message"] = 'token timeout';
+            return response()->json($response);
+        }
         $rules = [
                 'category' => 'required|unique:category,name|min:3|max:100'
             ];

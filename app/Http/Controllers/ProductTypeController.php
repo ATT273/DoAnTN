@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\ProductType;
 use App\Product;
 use App\Category;
+use App\User;
 use Validator;
 use Illuminate\Http\Request;
 
@@ -123,6 +124,13 @@ class ProductTypeController extends Controller
     }
 
     public function postAddApi(Request $request){
+        $id = explode('_', $request->apiToken)[0];
+        $user = User::find($id);
+        if ($request->apiToken != $user->api_token) {
+            $response["status"] = 250;
+            $response["message"] = 'token timeout';
+            return response()->json($response);
+        }
         $rules = [
                 'product_type' => 'required|unique:type_product,name',
             ];
@@ -146,6 +154,13 @@ class ProductTypeController extends Controller
     }
 
     public function postEditApi(Request $request, $id){
+        $uid = explode('_', $request->apiToken)[0];
+        $user = User::find($uid);
+        if ($request->apiToken != $user->api_token) {
+            $response["status"] = 250;
+            $response["message"] = 'token timeout';
+            return response()->json($response);
+        }
         $rules = [
                 'category' => 'required',
                 'product_type' => 'required',

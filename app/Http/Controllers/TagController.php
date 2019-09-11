@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Tag;
+use App\User;
 use Validator;
 use App\ProductTag;
 use Illuminate\Http\Request;
@@ -98,7 +99,7 @@ class TagController extends Controller
     }
 
 
-     // APi function
+    // APi function
 
     public function getDanhsachApi(){
         $tags = Tag::all() ;
@@ -108,6 +109,13 @@ class TagController extends Controller
     }
 
     public function postAddApi(Request $request){
+        $id = explode('_', $request->apiToken)[0];
+        $user = User::find($id);
+        if ($request->apiToken != $user->api_token) {
+            $response["status"] = 250;
+            $response["message"] = 'token timeout';
+            return response()->json($response);
+        }
         $rules = [
                 'tag'=>'required|unique:tag,name| min:3| max:100'
             ];
@@ -129,6 +137,13 @@ class TagController extends Controller
     }
 
     public function postEditApi(Request $request, $id){
+        $uid = explode('_', $request->apiToken)[0];
+        $user = User::find($uid);
+        if ($request->apiToken != $user->api_token) {
+            $response["status"] = 250;
+            $response["message"] = 'token timeout';
+            return response()->json($response);
+        }
         $rules = [
                 'tag' => 'required|unique:tag,name|min:3|max:100'
             ];

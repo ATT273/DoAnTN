@@ -33,10 +33,9 @@
 					                    <th>Customer</th>
 					                    <th>Discount Amount</th>
 					                    <th>Subtotal</th>
+					                    <th>Confirmation</th>
 					                    <th>Shipping Status</th>
 					                    <th>Payment Status</th>
-					                    <th>Edit</th>
-					                    <th>Delete</th>
 				                  	</tr>
 				                </thead>
 				                <tbody>
@@ -47,10 +46,21 @@
 						                    <td>{{$bill->user->name}}</td>
 						                    <td>{{$bill->discount_amount}}</td>
 						                    <td>{{$bill->total}}</td>
+						                    <td>
+												@if($bill->confirmation == 0)<i class="fa fa-check status-default" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Chua xac nhan"></i>@endif
+												@if($bill->confirmation == 1)<i class="fa fa-check status-success" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Da xac nhan"></i>@endif
+												</td>
+												<td>
+												@if($bill->transfer_status == 0)<i class="fa fa-truck status-default fa-lg" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Chua van chuyen"></i>@endif
+												@if($bill->transfer_status == 1)<i class="fa fa-truck status-success fa-lg" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Dang van chuyen">@endif
+												</td>
+												<td>
+												@if($bill->payment_status == 0)<i class="fa fa-credit-card status-default" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Chua thanh toan"></i>@endif
+												@if($bill->payment_status == 1)<i class="fa fa-credit-card status-success" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Da thanh toan"></i>@endif
+												</td>
+						                   {{--  <td>{{$bill->confirmation}}</td>
 						                    <td>{{$bill->transfer_status}}</td>
-						                    <td>{{$bill->payment_status}}</td>
-						                    <td><i class="fa fa-pencil"></i> <a href="admin/bill/edit/{{$bill->id}}">Edit</a></td>
-						                    <td><i class="fa fa-trash-o"></i> <a href="admin/bill/del/{{$bill->id}}" onclick="return confirm('Ban co muon xoa danh muc nay khong?')">Delete</a></td>
+						                    <td>{{$bill->payment_status}}</td> --}}
 						                </tr>
 				                  	@endforeach
 				                </tbody>
