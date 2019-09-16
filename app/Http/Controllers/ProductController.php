@@ -33,9 +33,9 @@ class ProductController extends Controller
     			'product_name' => 'required|unique:product,name|min:10|max:200',
     			'product_type' => 'required',
     			'product_unit' => 'required',
-    			'product_price' => 'required',
+    			'product_price' => 'required|numeric',
     			'product_qty' => 'required',
-    			'product_promo' => 'required',
+    			'product_promo' => 'required|numeric',
     			'product_img.*' => 'required|mimes:jpeg,png|max:1024',
     		],
     		[
@@ -43,8 +43,10 @@ class ProductController extends Controller
     			'product_name.unique'=>'You have added this product',
     			'product_name.min'=>'Name must be between 10 and 200 charaters',
     			'product_name.max'=>'Name must be between 10 and 200 charaters',
-    			'product_price.required'=>'Please enter product price',
+                'product_price.required'=>'Please enter product price',
+    			'product_price.numeric'=>'Price must be a number',
     			'product_promo.required'=>'Please enter product promo price',
+                'product_promo.numeric'=>'Price must be a number',
     			'product_qty.required'=>'Please enter product quantity',
     			'product_unit.required'=>'Please enter product unit',
     			'product_img.*.required' => 'Please choose images for this product',
@@ -52,6 +54,10 @@ class ProductController extends Controller
                 'product_img.*.max' => ' Max size is 1Mb',
     			// 'product_promo'
     		]);
+
+        if($request->product_promo > $request->price){
+            return redirect('admin/product/danhsach-sp')->with('loi','Promo Price must be smaller than Price');
+        }
 
     	$product = new Product;
     	$product->name = $request->product_name;
@@ -97,9 +103,9 @@ class ProductController extends Controller
     			'product_name' => 'required|min:10|max:200',
     			'product_type' => 'required',
     			'product_unit' => 'required',
-    			'product_price' => 'required',
-    			'product_qty' => 'required',
-    			'product_promo' => 'required',
+    			'product_price' => 'required|numeric',
+                'product_qty' => 'required',
+                'product_promo' => 'required|numeric',
     			'product_img.*' => 'mimes:jpeg,png|max:1024',
     		],
     		[
@@ -107,7 +113,9 @@ class ProductController extends Controller
     			'product_name.min'=>'Name must be between 10 and 200 charaters',
     			'product_name.max'=>'Name must be between 10 and 200 charaters',
     			'product_price.required'=>'Please enter product price',
-    			'product_promo.required'=>'Please enter product promo price',
+                'product_price.numeric'=>'Price must be a number',
+                'product_promo.required'=>'Please enter product promo price',
+                'product_promo.numeric'=>'Price must be a number',
     			'product_qty.required'=>'Please enter product quantity',
     			'product_unit.required'=>'Please enter product unit',
     			'product_img.*.mimes' => 'Image must be jpeg,jpg,png',

@@ -79,10 +79,12 @@ class TagController extends Controller
         $tag = Tag::find($id);
         // dd($tag);
         $productTags = ProductTag::where('tag_id',$id)->get();
-        foreach ($productTags as $pt) {
-            $pt->delete();
+        if(count($productTags) > 0){
+            foreach ($productTags as $pt) {
+                $pt->delete();
+            }
         }
-         $tag->delete();
+        $tag->delete();
         return redirect('admin/tag/danhsach-tag')->with('thongbao', 'Deleted Successfully');
 
     }

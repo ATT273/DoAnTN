@@ -39,8 +39,7 @@ class CategoryController extends Controller
     	$category->save();
 
     	return redirect('admin/category/add')->with('thongbao','Added Successfully');
-    	// echo changeTitle($request->category);
-    	// echo $category->lowcaseName;
+    	
     }
 
     public function getEdit($id){
@@ -78,9 +77,6 @@ class CategoryController extends Controller
         }elseif ($checkname[0]->id !== $id) {
             return redirect('admin/category/edit/'.$id)->with('loi','This category has already been existed');
         }
-
-
-    	
     }
 
     public function getDel($id){

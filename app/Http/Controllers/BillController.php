@@ -11,7 +11,7 @@ class BillController extends Controller
 {
     //
     public function getDanhsach(){
-    	$bills = Bill::paginate(5);
+    	$bills = Bill::orderBy('created_at','DESC')->paginate(5);
     	return view('admin.bill.danhsach_bill',['bills' => $bills]);
     }
 

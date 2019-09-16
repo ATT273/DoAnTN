@@ -717,10 +717,10 @@ class PageController extends Controller
       Session::put('thu.name','hihii');
       Session::put('thu.age',200);
       $thu2 = Session::get('thu');
-      echo $thu2['name'];
         $sid = session()->getId();
         echo $sid.'<br>';
-    
+
+        print_r($request->cookie());
         dd(Session::all());
         
     }

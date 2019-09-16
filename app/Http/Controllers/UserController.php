@@ -49,8 +49,6 @@ class UserController extends Controller
     }
 
     public function postAdminLogin(Request $request){
-        
-        
         if(Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password])){
             $receiver = $payer = Auth::user()->name;
             $receiver_phone = $payer_phone =  Auth::user()->phone;

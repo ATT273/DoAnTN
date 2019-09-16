@@ -37,9 +37,9 @@
 				                  	@foreach($reports as $report)
 						                <tr>
 						                    <td>{{$report->date}}</td>
-						                    <td>{{$report->gross_revenue}}</td>
-						                    <td>{{$report->discount_amount}}</td>
-						                    <td>{{$report->received}}</td>
+						                    <td align="right">@money($report->gross_revenue)</td>
+						                    <td align="right">@money($report->discount_amount)</td>
+						                    <td align="right">@money($report->received)</td>
 						                    <td>{{$report->number_of_orders}}</td>
 						                    <td>{{$report->number_products_sold}}</td>
 						                    <td><i class="fa fa-pencil"></i> <a href="admin/report/edit/{{$report->id}}">Edit</a></td>

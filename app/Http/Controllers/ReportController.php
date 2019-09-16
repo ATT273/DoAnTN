@@ -64,6 +64,7 @@ class ReportController extends Controller
 		// tao report khi o trang quan ly
 		}elseif( count($today_bill) == 0 ){
 			if(count($check_report) == 0){
+				dd($day);
 				$new_report = new Report;
 				$new_report->date = $day;
 				$new_report->number_of_orders = 0;
@@ -75,8 +76,6 @@ class ReportController extends Controller
 			}
 		}
 	}
-
-
 
 	// Report menu
 	public function getMenu(){
@@ -104,6 +103,7 @@ class ReportController extends Controller
 	public function getWeeklyReport(){
 		$daysOfWeek = [];
 		$today = Carbon::now();
+		$this->checkReport(Carbon::parse($today)->toDateString());
 		$week = $today->weekOfYear;
 		$firstDay = $today->startOfWeek();
 		$day1 = $firstDay;
@@ -122,6 +122,7 @@ class ReportController extends Controller
 	}
 	public function getMonthlyReport(){
 		$today = Carbon::now();
+		$this->checkReport(Carbon::parse($today)->toDateString());
 		$daysOfMonth = [];
 		$month = $today->month;
 		$daysInMonth = $today->daysInMonth;
