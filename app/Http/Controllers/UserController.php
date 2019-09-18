@@ -146,6 +146,18 @@ class UserController extends Controller
         $user->address = $request->address;
         $user->phone = $request->phone;
         $user->save();
+
+        $receiver = $payer = Auth::user()->name;
+        Session::put('checkout_info',
+            [
+                'receiver' => $receiver,
+                'receiver_phone' => $request->phone,
+                'shipping_address' => $request->address,
+                'payer' => $payer,
+                'payer_phone' => $request->phone,
+                'billing_address' => $request->address,
+            ]);
+        Session::save();
         return redirect()->back()->with('thongbao','Updated successfully');
     }
 

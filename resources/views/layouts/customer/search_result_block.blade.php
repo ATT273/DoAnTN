@@ -14,7 +14,17 @@
 						@endif
 						</p>
 						<p class="single-item-price">
-							<span>@money($product->price)</span>
+							
+							@if($product->promo_price != 0)
+								<span>
+									<strike>@money($product->price)</strike>
+								</span>
+								<span class="status-danger">
+									@money($product->promo_price)
+								</span>
+							@else
+								<span>@money($product->price)</span>
+							@endif
 						</p>
 					</div>
 					<div class="single-item-caption">

@@ -63,7 +63,16 @@
 						<div class="single-item-body">
 							<p class="single-item-title"><h3>{{$product->name}}</h3></p>
 							<p class="single-item-price">
-								<span>@money($product->price)</span>
+								@if($product->promo_price != 0)
+									<span>
+										<strike>@money($product->price)</strike>
+									</span><br>
+									<span class="status-danger">
+										@money($product->promo_price)
+									</span>
+								@else
+									<span>@money($product->price)</span>
+								@endif
 							</p>
 						</div>
 						<div class="clearfix"></div>

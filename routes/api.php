@@ -91,6 +91,8 @@ Route::group(['prefix'=>'admin'],function(){
 	
 	//DashBoard
 	Route::get('dashboard','PageController@getAdminDashboardApi');
+	// logout
+	Route::post('logout-api','UserController@getLogoutApi');
 
 	//product
 	Route::group(['prefix'=>'product'], function(){ 

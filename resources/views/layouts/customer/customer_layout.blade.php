@@ -48,15 +48,7 @@
 	<script src="js/bootstrap.min.js"></script>
 	@yield('script')
 	<script>
-	$(document).ready(function($) {    
-		$(window).scroll(function(){
-			if($(this).scrollTop()>150){
-			$(".header-bottom").addClass('fixNav')
-			}else{
-				$(".header-bottom").removeClass('fixNav')
-			}}
-		)
-
+	$(document).ready(function() { 
 		$('#myModal').on('shown.bs.modal', function () {
 		  $('#myInput').focus()
 		})

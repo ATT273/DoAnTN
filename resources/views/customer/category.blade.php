@@ -49,4 +49,14 @@
  <!-- #content -->
 @endsection
 @section('script')
+<script type="text/javascript">
+	$(document).ready(function(){
+		@foreach($products as $product)
+			$('#add-to-cart-{{$product->id}}').click(function(){
+				$('#cart-button').load('add-to-cart/{{$product->id}}');
+				alert('Product is added to your cart');
+			});
+		@endforeach
+	});
+</script>
 @endsection

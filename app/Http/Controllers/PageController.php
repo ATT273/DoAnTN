@@ -564,6 +564,7 @@ class PageController extends Controller
             $cart = new Cart($oldCart);
             $checkout_info = Session::get('checkout_info');
             if ($request->has('change_info')) {
+              
                 if($request->change_info == 'billing'){
                     $payer = $request->payer_name;
                     $payer_phone = $request->payer_phone;
@@ -630,8 +631,6 @@ class PageController extends Controller
         }elseif($cart->promoCode == 1){
             return redirect('checkout')->with('loi','Only use 1 code for this order');
         }
-        
-        
     }
 
     public function postPlaceOrder(Request $request){
@@ -699,7 +698,7 @@ class PageController extends Controller
         $request->session()->forget('cart');
         
         // $request->session()->forget('checkout_info');
-        return redirect('index');
+        return view('customer.after_place_order');
 
     }
     // for debug

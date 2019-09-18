@@ -55,7 +55,7 @@ class ProductController extends Controller
     			// 'product_promo'
     		]);
 
-        if($request->product_promo > $request->price){
+        if($request->product_promo > $request->product_price){
             return redirect('admin/product/danhsach-sp')->with('loi','Promo Price must be smaller than Price');
         }
 
@@ -84,7 +84,7 @@ class ProductController extends Controller
     		$img->product_id = $lastest_pr->id;
     		$img->save();
     	}
-    	return redirect('admin/product/danhsach-sp')->with('thongbao','Added Successfully');
+    	return redirect('admin/product/add')->with('thongbao','Added Successfully');
     }
 
     public function getEdit($id){
@@ -123,7 +123,9 @@ class ProductController extends Controller
     			// 'product_promo'
     		]);
 
-
+        if($request->product_promo > $request->product_price){
+            return redirect('admin/product/add')->with('loi','Promo Price must be smaller than Price');
+        }
         $checkname = Product::where('name',$request->product_name)->get();
         if(count($checkname) == 0){
             $product = Product::findOrFail($id);

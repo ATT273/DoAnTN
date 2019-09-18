@@ -21,15 +21,16 @@
 			</div> <!-- .main-content -->
 		</div> 
 	</div><!-- #content -->
+	<a href="view-cart">
+		<button type="button" class="btn btn-default compare-btn btn-other">
+			<i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i>
+		</button>
+	</a>
 	@include('layouts.customer.comparison_list_modal')
 @endsection
 @section('script')
 	<script type="text/javascript" src="slick-1.8.1/slick/slick.min.js"></script>
 	<script type="text/javascript">
-		
-
-
-
 		$(document).ready(function(){
 
 			$.ajaxSetup({
@@ -47,7 +48,7 @@
 			});
 			// new product
 			@foreach($newProducts as $newPr)
-			$('#add-to-cart-{{$newPr->id}}').click(function(){
+			$('#add-to-cart-new-{{$newPr->id}}').click(function(){
 				$('#cart-button').load('add-to-cart/{{$newPr->id}}');
 				alert('Product is added to your cart');
 			});
@@ -56,8 +57,8 @@
 				$('#campareS').load('load-button');
 			});
 
-			$('#heart-{{$newPr->id}}').click(function(e){
-				$(this).addClass('status-danger');
+			$('#heart-new-{{$newPr->id}}').click(function(e){
+				// $(this).addClass('status-danger');
 		    	e.preventDefault();
 		    	
 		    	var pid = {{$newPr->id}};
@@ -67,6 +68,7 @@
 					data:{id:pid},
 					success:function(data){
 						if(data.status == 1){
+							$('#heart-new-{{$newPr->id}}').addClass('status-danger');
 							alert(data.success);
 						}
 						if(data.status == 0){
@@ -82,7 +84,7 @@
 
 			// top product
 			@foreach($topProducts as $topPr)
-			$('#add-to-cart-{{$topPr->id}}').click(function(){
+			$('#add-to-cart-top-{{$topPr->id}}').click(function(){
 				$('#cart-button').load('add-to-cart/{{$topPr->id}}');
 				alert('Product is added to your cart');
 			});
@@ -90,8 +92,8 @@
 				$('#modal-body').load('compare/{{$topPr->id}}');
 				$('#campareS').load('load-button');
 			});
-			$('#heart-{{$topPr->id}}').click(function(e){
-				$(this).addClass('status-danger');
+			$('#heart-top-{{$topPr->id}}').click(function(e){
+				// $(this).addClass('status-danger');
 		    	e.preventDefault();
 		    	
 		    	var pid = {{$topPr->id}};
@@ -100,6 +102,7 @@
 					url: "post-wishlist",
 					data:{id:pid},
 					success:function(data){
+						$('#heart-top-{{$topPr->id}}').addClass('status-danger');
 						if(data.status == 1){
 							alert(data.success);
 						}
@@ -115,17 +118,8 @@
 			@endforeach
 
 			// compare list
-			@if(Session::has('compare_list'))
-				@foreach($list->items as $item)
-					$('#del-item-{{$item['item']['id']}}').click(function(){
-						$('#modal-body').load('del-compare/{{$item['item']['id']}}');
-					});
-				@endforeach
-			@endif
+			
 		});
 	</script>
-	<div id=compareS>
-		@include('layouts.customer.compare_script')
-	</div>
 	
 @endsection

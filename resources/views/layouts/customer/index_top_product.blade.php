@@ -8,7 +8,7 @@
 			<div class="single-item">
 				<div class="single-item-header">
 					<div class="df" id="wl-{{$topPr->id}}">
-						<i id="heart-{{$topPr->id}}" class="fa fa-heart fa-2x status-default
+						<i id="heart-top-{{$topPr->id}}" class="fa fa-heart fa-2x status-default
 							@if(Auth::check())
 								@foreach(Auth::user()->wishlist as $wl)
 									@if($wl->product_id == $topPr->id)
@@ -42,7 +42,7 @@
 					</p>
 				</div>
 				<div class="single-item-caption">
-					<button type="button" class="btn btn-warning pull-left" id="add-to-cart-{{$topPr->id}}" @if ($topPr->quantity == 0) disabled @endif>
+					<button type="button" class="btn btn-warning pull-left" id="add-to-cart-top-{{$topPr->id}}" @if ($topPr->quantity == 0) disabled @endif>
 						<i class="fa fa-shopping-cart"></i>
 					</button>&nbsp;
 					{{-- <button type="button" class="btn btn-default" id="compare-{{$topPr->id}}">Add to compare</button> --}}

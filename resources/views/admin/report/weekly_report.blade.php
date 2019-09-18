@@ -29,8 +29,6 @@
 					                    <th class="text-right">Received</th>
 					                    <th class="text-right">Number 0f Orders</th>
 					                    <th class="text-right">Sold Products</th>
-					                    <th>Edit</th>
-					                    <th>Delete</th>
 				                  	</tr>
 				                </thead>
 				                <tbody>
@@ -42,8 +40,6 @@
 						                    <td align="right">@money($report->received)</td>
 						                    <td align="right">{{$report->number_of_orders}}</td>
 						                    <td align="right">{{$report->number_products_sold}}</td>
-						                    <td><i class="fa fa-pencil"></i> <a href="admin/report/edit/{{$report->id}}">Edit</a></td>
-						                    <td><i class="fa fa-trash-o"></i> <a href="admin/report/del/{{$report->id}}" onclick="return confirm('Ban co muon xoa danh muc nay khong?')">Delete</a></td>
 						                </tr>
 				                  	@endforeach
 				                </tbody>

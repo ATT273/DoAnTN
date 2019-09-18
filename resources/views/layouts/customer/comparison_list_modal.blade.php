@@ -1,6 +1,4 @@
-<button type="button" class="btn btn-warning compare-btn btn-other" data-toggle="modal" data-target="#myModal">
-	<i class="fa fa-info-circle" aria-hidden="true"></i>
-</button>
+
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">

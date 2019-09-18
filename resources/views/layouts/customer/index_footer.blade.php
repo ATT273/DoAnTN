@@ -3,7 +3,7 @@
 			<div class="row">
 				<div class="col-sm-3">
 					<div class="widget">
-						<h4 class="widget-title">Instagram Feed</h4>
+						<h4 class="widget-title">Shop Vui Ve</h4>
 						<div id="beta-instagram-feed"><div></div></div>
 					</div>
 				</div>
@@ -12,12 +12,8 @@
 						<h4 class="widget-title">Information</h4>
 						<div>
 							<ul>
-								<li><a href="blog_fullwidth_2col.html"><i class="fa fa-chevron-right"></i> Web Design</a></li>
-								<li><a href="blog_fullwidth_2col.html"><i class="fa fa-chevron-right"></i> Web development</a></li>
-								<li><a href="blog_fullwidth_2col.html"><i class="fa fa-chevron-right"></i> Marketing</a></li>
-								<li><a href="blog_fullwidth_2col.html"><i class="fa fa-chevron-right"></i> Tips</a></li>
-								<li><a href="blog_fullwidth_2col.html"><i class="fa fa-chevron-right"></i> Resources</a></li>
-								<li><a href="blog_fullwidth_2col.html"><i class="fa fa-chevron-right"></i> Illustrations</a></li>
+								<li><a href="index"><i class="fa fa-chevron-right"></i> Tran Anh Tuan</a></li>
+								<li><a href="index"><i class="fa fa-chevron-right"></i> Pham Duy Anh</a></li>
 							</ul>
 						</div>
 					</div>

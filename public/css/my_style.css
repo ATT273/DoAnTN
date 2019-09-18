@@ -19,6 +19,18 @@
 body{
 	background-color: var(--body-color);
 }
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button, 
+input[type=number]::-moz-inner-spin-button, 
+input[type=number]::-moz-outer-spin-button { 
+  -webkit-appearance: none; 
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0; 
+}
+input[type=number] {
+    -moz-appearance:textfield !important; /* Firefox */
+}
 body.modal-open {
     overflow: visible;
 }
@@ -85,6 +97,7 @@ input[type=radio]{
 }
 
 /*Index page*/
+
 #content{
 	min-height: 700px;
 }
@@ -130,10 +143,10 @@ ul.cart-items-list{
 	-webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
 	box-shadow: 0 6px 12px rgba(0,0,0,.175);
 }
-.container{
+/*.container{
 	width: 1300px;
 }
-
+*/
 p.single-item-price{
 	height: 40px;
 }
@@ -552,6 +565,7 @@ section .section-title {
 
 /*Bill Detail*/
 .subtotal{
+	margin-bottom: 3px;
 	padding: 5px 5px 5px 5px;
 	line-height: 30px;
 	text-align: center;

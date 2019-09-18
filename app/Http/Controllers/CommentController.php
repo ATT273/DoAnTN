@@ -30,7 +30,7 @@ class CommentController extends Controller
     }
     //apiiii
     public function postAddCommentApi(Request $request){
-        $id = explode('_', $request->token)[0];
+        $id = explode('_', $request->apiToken)[0];
         $user = User::find($id);
         if ($request->apiToken != $user->api_token) {
             $response["status"] = 250;

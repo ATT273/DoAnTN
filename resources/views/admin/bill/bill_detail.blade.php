@@ -60,11 +60,42 @@
       								@endforeach
       							</tbody>
       						</table>
+                  {{-- subtotal --}}
                   <div class="subtotal">
                     <div class="row">
                       <div class="col-xs-3">
                         <div class="subtotal-name">
                           <strong>Subtotal:</strong>
+                        </div>
+                      </div>
+                      <div class="col-xs-9">
+                        <div class="subtotal-amount">
+                          @money($bill->sub_total)
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {{-- discount --}}
+                  <div class="subtotal">
+                    <div class="row">
+                      <div class="col-xs-3">
+                        <div class="subtotal-name">
+                          <strong>Discount:</strong>
+                        </div>
+                      </div>
+                      <div class="col-xs-9">
+                        <div class="subtotal-amount">
+                          @money($bill->discount_amount)
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {{-- total --}}
+                  <div class="subtotal">
+                    <div class="row">
+                      <div class="col-xs-3">
+                        <div class="subtotal-name">
+                          <strong>Total:</strong>
                         </div>
                       </div>
                       <div class="col-xs-9">
@@ -92,7 +123,7 @@
                     @endif
                   </div>
                   <button id="btn_xacnhan" class="btn btn-success btn-xs" @if($bill->confirmation == 1){{'disabled'}}@endif> Xac nhan</button>
-                  <button id="btn_huy" class="btn btn-danger btn-xs"> Huy</button>
+                  {{-- <button id="btn_huy" class="btn btn-danger btn-xs"> Huy</button> --}}
                 </div>
                 <div class="status">
                   <div id="transfer_status" class="confirmation-st">

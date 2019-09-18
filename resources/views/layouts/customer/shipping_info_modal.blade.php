@@ -19,7 +19,7 @@
 								</div>
 								<div class="form-group">
 									<label for="">Phone</label>
-									<input type="text" class="form-control" id="" name="receiver_phone" required>
+									<input type="number" class="form-control" id="" name="receiver_phone" required>
 								</div>
 								<div class="form-group">
 									<label for="">Address</label>
