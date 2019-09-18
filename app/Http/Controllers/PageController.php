@@ -543,11 +543,11 @@ class PageController extends Controller
         $this->ajaxReloadComparionList($list->items);
     }
 
-    public function loadButton(){
-        $oldList = Session::get('compare_list');
-        $list = new Compare($oldList);
-        return view('layouts.customer.compare_script','list' -> $list);
-    }
+    // public function loadButton(){
+    //     $oldList = Session::get('compare_list');
+    //     $list = new Compare($oldList);
+    //     return view('layouts.customer.compare_script','list' -> $list);
+    // }
 
     ////////////////////
     // Checkout//
