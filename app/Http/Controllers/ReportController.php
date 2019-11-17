@@ -64,7 +64,7 @@ class ReportController extends Controller
 		// tao report khi o trang quan ly
 		}elseif( count($today_bill) == 0 ){
 			if(count($check_report) == 0){
-				dd($day);
+				// dd($day);
 				$new_report = new Report;
 				$new_report->date = $day;
 				$new_report->number_of_orders = 0;
