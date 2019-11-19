@@ -1,7 +1,7 @@
 @foreach ($products->chunk(4) as $chunk)
 	<div class="row">
 		@foreach ($chunk as $product)
-			<div class="col-sm-3 item-block">
+			<div class="col-md-3 col-sm-4 col-xs-12 item-block">
 				<div class="single-item">
 					<div class="single-item-header">
 						<a href="product/{{$product->id}}"><img src="upload/product/{{$product->productimg->first()["name"]}}" width="200" alt=""></a>

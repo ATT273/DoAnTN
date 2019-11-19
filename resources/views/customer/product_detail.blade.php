@@ -38,7 +38,7 @@
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="row">
-					<div class="col-md-4 col-sm-4 col-xs-4">
+					<div class="col-md-4 col-sm-4 col-xs-12">
 						<div class="row">
 							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 product-images-slide">
 								@foreach($product->productimg as $image)
@@ -59,7 +59,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-md-8 col-sm-8 col-xs-8">
+					<div class="col-md-8 col-sm-8 col-xs-12">
 						<div class="single-item-body">
 							<p class="single-item-title"><h3>{{$product->name}}</h3></p>
 							<p class="single-item-price">

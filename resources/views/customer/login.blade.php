@@ -25,8 +25,8 @@
 				<input type="hidden" name="to_checkout" value="1">
 			@endif
 			<div class="row">
-				<div class="col-sm-3"></div>
-				<div class="col-sm-6 form-login">
+				<div class="col-sm-1 col-xs-3"></div>
+				<div class="col-sm-10 col-xs-6 form-login">
 					<center><h4>Đăng nhập</h4></center>
 					<div class="space20">&nbsp;</div>
 					<div class="form-block">
@@ -41,7 +41,7 @@
 						<button type="submit" class="btn btn-primary center">Login</button>
 					</div>
 				</div>
-				<div class="col-sm-3"></div>
+				<div class="col-sm-1 col-xs-3"></div>
 			</div>
 		</form>
 	</div>

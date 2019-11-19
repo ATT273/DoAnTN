@@ -6,7 +6,7 @@
 
 	<div class="row">
 		@foreach($newProducts as $newPr)
-		<div class="col-sm-3 item-block">
+		<div class="col-md-3 col-sm-4 col-xs-12 item-block">
 			<div class="single-item">
 				<div class="single-item-header">
 					<div class="df" id="wl-{{$newPr->id}}">

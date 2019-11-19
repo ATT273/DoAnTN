@@ -3,7 +3,7 @@
 		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 			<h4>Keyword: {{$keyword}}</h4>
 		</div>
-		<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 pull-right">
+		<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
 			<form action="search" method="GET" role="form">
 				<input type="hidden" name="keyword" value="{{$keyword}}">
 				<div class="row" style="margin-top: 10px">
@@ -19,6 +19,7 @@
 						<button type="submit" class="btn btn-default">Loc</button>
 					</div>
 					<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+						fhghg
 					</div>
 				</div>
 			</form>

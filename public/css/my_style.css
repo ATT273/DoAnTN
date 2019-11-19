@@ -171,6 +171,10 @@ p.single-item-price{
 }
 .beta-products-list .row .item-block{
 	border-right: 0.5px solid #ddd;
+	margin-top: 10px;
+}
+.item-block{
+	margin-top: 10px;
 }
 .compare-btn{
 	position: fixed;
@@ -180,15 +184,18 @@ p.single-item-price{
 
 }
 /*Search sortby*/
-.filter{
+.filter-bar{
 	height: 50px;
 	border-top:0.5px solid var(--border-color);
 	background-color: var(--filter-section);
 }
-.filter h4{
+.filter-bar h4{
 	color: #fff;
 	text-align: center;
 	line-height: 50px;
+}
+.filter-bar .filter-input{
+	float: right;
 }
 /*COMPARE LIST*/
 .modal-dialog{
@@ -623,4 +630,25 @@ section .section-title {
 	margin-bottom: 20px;
 	border-top-right-radius: 3px;
 	border-bottom-right-radius: 3px;
+}
+
+/*Responsive */
+@media(max-width: 770px){
+	.single-item-header .fa-heart{
+		margin-left: -50px;
+	}
+	.slick-track img{
+		height: auto;
+	}
+}
+@media (max-width: 570px) {
+	.single-item-header .fa-heart{
+		margin-left: 00px;
+	}
+	.beta-products-list .row .item-block{
+		border: none;
+	}
+	.slick-track img{
+		height: auto;
+	}
 }

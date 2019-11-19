@@ -20,7 +20,7 @@
     @endif
 	<div id="content">
 		<div class="row">
-			<div class="col-md-3">
+			<div class="col-xs-12 col-md-3">
 		        <div class="box box-primary">
 		            <div class="box-body box-profile">
 		                <h3 class="profile-username text-center">{{$user->username}}</h3>
@@ -50,7 +50,7 @@
 		        </div>
 		        <!-- About Me Box -->
 		    </div>
-		    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 " id="order-sec">
+		    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 " id="order-sec">
 		    	<div class="box box-success">
 		    		<div class="box-body">
 		                @if(count($bills) > 0)
