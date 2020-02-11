@@ -5,31 +5,22 @@
 
 @section('content')
 	@include('layouts.customer.index_slide')
-	<div class="container">
-		<div id="content" class="space-top-none">
-			<div class="main-content">
-				<div class="space60">&nbsp;</div>
-				<div class="row">
-					<div class="col-sm-12">
-						@include('layouts.customer.index_new_product')
+	<main>
+		<div class="main-content">
+			
+			@include('layouts.customer.index_new_product')
 
-						<div class="space50">&nbsp;</div>
+			<div class="space50">&nbsp;</div>
 
-						@include('layouts.customer.index_top_product')
-					</div>
-				</div> <!-- end section with sidebar and main content -->
-			</div> <!-- .main-content -->
-		</div> 
-	</div><!-- #content -->
-	<a href="view-cart">
-		<button type="button" class="btn btn-default compare-btn btn-other">
-			<i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i>
-		</button>
-	</a>
-	@include('layouts.customer.comparison_list_modal')
+			@include('layouts.customer.index_top_product')
+			
+		</div> <!-- .main-content -->
+	</main>
+	
+	{{-- @include('layouts.customer.comparison_list_modal') --}}
 @endsection
 @section('script')
-	<script type="text/javascript" src="slick-1.8.1/slick/slick.min.js"></script>
+	{{-- <script type="text/javascript" src="js/slick.js"></script> --}}
 	<script type="text/javascript">
 		$(document).ready(function(){
 
@@ -39,13 +30,6 @@
 		        }
 		    });
 
-			$('.slide').slick({
-				autoplay:true,
-				arrows:false,
-				fade:true,
-				easing:'swing',
-				autoplaySpeed:2000,
-			});
 			// new product
 			@foreach($newProducts as $newPr)
 			$('#add-to-cart-new-{{$newPr->id}}').click(function(){
@@ -121,5 +105,5 @@
 			
 		});
 	</script>
-	
+	<script type="text/javascript" src="js/my_script.js"></script>
 @endsection

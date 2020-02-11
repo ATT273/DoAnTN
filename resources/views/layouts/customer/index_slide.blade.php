@@ -1,15 +1,28 @@
-<div class="row" style="width: 100%; margin-right: 0px; margin-left: 0px;">
-	{{-- <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2"></div> --}}
-	{{-- <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8"> --}}
-		<div class="slide">
-			@foreach( $banners as $banner)
-				<div>
-					<a href="news/{{$banner->news->id}}">
-						<img src="upload/slide/{{$banner->image}}" alt="{{$banner->image}}" height="530" >
-					</a>
-				</div>
-			@endforeach
+<div class="slide">
+	<div id="indexCarousel" class="carousel slide" data-ride="carousel">
+		<ol class="carousel-indicators">
+		  <li data-target="#indexCarousel" data-slide-to="0" class="active"></li>
+		  <li data-target="#indexCarousel" data-slide-to="1"></li>
+		  <li data-target="#indexCarousel" data-slide-to="2"></li>
+		</ol>
+		<div class="carousel-inner">
+		  <div class="carousel-item active">
+			<img class="d-block w-100" src="upload/slide/2019-08-04 13-43-55-BANNER1.jpg" alt="First slide">
+		  </div>
+		  <div class="carousel-item">
+			<img class="d-block w-100" src="upload/slide/2019-08-04 13-44-08-banner2.jpg" alt="Second slide">
+		  </div>
+		  <div class="carousel-item">
+			<img class="d-block w-100" src="upload/slide/2019-08-04 13-44-17-banner3.jpg" alt="Third slide">
+		  </div>
 		</div>
-	{{-- </div> --}}
-	{{-- <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2"></div> --}}
+		<a class="carousel-control-prev" href="#indexCarousel" role="button" data-slide="prev">
+		  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		  <span class="sr-only">Previous</span>
+		</a>
+		<a class="carousel-control-next" href="#indexCarousel" role="button" data-slide="next">
+		  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+		  <span class="sr-only">Next</span>
+		</a>
+	  </div>
 </div>

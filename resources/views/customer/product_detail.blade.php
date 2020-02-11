@@ -53,7 +53,7 @@
 							<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 slide-nav">
 								@foreach($product->productimg as $image)
 									<div>
-										<img src="upload/product/{{$image->name}}" alt="" height="90px">
+										<img src="upload/product/{{$image->name}}" alt="">
 									</div>
 								@endforeach
 							</div>

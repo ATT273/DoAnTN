@@ -67,8 +67,7 @@ class PageController extends Controller
                         <div class="row status-danger">
                             '.$promo_price.' X '.$item['qty'].'
                         </div>';
-            }
-            else{
+            } else {
                 echo    '<div class="row">'
                             .$price.' X '.$item['qty'].
                         '</div>';
